@@ -154,13 +154,149 @@ export const asyncRouterMap = [
       }
     ]
   },
+  {
+    path: '/user',
+    component: Layout,
+    children: [
+      {
+        path: 'user',
+        component: () => import('@/views/user/user'),
+        name: '用户',
+        meta: { title: '用户', icon: 'people', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/position',
+    component: Layout,
+    children: [
+      {
+        path: 'position',
+        component: () => import('@/views/position/position'),
+        name: '定位查看',
+        meta: { title: '定位查看', icon: 'example', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/satisfaction',
+    component: Layout,
+    children: [
+      {
+        path: 'satisfaction',
+        component: () => import('@/views/satisfaction/satisfaction'),
+        name: '满意度',
+        meta: { title: '满意度', icon: 'star', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/record',
+    component: Layout,
+    children: [
+      {
+        path: 'record',
+        component: () => import('@/views/record/record'),
+        name: '监管记录',
+        meta: { title: '监管记录', icon: 'password', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/order',
+    component: Layout,
+    meta: {
+      roles:['editor'] 
+    },
+    children: [
+      {
+        path: 'order',
+        component: () => import('@/views/order/order'),
+        name: '预约管理',
+        meta: { title: '预约管理', icon: 'tab', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/bill',
+    component: Layout,
+    meta: {
+      roles:['editor'] 
+    },
+    children: [
+      {
+        path: 'bill',
+        component: () => import('@/views/bill/bill'),
+        name: '账单管理',
+        meta: { title: '账单管理', icon: 'money', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/sign',
+    component: Layout,
+    meta: {
+      roles:['editor'] 
+    },
+    children: [
+      {
+        path: 'sign',
+        component: () => import('@/views/sign/sign'),
+        name:'签约管理',
+        meta: { title: '签约管理', icon: 'tab', noCache: true }
+      }
+    ]
+  },
 
   /** When your routing table is too long, you can split it into small modules**/
   componentsRouter,
   chartsRouter,
   nestedRouter,
   tableRouter,
-
+  {
+    path: '/localhospital',
+    component: Layout,
+    redirect: '/localhospital/localhospital',
+    name: '卫生院',
+    meta: {
+      title: '卫生院',
+      icon: 'tree',
+      roles:['admin'] 
+    },
+    children: [
+      {
+        path: 'localhospital',
+        component: () => import('@/views/localhospital/localhospital'),
+        name: '卫生院管理',
+        meta: { title: '卫生院管理', icon: 'tree' }
+      }
+    ]
+  },
+  {
+    path: '/employee',
+    component: Layout,
+    redirect: '/employee/doctor',
+    name: '人员管理',
+    meta: {
+      title: '人员管理',
+      icon: 'peoples',
+      roles:['editor'] 
+    },
+    children: [
+      {
+        path: 'doctor',
+        component: () => import('@/views/employee/Doctor'),
+        name: '医生管理',
+        meta: { title: '医生管理', icon: 'user' }
+      },
+      {
+        path: 'nurse',
+        component: () => import('@/views/employee/Nurse'),
+        name: '护理员管理',
+        meta: { title: '护理员管理', icon: 'user' }
+      }
+    ]
+  },
   {
     path: '/example',
     component: Layout,
@@ -168,7 +304,8 @@ export const asyncRouterMap = [
     name: 'Example',
     meta: {
       title: 'example',
-      icon: 'example'
+      icon: 'example',
+      roles:['admin'] 
     },
     children: [
       {
@@ -192,7 +329,6 @@ export const asyncRouterMap = [
       }
     ]
   },
-
   {
     path: '/tab',
     component: Layout,

@@ -49,6 +49,7 @@ const user = {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
         loginByUsername(username, userInfo.password).then(response => {
+          response = response.data
           console.log(response)
           if (response.errno === 0) {
             console.log('setLocalStorage执行了')
