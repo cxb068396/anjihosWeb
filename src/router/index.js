@@ -141,7 +141,341 @@ export const asyncRouterMap = [
       }
     ]
   },
-
+  {
+    path: '/goods',
+    component: Layout,
+    name: '商品管理',
+    meta: {
+      title: '商品管理',
+      icon: 'peoples',
+      roles:['admin'] 
+    },
+    children: [
+      {
+        path: 'Goods',
+        component: () => import('@/views/Goods/GoodsPage'),
+        name: '商品列表',
+        meta: { title: '商品列表', icon: 'user' }
+      },
+      {
+        path: 'add',
+        component: () => import('@/views/Goods/GoodsAddPage'),
+        name: 'goodsaddpage',
+        meta: { title: '商品添加', icon: 'user' },
+        hidden:true
+      },
+      {
+        path: 'Category',
+        component: () => import('@/views/Category/CategoryPage'),
+        name: '商品分类',
+        meta: { title: '商品分类', icon: 'user' }
+      },
+      {
+        path: 'add',
+        component: () => import('@/views/Category/CategoryAddPage'),
+        name: 'categoryaddpage',
+        meta: { title: '分类添加', icon: 'user' },
+        hidden:true
+      },
+    ]
+  },
+  {
+    path: '/merchant',
+    component: Layout,
+    name: '店铺管理',
+    meta: {
+      title: '店铺管理',
+      icon: 'peoples',
+      roles:['admin'] 
+    },
+    children: [
+      {
+        path: 'merchant',
+        component: () => import('@/views/Merchant/Merchant'),
+        name: '商家列表',
+        meta: { title: '商家列表', icon: 'user' }
+      },
+      {
+        path: 'approval',
+        component: () => import('@/views/Merchant/Approval'),
+        name: '商家入驻审批',
+        meta: { title: '商家入驻审批', icon: 'user' }
+      },
+      {
+        path: 'merchantgoods',
+        component: () => import('@/views/Merchant/MerchantGoods'),
+        name: '商家商品审批',
+        meta: { title: '商家商品审批', icon: 'user' }
+      },
+      {
+        path: 'merchantinfo',
+        component: () => import('@/views/Merchant/MerchantInfo'),
+        name: 'merchantinfo',
+        meta: { title: '商家详情', icon: 'user' },
+        hidden: true    
+      },
+      {
+        path: 'add',
+        component: () => import('@/views/Merchant/MerchantAddPage'),
+        name: 'merchantaddpage',
+        meta: { title: '添加商家', icon: 'user' },
+        hidden: true    
+      },
+  
+    ]
+  },
+  {
+    path: '/order',
+    component: Layout,
+    meta: {
+      title: '订单中心',
+      icon: 'peoples',
+      roles:['admin'] 
+    },
+    children: [
+      {
+        path: 'order',
+        component: () => import('@/views/Order/Order'),
+        name: '订单列表',
+        meta: { title: '订单列表', icon: 'money', noCache: true }
+      },
+      {
+        path: 'ordercommentpage',
+        component: () => import('@/views/Order/OrderCommentPage'),
+        name: 'ordercommentpage',
+        meta: { title: '订单评价', icon: 'user' },
+        hidden: true    
+      },
+      {
+        path: 'orderinfo',
+        component: () => import('@/views/Order/OrderInfo'),
+        name: 'orderinfo',
+        meta: { title: '订单详情', icon: 'user' },
+        hidden: true    
+      },
+      {
+        path: 'ordersendcompany',
+        component: () => import('@/views/Order/OrderSendCompany'),
+        name: 'ordersendcompany',
+        meta: { title: '员工指派', icon: 'user' },
+        hidden: true    
+      },
+    ]
+  },
+  {
+    path: '/flatbill',
+    component: Layout,
+    meta: {
+      title: '账单功能',
+      icon: 'peoples',
+      roles:['admin'] 
+    },
+    children: [
+      {
+        path: 'flatbill',
+        component: () => import('@/views/FlatBill/FlatBill'),
+        name: '账单列表',
+        meta: { title: '账单列表', icon: 'money', noCache: true }
+      },
+      {
+        path: 'choosemerchant',
+        component: () => import('@/views/FlatBill/ChooseMerchant'),
+        name: 'choosemerchant',
+        meta: { title: '选择商店', icon: 'user' },
+        hidden: true    
+      },
+      {
+        path: 'flatbillinfo',
+        component: () => import('@/views/FlatBill/FlatBillInfo'),
+        name: 'flatbillinfo',
+        meta: { title: '账单详情', icon: 'user' },
+        hidden: true    
+      }
+    ]
+  },
+  {
+    path: '/service',
+    component: Layout,
+    meta: {
+      title: '服务管理',
+      icon: 'peoples',
+      roles:['admin'] 
+    },
+    children: [
+      {
+        path: 'service',
+        component: () => import('@/views/Service/Service'),
+        name: 'service',
+        meta: { title: '资格列表', icon: 'user' },
+      },
+      {
+        path: 'qualification',
+        component: () => import('@/views/Service/Qualification'),
+        name: 'qualification',
+        meta: { title: '资格申请管理', icon: 'money', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/advertisement',
+    component: Layout,
+    meta: {
+      title: '广告管理',
+      icon: 'peoples',
+      roles:['admin'] 
+    },
+    children: [
+      {
+        path: 'advertisement',
+        component: () => import('@/views/Advertisement/Advertisement'),
+        name: 'advertisement',
+        meta: { title: '广告管理', icon: 'user' },
+      },
+      {
+        path: 'adwxadd',
+        component: () => import('@/views/Advertisement/AdWxAdd'),
+        name: 'adwxadd',
+        meta: { title: '小程序广告添加', icon: 'money', noCache: true },
+        hidden: true 
+      },
+      {
+        path: 'adwxupdate',
+        component: () => import('@/views/Advertisement/AdWxUpdate'),
+        name: 'adwxupdate',
+        meta: { title: '小程序广告更新', icon: 'money', noCache: true },
+        hidden: true 
+      }
+    ]
+  },
+  {
+    path: '/Personnel',
+    component: Layout,
+    meta: {
+      title: '人员管理',
+      icon: 'peoples',
+      roles:['editor'] 
+    },
+    children: [
+      {
+        path: 'personnelpage',
+        component: () => import('@/views/Personnel/PersonnelPage'),
+        name: 'personnelpage',
+        meta: { title: '人员列表', icon: 'user' },
+      },
+      {
+        path: 'personneladdpage',
+        component: () => import('@/views/Personnel/PersonnelAddPage'),
+        name: 'personneladdpage',
+        meta: { title: '人员添加', icon: 'money', noCache: true },
+        hidden: true 
+      },
+      {
+        path: 'personnelupdatepage',
+        component: () => import('@/views/Personnel/PersonnelUpdatPage'),
+        name: 'personnelupdatepage',
+        meta: { title: '人员更新', icon: 'money', noCache: true },
+        hidden: true 
+      }
+    ]
+  },
+  {
+    path: '/MerchantOrderPage',
+    component: Layout,
+    meta: {
+      title: '订单管理',
+      icon: 'peoples',
+      roles:['editor'] 
+    },
+    children: [
+      {
+        path: 'merchantorderpage',
+        component: () => import('@/views/MerchantOrder/MerchantOrderPage'),
+        name: 'merchantorderpage',
+        meta: { title: '订单列表', icon: 'user' },
+      },
+      {
+        path: 'merchantordercommentpage',
+        component: () => import('@/views/MerchantOrder/MerchantOrderCommentPage'),
+        name: 'merchantordercommetpage',
+        meta: { title: '订单评论', icon: 'money', noCache: true },
+        hidden: true 
+      },
+      {
+        path: 'merchantorderpostpage',
+        component: () => import('@/views/MerchantOrder/MerchantOrderPostPage'),
+        name: 'merchantorderpostpage',
+        meta: { title: '订单操作', icon: 'money', noCache: true },
+        hidden: true 
+      }
+    ]
+  },
+  {
+    path: '/Serve',
+    component: Layout,
+    meta: {
+      title: '服务管理',
+      icon: 'peoples',
+      roles:['editor'] 
+    },
+    children: [
+      {
+        path: 'servecontent',
+        component: () => import('@/views/Serve/ServeContent'),
+        name: 'servecontent',
+        meta: { title: '服务列表', icon: 'user' },
+      },
+      {
+        path: 'serveaddpage',
+        component: () => import('@/views/Serve/ServeAddPage'),
+        name: 'serveaddpage',
+        meta: { title: '服务添加申请', icon: 'money', noCache: true },
+      }
+    ]
+  },
+  {
+    path: '',
+    component: Layout,
+    meta: {
+      title: '账单管理',
+      icon: 'peoples',
+      roles:['editor'] 
+    },
+    children: [
+      {
+        path: '/MerchantBill/billgeneration',
+        component: () => import('@/views/MerchantBill/BillGeneration'),
+        name: 'billgeneration',
+        meta: { title: '服务列表', icon: 'user' },
+        hidden:true
+      },
+      {
+        path: '/MerchantBill/merchantbill',
+        component: () => import('@/views/MerchantBill/MerchantBill'),
+        name: 'merchantbill',
+        meta: { title: '员工账单', icon: 'money', noCache: true },
+      },
+      {
+        path: '/MerchantBill/workerbill',
+        component: () => import('@/views/MerchantBill/WorkerBill'),
+        name: 'workerbill',
+        meta: { title: '员工账单', icon: 'money', noCache: true },
+        hidden:true
+      },
+      {
+        path: '/ShopBill/shopbill',
+        component: () => import('@/views/ShopBill/ShopBill'),
+        name: 'shopbill',
+        meta: { title: '店铺账单', icon: 'money', noCache: true },
+      },
+      {
+        path: '/ShopBill/shopbillinfo',
+        component: () => import('@/views/ShopBill/ShopBillInfo'),
+        name: 'shopbillinfo',
+        meta: { title: '店铺账单详情', icon: 'money', noCache: true },
+        hidden:true
+      }
+    ]
+  },
   {
     path: '/icon',
     component: Layout,

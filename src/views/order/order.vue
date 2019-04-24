@@ -1,363 +1,437 @@
 <template>
-  <div class="app-container">
-    <div class="filter-container">
-      <el-input :placeholder="$t('table.name')" v-model="listQuery.title" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-      <el-select v-model="listQuery.importance" :placeholder="$t('table.importance')" clearable style="width: 90px" class="filter-item">
-        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item"/>
-      </el-select>
-      <!-- <el-select v-model="listQuery.type" :placeholder="$t('table.type')" clearable class="filter-item" style="width: 130px">
-        <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key"/>
-      </el-select>
-      <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
-        <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key"/>
-      </el-select> -->
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('table.add') }}</el-button>
-      <!-- <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">{{ $t('table.export') }}</el-button> -->
-      <el-checkbox v-model="showReviewer" class="filter-item" style="margin-left:15px;" @change="tableKey=tableKey+1">{{ $t('table.reviewer') }}</el-checkbox>
+  <div class="content-page">
+    <div class="content-nav">
+      <el-breadcrumb
+        class="breadcrumb"
+        separator="/"
+      >
+        <el-breadcrumb-item :to="{path: '/dashboard'}">首页</el-breadcrumb-item>
+        <el-breadcrumb-item>订单列表</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
+    <el-tabs @tab-click="handleClick">
+      <el-tab-pane label="服务类订单">
+        <el-table
+          stripe
+          style="width: 100%;"
+          :data="OrderListService"
+        >
+          <el-table-column
+            label="下单时间"
+            prop="add_time"
+            min-width="130"
+          >
+            <template slot-scope="scope">
+              {{scope.row.add_time*1000 | datetimeFilter}}
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="预约时间"
+            prop="service_need_time"
+            min-width="130"
+          >
+            <template slot-scope="scope">
+              {{scope.row.service_need_time*1000 | datetimeFilter}}
+            </template>
 
-    <el-table
-      v-loading="listLoading"
-      :key="tableKey"
-      :data="list"
-      border
-      fit
-      highlight-current-row
-      style="width: 100%;"
-      @sort-change="sortChange">
-      <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="65">
-        <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.date')" width="150px" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
-        </template>
-      </el-table-column>
-      <!-- <el-table-column :label="$t('table.title')" min-width="150px">
-        <template slot-scope="scope">
-          <span class="link-type" @click="handleUpdate(scope.row)">{{ scope.row.title }}</span>
-          <el-tag>{{ scope.row.type | typeFilter }}</el-tag>
-        </template>
-      </el-table-column> -->
-      <el-table-column :label="$t('table.author')" width="110px" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="showReviewer" :label="$t('table.reviewer')" width="110px" align="center">
-        <template slot-scope="scope">
-          <span style="color:red;">{{ scope.row.reviewer }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.importance')" width="80px">
-        <template slot-scope="scope">
-          <svg-icon v-for="n in +scope.row.importance" :key="n" icon-class="star" class="meta-item__icon"/>
-        </template>
-      </el-table-column>
-      <!-- <el-table-column :label="$t('table.readings')" align="center" width="95">
-        <template slot-scope="scope">
-          <span v-if="scope.row.pageviews" class="link-type" @click="handleFetchPv(scope.row.pageviews)">{{ scope.row.pageviews }}</span>
-          <span v-else>0</span>
-        </template>
-      </el-table-column> -->
-      <el-table-column :label="$t('table.status')" class-name="status-col" width="100">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.actions')" align="center" width="230" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.update') }}</el-button>
-          <!-- <el-button v-if="scope.row.status!='published'" size="mini" type="success" @click="handleModifyStatus(scope.row,'published')">{{ $t('table.publish') }}
-          </el-button>
-          <el-button v-if="scope.row.status!='draft'" size="mini" @click="handleModifyStatus(scope.row,'draft')">{{ $t('table.draft') }}
-          </el-button>
-          <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{ $t('table.delete') }}
-          </el-button> -->
-        </template>
-      </el-table-column>
-    </el-table>
+          </el-table-column>
+          <el-table-column
+            label="用户姓名"
+            prop="consignee"
+            min-width="80"
+          >
 
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+          </el-table-column>
+          <el-table-column
+            label="服务名称"
+            prop="goodsInfos[0].name"
+            min-width="140"
+          >
+          </el-table-column>
+          <el-table-column
+            label="评价"
+            min-width="70"
+          >
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <el-form-item :label="$t('table.type')" prop="type">
-          <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key"/>
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('table.date')" prop="timestamp">
-          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date"/>
-        </el-form-item>
-        <!-- <el-form-item :label="$t('table.title')" prop="title">
-          <el-input v-model="temp.title"/>
-        </el-form-item> -->
-        <el-form-item :label="$t('table.status')">
-          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item"/>
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('table.importance')">
-          <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;"/>
-        </el-form-item>
-        <el-form-item :label="$t('table.remark')">
-          <el-input :autosize="{ minRows: 2, maxRows: 4}" v-model="temp.remark" type="textarea" placeholder="Please input"/>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">{{ $t('table.confirm') }}</el-button>
-      </div>
-    </el-dialog>
+            <template slot-scope="scope">
+              <el-button
+                @click="commentsRowInfo(scope.$index, scope.row)"
+                v-if="scope.row.commentInfos !=null"
+                size="small"
+              >
+                评价
+              </el-button>
+            </template>
 
-    <!-- <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
-      <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
-        <el-table-column prop="key" label="Channel"/>
-        <el-table-column prop="pv" label="Pv"/>
-      </el-table>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">{{ $t('table.confirm') }}</el-button>
-      </span>
-    </el-dialog> -->
+            <!-- <template slot-scope="scope">
+      <el-button 
+      v-if="scope.row.comment == 1"
+      @click="commentsRowInfo(scope.$index, scope.row)"
+      size="small">
+      评价
+      </el-button>
+    </template> -->
 
+          </el-table-column>
+          <el-table-column
+            label="地址"
+            prop="address"
+            min-width="180"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="order_status_text"
+            label="订单状态"
+            min-width="130"
+            :filters="[ { text: '待付款', value: '待付款' },{ text: '已付款，待接单', value: '已付款，待接单' },{ text: '已接单', value: '已接单' },{ text: '服务已完成', value: '服务已完成' },{ text: '已取消', value: '已取消' } ]"
+            :filter-method="filterTag"
+            filter-placement="bottom-end"
+          >
+            <template slot-scope="scope">
+              <el-tag
+                class="likeButton"
+                :type="scope.row.order_status_text === '已下单' ? 'primary' : 'success'"
+                disable-transitions
+              >{{scope.row.order_status_text}}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column
+            fixed="right"
+            label="订单详情"
+            min-width="80"
+          >
+            <template slot-scope="scope">
+              <el-button
+                size="small"
+                type='info'
+                @click="handleRowInfo(scope.$index, scope.row)"
+              >详情</el-button>
+            </template>
+          </el-table-column>
+          <el-table-column
+            fixed="right"
+            label="操作"
+            min-width="150"
+          >
+            <template slot-scope="scope">
+              <el-button
+                size="small"
+                type="danger"
+                @click="orderSend(scope.$index, scope.row)"
+                v-bind:class="[scope.row.order_status == 11 ? goToSend: scope.row.order_status == 12 ? changeSend: hasSend]"
+              >
+                {{scope.row.order_status == 11 ? '去派单' : scope.row.order_status == 12 ? '改派单' : '服务完成或其它'}}
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-pagination
+          @current-change="handlePageChangeService"
+          :current-page="currentPage0"
+          :page-size="pagesize"
+          layout="total, prev, pager, next, jumper"
+          :total="count"
+        >
+        </el-pagination>
+      </el-tab-pane>
+
+      <el-tab-pane label="商品类订单">
+        <el-table
+          stripe
+          style="width: 100%;"
+          :data="OrderListGoods"
+        >
+          <el-table-column
+            label="下单时间"
+            prop="add_time"
+            min-width="130"
+          >
+            <template slot-scope="scope">
+              {{scope.row.add_time*1000 | datetimeFilter}}
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="预约时间"
+            prop="service_need_time"
+            min-width="130"
+          >
+            <template slot-scope="scope">
+              {{'暂无预约时间'}}
+            </template>
+
+          </el-table-column>
+          <el-table-column
+            label="用户姓名"
+            prop="consignee"
+            min-width="80"
+          >
+
+          </el-table-column>
+          <el-table-column
+            label="商品名称"
+            prop="goodsInfos[0].name"
+            min-width="140"
+          >
+          </el-table-column>
+          <el-table-column
+            label="评价"
+            min-width="70"
+          >
+            <template slot-scope="scope">
+              <el-button
+                v-if="scope.row.comment == 1"
+                @click="commentsRowInfo(scope.$index, scope.row)"
+                size="small"
+              >
+                评价
+              </el-button>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="地址"
+            prop="address"
+            min-width="180"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="order_status_text"
+            label="订单状态"
+            min-width="130"
+            :filters="[ { text: '待付款', value: '待付款' },{ text: '已付款，待发货', value: '已付款，待发货' },{ text: '已发货，待收货', value: '已发货，待收货' },{ text: '已收货', value: '已收货' },{ text: '已取消', value: '已取消' } ]"
+            :filter-method="filterTag"
+            filter-placement="bottom-end"
+          >
+            <template slot-scope="scope">
+              <el-tag
+                class="likeButton"
+                :type="scope.row.order_status_text === '已下单' ? 'primary' : 'success'"
+                disable-transitions
+              >{{scope.row.order_status_text}}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column
+            fixed="right"
+            label="订单详情"
+            min-width="80"
+          >
+            <template slot-scope="scope">
+              <el-button
+                size="small"
+                type='info'
+                @click="handleRowInfo(scope.$index, scope.row)"
+              >详情</el-button>
+            </template>
+          </el-table-column>
+          <el-table-column
+            fixed="right"
+            label="操作"
+            min-width="150"
+          >
+            <template slot-scope="scope">
+              <el-button
+                size="small"
+                type="danger"
+                @click="orderSend(scope.$index, scope.row)"
+                v-bind:class="[scope.row.order_status == 11 ? goToSend: scope.row.order_status == 12 ? changeSend: hasSend]"
+              >
+                {{scope.row.order_status == 11 ? '去派单' : scope.row.order_status == 12 ? '改派单' : '服务完成或其它'}}
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-pagination
+          @current-change="handlePageChangeGoods"
+          :current-page="currentPage1"
+          :page-size="pagesize"
+          layout="total, prev, pager, next, jumper"
+          :total="count"
+        >
+        </el-pagination>
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
 <script>
-import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
-import waves from '@/directive/waves' // Waves directive
-import { parseTime } from '@/utils'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
-
-const calendarTypeOptions = [
-  { key: 'CN', display_name: 'China' },
-  { key: 'US', display_name: 'USA' },
-  { key: 'JP', display_name: 'Japan' },
-  { key: 'EU', display_name: 'Eurozone' }
-]
-
-// arr to obj ,such as { CN : "China", US : "USA" }
-const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
-  acc[cur.key] = cur.display_name
-  return acc
-}, {})
-
+import api from "@/config/api";
 export default {
-  name: 'ComplexTable',
-  components: { Pagination },
-  directives: { waves },
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: 'success',
-        draft: 'info',
-        deleted: 'danger'
-      }
-      return statusMap[status]
-    },
-    typeFilter(type) {
-      return calendarTypeKeyValue[type]
-    }
-  },
   data() {
     return {
-      tableKey: 0,
-      list: null,
-      total: 0,
-      listLoading: true,
-      listQuery: {
-        page: 1,
-        limit: 20,
-        importance: undefined,
-        title: undefined,
-        type: undefined,
-        sort: '+id'
-      },
-      importanceOptions: [1, 2, 3],
-      calendarTypeOptions,
-      sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
-      statusOptions: ['published', 'draft', 'deleted'],
-      showReviewer: false,
-      temp: {
-        id: undefined,
-        importance: 1,
-        remark: '',
-        timestamp: new Date(),
-        title: '',
-        type: '',
-        status: 'published'
-      },
-      dialogFormVisible: false,
-      dialogStatus: '',
-      textMap: {
-        update: 'Edit',
-        create: 'Create'
-      },
-      dialogPvVisible: false,
-      pvData: [],
-      rules: {
-        type: [{ required: true, message: 'type is required', trigger: 'change' }],
-        timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-        title: [{ required: true, message: 'title is required', trigger: 'blur' }]
-      },
-      downloadLoading: false
-    }
+      changeSend: "changeSend",
+      goToSend: "goToSend",
+      hasSend: "hasSend",
+      currentPage0: 1,
+      currentPage1: 1,
+      count: 0,
+      pagesize: 10,
+      OrderListService: [],
+      OrderListGoods: []
+    };
   },
   created() {
-    this.getList()
+    this.handleOrderListService();
   },
+  mounted() {},
   methods: {
-    getList() {
-      this.listLoading = true
-      fetchList(this.listQuery).then(response => {
-        console.log(response)
-        this.list = response.data.items
-        this.total = response.data.total
-
-        // Just to simulate the time of the request
-        setTimeout(() => {
-          this.listLoading = false
-        }, 500)
-      })
+    //订单状态筛选
+    formatter(row) {
+      return row.address;
     },
-    handleFilter() {
-      this.listQuery.page = 1
-      this.getList()
+    filterTag(value, row) {
+      return row.order_status_text === value;
     },
-    // handleModifyStatus(row, status) {
-    //   this.$message({
-    //     message: '操作成功',
-    //     type: 'success'
-    //   })
-    //   row.status = status
-    // },
-    sortChange(data) {
-      const { prop, order } = data
-      if (prop === 'id') {
-        this.sortByID(order)
-      }
+    filterHandler(value, row, column) {
+      const property = column["property"];
+      return row[property] === value;
     },
-    sortByID(order) {
-      if (order === 'ascending') {
-        this.listQuery.sort = '+id'
+    //派单
+    orderSend(index, row) {
+      if (row.order_status == 11 || row.order_status == 12) {
+        //有bug。先注释
+        // this.$router.push({
+        //   name: "ordersendcompany",
+        //   query: {
+        //     id: row.id,
+        //     add_time: row.add_time,
+        //     company_id: row.company_id,
+        //     goods_id: row.goods_id,
+        //     company_name: row.company_name,
+        //     goods_name: row.goods_name,
+        //     name: row.goodsInfos[0].name,
+        //     goodsInfos: row.goodsInfos
+        //   }
+        // });
       } else {
-        this.listQuery.sort = '-id'
+        this.$message({
+          type: "error",
+          message: "此单可能未付款、已取消或已完成等。"
+        });
       }
-      this.handleFilter()
     },
-    handleCreate() {
-      this.temp = {
-        id: undefined,
-        importance: 1,
-        remark: '',
-        timestamp: new Date(),
-        title: '',
-        status: 'published',
-        type: ''
+    //详情
+    handleRowInfo(index, row) {
+      console.log(row);
+      this.$router.push({
+        name: "orderinfo",
+        query: {
+          id: row.id,
+          order_status: row.order_status,
+          consignee: row.consignee,
+          address: row.address,
+          mobile: row.mobile,
+          actual_price: row.actual_price,
+          order_status_text: row.order_status_text,
+          worker_id: row.worker_id,
+          goodsInfos: row.goodsInfos,
+          goodsList: row.goodsList,
+          add_time: row.add_time,
+          workerInfos: row.workerInfos,
+          service_need_time: row.service_need_time,
+          companyInfos: row.companyInfos
+        }
+      });
+    },
+
+    handleClick(tab) {
+      if (tab.label == "服务类订单") {
+        this.handleOrderListService();
+      } else {
+        this.handleOrderListGoods();
       }
-      this.dialogStatus = 'create'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-
-
-      })
     },
-    createData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-          this.temp.author = 'vue-element-admin'
-          createArticle(this.temp).then(() => {
-            this.list.unshift(this.temp)
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '创建成功',
-              type: 'success',
-              duration: 2000
-            })
-          })
+    commentsRowInfo(index, row) {
+      console.log(row);
+      this.$router.push({
+        name: "ordercommentpage",
+        query: {
+          id: row.id
         }
-      })
+      });
     },
-    handleUpdate(row) {
-      this.temp = Object.assign({}, row) // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp)
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
+    //分页
+    handleSizeChange: function(size) {
+      this.pagesize = size;
     },
-    updateData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          const tempData = Object.assign({}, this.temp)
-          tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          updateArticle(tempData).then(() => {
-            for (const v of this.list) {
-              if (v.id === this.temp.id) {
-                const index = this.list.indexOf(v)
-                this.list.splice(index, 1, this.temp)
-                break
-              }
-            }
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '更新成功',
-              type: 'success',
-              duration: 2000
-            })
-          })
-        }
-      })
+    handlePageChangeService: function(val) {
+      this.currentPage0 = val;
+      this.handleOrderListService();
     },
-    // handleDelete(row) {
-    //   this.$notify({
-    //     title: '成功',
-    //     message: '删除成功',
-    //     type: 'success',
-    //     duration: 2000
-    //   })
-    //   const index = this.list.indexOf(row)
-    //   this.list.splice(index, 1)
-    // },
-    // handleFetchPv(pv) {
-    //   fetchPv(pv).then(response => {
-    //     console.log(response)
-    //     this.pvData = response.data.pvData
-    //     this.dialogPvVisible = true
-    //   })
-    // },
-    handleDownload() {
-      this.downloadLoading = true
-      import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-        const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
-        const data = this.formatJson(filterVal, this.list)
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: 'table-list'
+    handlePageChangeGoods: function(val) {
+      this.currentPage1 = val;
+      this.handleOrderListGoods();
+    },
+
+    handleOrderListService() {
+      this.axios
+        .get("https://anji.newlioncity.com/admin/order", {
+          params: { page: this.currentPage0, is_service: 1 }
         })
-        this.downloadLoading = false
-      })
+        .then(response => {
+          //this.OrderList = response.data.data.data;
+          //  console.log(response.data.data.data);
+          this.OrderListService = response.data.data.data;
+
+          this.count = response.data.data.count;
+        });
     },
-    formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => {
-        if (j === 'timestamp') {
-          return parseTime(v[j])
-        } else {
-          return v[j]
-        }
-      }))
+    handleOrderListGoods() {
+      this.axios
+        .get("https://anji.newlioncity.com/admin/order", {
+          params: { page: this.currentPage1, is_service: 0 }
+        })
+        .then(response => {
+          // console.log(response.data.data.data);
+          this.OrderListGoods = response.data.data.data;
+          this.count = response.data.data.count;
+        });
     }
+    //时间过滤
+    // datetimeFilterAdd_time(row) {
+    //   var date = new Date(row.add_time * 1000);
+    //   var y = date.getFullYear();
+    //   var m = date.getMonth() + 1;
+    //   m < 10 && (m = "0" + m);
+    //   var d = date.getDate();
+    //   d < 10 && (d = "0" + d);
+    //   var h = date.getHours();
+    //   h > 12 && (h -= 12);
+    //   h < 10 && (h = "0" + h);
+    //   var M = date.getMinutes();
+    //   M < 10 && (M = "0" + M);
+    //   return `${y}-${m}-${d} ${h}:${M}`;
+    // },
+    // datetimeFilterService_need_time(row) {
+    //   var date = new Date(row.service_need_time * 1000);
+    //   var y = date.getFullYear();
+    //   var m = date.getMonth() + 1;
+    //   m < 10 && (m = "0" + m);
+    //   var d = date.getDate();
+    //   d < 10 && (d = "0" + d);
+    //   var h = date.getHours();
+    //   h > 12 && (h -= 12);
+    //   h < 10 && (h = "0" + h);
+    //   var M = date.getMinutes();
+    //   M < 10 && (M = "0" + M);
+    //   return `${y}-${m}-${d} ${h}:${M}`;
+    // }
   }
-}
+};
 </script>
+<style scoped>
+.likeButton {
+  border: none;
+  background-color: rgba(255, 255, 255, 0);
+}
+.hasSend {
+  color: black;
+  background-color: rgba(255, 255, 255, 0);
+}
+.changeSend {
+  color: white;
+  border-color: green;
+  background-color: rgba(0, 128, 0, 1);
+}
+.changeSend:hover {
+  background-color: rgba(0, 128, 0, 0.6);
+}
+</style>
