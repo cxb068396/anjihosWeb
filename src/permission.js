@@ -92,7 +92,7 @@ router.beforeEach((to, from, next) => {
       Axios.defaults.headers.common['X-Anjishop-Token'] = token
       Axios.defaults.headers.common['x-api-key'] =
         '40bd001563085fc35165329ea1ff5c5ecbdbbeef'
-
+      console.log('3')
       next()
     }
   } else {

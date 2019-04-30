@@ -19,6 +19,7 @@ function hasPermission(roles, route) {
  * @param roles
  */
 function filterAsyncRouter(routes, roles) {
+  console.log('111111111')
   const res = []
 
   routes.forEach(route => {
@@ -30,7 +31,7 @@ function filterAsyncRouter(routes, roles) {
       res.push(tmp)
     }
   })
-
+  console.log(res)
    return res
 }
 
@@ -41,7 +42,9 @@ const permission = {
   },
   mutations: {
     SET_ROUTERS: (state, routers) => {
+      //此句先注释，避免vue报warn
       state.addRouters = routers
+      
       state.routers = constantRouterMap.concat(routers)
     }
   },

@@ -287,20 +287,21 @@ export default {
     //派单
     orderSend(index, row) {
       if (row.order_status == 11 || row.order_status == 12) {
-        //有bug。先注释
-        // this.$router.push({
-        //   name: "ordersendcompany",
-        //   query: {
-        //     id: row.id,
-        //     add_time: row.add_time,
-        //     company_id: row.company_id,
-        //     goods_id: row.goods_id,
-        //     company_name: row.company_name,
-        //     goods_name: row.goods_name,
-        //     name: row.goodsInfos[0].name,
-        //     goodsInfos: row.goodsInfos
-        //   }
-        // });
+        // 有bug。先注释
+        console.log(row)
+        this.$router.push({
+          name: "ordersendcompany",
+          query: {
+            id: row.id,
+            add_time: row.add_time,
+            company_id: row.company_id,
+            goods_id: row.goods_id,
+            company_name: row.company_name,
+            goods_name: row.goods_name,
+            name: row.goodsInfos[0].name,
+            goodsInfos: row.goodsInfos
+          }
+        });
       } else {
         this.$message({
           type: "error",

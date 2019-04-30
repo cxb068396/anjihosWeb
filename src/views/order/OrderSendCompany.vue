@@ -102,7 +102,7 @@ export default {
       }
     },
     goBackPage() {
-      this.$router.push({ name: "platformOrder" });
+      this.$router.push({ name: "order" });
     },
     //选择商家
     handleClickPost(row) {

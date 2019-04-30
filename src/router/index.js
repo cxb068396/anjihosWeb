@@ -236,7 +236,7 @@ export const asyncRouterMap = [
       {
         path: 'order',
         component: () => import('@/views/Order/Order'),
-        name: '订单列表',
+        name: 'order',
         meta: { title: '订单列表', icon: 'money', noCache: true }
       },
       {
@@ -257,9 +257,16 @@ export const asyncRouterMap = [
         path: 'ordersendcompany',
         component: () => import('@/views/Order/OrderSendCompany'),
         name: 'ordersendcompany',
-        meta: { title: '员工指派', icon: 'user' },
+        meta: { title: '公司指派', icon: 'user' },
         hidden: true    
       },
+      {
+        path: 'ordersendworker',
+        component: () => import('@/views/Order/OrderSendWorker'),
+        name: 'ordersendworker',
+        meta: { title: '员工指派', icon: 'user' },
+        hidden: true    
+      }
     ]
   },
   {
@@ -500,137 +507,137 @@ export const asyncRouterMap = [
       }
     ]
   },
-  {
-    path: '/position',
-    component: Layout,
-    children: [
-      {
-        path: 'position',
-        component: () => import('@/views/position/position'),
-        name: '定位查看',
-        meta: { title: '定位查看', icon: 'example', noCache: true }
-      }
-    ]
-  },
-  {
-    path: '/satisfaction',
-    component: Layout,
-    children: [
-      {
-        path: 'satisfaction',
-        component: () => import('@/views/satisfaction/satisfaction'),
-        name: '满意度',
-        meta: { title: '满意度', icon: 'star', noCache: true }
-      }
-    ]
-  },
-  {
-    path: '/record',
-    component: Layout,
-    children: [
-      {
-        path: 'record',
-        component: () => import('@/views/record/record'),
-        name: '监管记录',
-        meta: { title: '监管记录', icon: 'password', noCache: true }
-      }
-    ]
-  },
-  {
-    path: '/order',
-    component: Layout,
-    meta: {
-      roles:['editor'] 
-    },
-    children: [
-      {
-        path: 'order',
-        component: () => import('@/views/order/order'),
-        name: '预约管理',
-        meta: { title: '预约管理', icon: 'tab', noCache: true }
-      }
-    ]
-  },
-  {
-    path: '/bill',
-    component: Layout,
-    meta: {
-      roles:['editor'] 
-    },
-    children: [
-      {
-        path: 'bill',
-        component: () => import('@/views/bill/bill'),
-        name: '账单管理',
-        meta: { title: '账单管理', icon: 'money', noCache: true }
-      }
-    ]
-  },
-  {
-    path: '/sign',
-    component: Layout,
-    meta: {
-      roles:['editor'] 
-    },
-    children: [
-      {
-        path: 'sign',
-        component: () => import('@/views/sign/sign'),
-        name:'签约管理',
-        meta: { title: '签约管理', icon: 'tab', noCache: true }
-      }
-    ]
-  },
+  // {
+  //   path: '/position',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'position',
+  //       component: () => import('@/views/position/position'),
+  //       name: '定位查看',
+  //       meta: { title: '定位查看', icon: 'example', noCache: true }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/satisfaction',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'satisfaction',
+  //       component: () => import('@/views/satisfaction/satisfaction'),
+  //       name: '满意度',
+  //       meta: { title: '满意度', icon: 'star', noCache: true }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/record',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'record',
+  //       component: () => import('@/views/record/record'),
+  //       name: '监管记录',
+  //       meta: { title: '监管记录', icon: 'password', noCache: true }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/order',
+  //   component: Layout,
+  //   meta: {
+  //     roles:['editor'] 
+  //   },
+  //   children: [
+  //     {
+  //       path: 'order',
+  //       component: () => import('@/views/order/order'),
+  //       name: '预约管理',
+  //       meta: { title: '预约管理', icon: 'tab', noCache: true }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/bill',
+  //   component: Layout,
+  //   meta: {
+  //     roles:['editor'] 
+  //   },
+  //   children: [
+  //     {
+  //       path: 'bill',
+  //       component: () => import('@/views/bill/bill'),
+  //       name: '账单管理',
+  //       meta: { title: '账单管理', icon: 'money', noCache: true }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/sign',
+  //   component: Layout,
+  //   meta: {
+  //     roles:['editor'] 
+  //   },
+  //   children: [
+  //     {
+  //       path: 'sign',
+  //       component: () => import('@/views/sign/sign'),
+  //       name:'签约管理',
+  //       meta: { title: '签约管理', icon: 'tab', noCache: true }
+  //     }
+  //   ]
+  // },
 
   /** When your routing table is too long, you can split it into small modules**/
   componentsRouter,
   chartsRouter,
   nestedRouter,
   tableRouter,
-  {
-    path: '/localhospital',
-    component: Layout,
-    redirect: '/localhospital/localhospital',
-    name: '卫生院',
-    meta: {
-      title: '卫生院',
-      icon: 'tree',
-      roles:['admin'] 
-    },
-    children: [
-      {
-        path: 'localhospital',
-        component: () => import('@/views/localhospital/localhospital'),
-        name: '卫生院管理',
-        meta: { title: '卫生院管理', icon: 'tree' }
-      }
-    ]
-  },
-  {
-    path: '/employee',
-    component: Layout,
-    redirect: '/employee/doctor',
-    name: '人员管理',
-    meta: {
-      title: '人员管理',
-      icon: 'peoples',
-      roles:['editor'] 
-    },
-    children: [
-      {
-        path: 'doctor',
-        component: () => import('@/views/employee/Doctor'),
-        name: '医生管理',
-        meta: { title: '医生管理', icon: 'user' }
-      },
-      {
-        path: 'nurse',
-        component: () => import('@/views/employee/Nurse'),
-        name: '护理员管理',
-        meta: { title: '护理员管理', icon: 'user' }
-      }
-    ]
-  },
+  // {
+  //   path: '/localhospital',
+  //   component: Layout,
+  //   redirect: '/localhospital/localhospital',
+  //   name: '卫生院',
+  //   meta: {
+  //     title: '卫生院',
+  //     icon: 'tree',
+  //     roles:['admin'] 
+  //   },
+  //   children: [
+  //     {
+  //       path: 'localhospital',
+  //       component: () => import('@/views/localhospital/localhospital'),
+  //       name: '卫生院管理',
+  //       meta: { title: '卫生院管理', icon: 'tree' }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/employee',
+  //   component: Layout,
+  //   redirect: '/employee/doctor',
+  //   name: '人员管理',
+  //   meta: {
+  //     title: '人员管理',
+  //     icon: 'peoples',
+  //     roles:['editor'] 
+  //   },
+  //   children: [
+  //     {
+  //       path: 'doctor',
+  //       component: () => import('@/views/employee/Doctor'),
+  //       name: '医生管理',
+  //       meta: { title: '医生管理', icon: 'user' }
+  //     },
+  //     {
+  //       path: 'nurse',
+  //       component: () => import('@/views/employee/Nurse'),
+  //       name: '护理员管理',
+  //       meta: { title: '护理员管理', icon: 'user' }
+  //     }
+  //   ]
+  // },
   {
     path: '/example',
     component: Layout,
