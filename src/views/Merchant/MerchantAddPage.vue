@@ -103,7 +103,7 @@
               name="pic"
               :limit = 1 
               :on-exceed="picLimitMes"
-              action="https://anji.newlioncity.com/admin/upload/goodsPic"
+              action="https://api.anjihos.newlioncity.com/admin/upload/goodsPic"
               :on-preview="handlePreview"
               :on-remove="handleRemove"
               :on-success="onloadPic"
@@ -119,7 +119,7 @@
               ref="upload"
               name='pic'
               v-model="infoForm.image_url"
-              action="https://anji.newlioncity.com/admin/upload/goodsPic"
+              action="https://api.anjihos.newlioncity.com/admin/upload/goodsPic"
               :headers='headers'
               :on-preview="handlePreview"
               :on-remove="handleRemove"
@@ -202,7 +202,7 @@ export default {
             console.log(this.infoForm);
             this.axios
               .post(
-                "https://anji.newlioncity.com/admin/company/store",
+                "/company/store",
                 this.infoForm
               )
               .then(response => {

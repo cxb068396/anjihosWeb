@@ -364,7 +364,7 @@ export default {
 
     handleOrderListService() {
       this.axios
-        .get("https://anji.newlioncity.com/admin/order", {
+        .get("/order", {
           params: { page: this.currentPage0, is_service: 1 }
         })
         .then(response => {
@@ -377,7 +377,7 @@ export default {
     },
     handleOrderListGoods() {
       this.axios
-        .get("https://anji.newlioncity.com/admin/order", {
+        .get("/order", {
           params: { page: this.currentPage1, is_service: 0 }
         })
         .then(response => {

@@ -124,7 +124,7 @@ export default {
     getWorkerList() {
       let userInfo = JSON.parse(localStorage.getItem("userInfo"));
       this.axios
-        .get("https://anji.newlioncity.com/admin/workerbill", {
+        .get("/workerbill", {
           params: {
             page: this.currentPage,
             company_id: userInfo.company_id
@@ -179,7 +179,7 @@ export default {
         worker_id: row.worker_id
       };
       this.axios
-        .post("https://anji.newlioncity.com/admin/workerbill/store", params)
+        .post("/workerbill/store", params)
         .then(response => {
           // console.log(response.data);
           if (response.data.errno === 0) {
@@ -199,7 +199,7 @@ export default {
     //删除
     handleRowDelete(index, row) {
       this.axios
-        .post("https://anji.newlioncity.com/admin/workerbill/destroy", {
+        .post("/workerbill/destroy", {
           id: row.id
         })
         .then(response => {

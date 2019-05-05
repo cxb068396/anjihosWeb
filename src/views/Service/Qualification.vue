@@ -83,7 +83,7 @@ export default {
         type: "error"
       }).then(() => {
         this.axios
-          .post("https://anji.newlioncity.com/admin/companygoods/store", {
+          .post("/companygoods/store", {
             id: row.id,
             verified: 1
           })
@@ -112,7 +112,7 @@ export default {
     },
     handleQualificationList() {
       this.axios
-        .get("https://anji.newlioncity.com/admin/companygoods?verified=0", {
+        .get("/companygoods?verified=0", {
           params: { page: this.currentPage }
         })
         .then(response => {

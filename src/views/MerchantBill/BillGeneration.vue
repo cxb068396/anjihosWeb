@@ -123,7 +123,7 @@ export default {
       let id = this.id;
       this.axios
         .get(
-          "https://anji.newlioncity.com/admin/workerbill/info?id=" +
+          "/workerbill/info?id=" +
             this.$route.query.id
         )
         .then(response => {

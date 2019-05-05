@@ -67,7 +67,7 @@ export default {
       let company_id = userInfo.company_id;
       this.axios
         .get(
-          "https://anji.newlioncity.com/admin/worker?company_id=" + company_id
+          "/worker?company_id=" + company_id
         )
         .then(response => {
           this.tableData = response.data.data.data;
@@ -77,7 +77,7 @@ export default {
     handleClickPost(row) {
       let id = this.$route.query.id;
       this.axios
-        .post("https://anji.newlioncity.com/admin/order/store", {
+        .post("/order/store", {
           company_id: row.company_id, //公司id
           id: id, //订单id
           order_status: 12, //派单状态

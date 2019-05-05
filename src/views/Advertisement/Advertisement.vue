@@ -113,7 +113,7 @@ export default {
         type: "warning"
       }).then(() => {
         this.axios
-          .post("https://anji.newlioncity.com/admin/banner/destroy", {
+          .post("/banner/destroy", {
             id: row.id
           })
           .then(response => {
@@ -131,7 +131,7 @@ export default {
     },
     getList() {
       this.axios
-        .get("https://anji.newlioncity.com/admin/banner")
+        .get("/banner")
         .then(response => {
           console.log(response.data)
           this.imgData = response.data.data.data;

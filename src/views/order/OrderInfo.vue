@@ -177,7 +177,7 @@ export default {
   }
 
     // handleOrderList() {
-    //   this.axios.get('https://anji.newlioncity.com/admin/order',{params:{}}).then(response => {
+    //   this.axios.get('/order',{params:{}}).then(response => {
     //     // console.log(response.data.data.data)
     //       // this.OrderList = response.data.data.data
     //   })

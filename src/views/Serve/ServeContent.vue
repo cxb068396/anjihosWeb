@@ -128,7 +128,7 @@ export default {
       let company_id = userInfo.company_id;
       this.axios
         .get(
-          "https://anji.newlioncity.com/admin/goods?company_id=" + company_id
+          "/goods?company_id=" + company_id
         )
         .then(response => {
           var result = response.data.data.company_has_goods.reverse();
@@ -141,7 +141,7 @@ export default {
       let company_id = userInfo.company_id;
       this.axios
         .get(
-          "https://anji.newlioncity.com/admin/goods?company_id=" + company_id
+          "/goods?company_id=" + company_id
         )
         .then(response => {
           this.submitData = response.data.data.company_has_not_goods.reverse();
@@ -153,7 +153,7 @@ export default {
       let userInfo = JSON.parse(localStorage.getItem("userInfo"));
       let company_id = userInfo.company_id;
       this.axios
-        .post("https://anji.newlioncity.com/admin/companygoods/store", {
+        .post("/companygoods/store", {
           goods_id: row.id,
           company_id: company_id
         })

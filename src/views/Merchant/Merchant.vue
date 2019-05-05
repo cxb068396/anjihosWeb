@@ -173,7 +173,7 @@ export default {
     },
     handleMerchantList() {
       this.axios
-        .get("https://anji.newlioncity.com/admin/company", {
+        .get("/company", {
           params: { page: this.currentPage }
         })
         .then(response => {

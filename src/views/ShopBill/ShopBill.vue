@@ -89,7 +89,7 @@ export default {
     getShopbill() {
       let userInfo = JSON.parse(localStorage.getItem("userInfo"));
       this.axios
-        .get("https://anji.newlioncity.com/admin/companybill", {
+        .get("/companybill", {
           params: {
             page: this.currentPage,
             company_id: userInfo.company_id

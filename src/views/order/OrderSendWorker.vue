@@ -79,7 +79,7 @@ export default {
       this.importantId = this.$route.query.importantId;
       this.axios
         .get(
-          "https://anji.newlioncity.com/admin/worker?company_id=" +
+          "/worker?company_id=" +
             this.$route.query.company_id
         )
         .then(response => {
@@ -100,7 +100,7 @@ export default {
       this.infoForm.worker_id = row.id;
       this.infoForm.company_id = row.company_id;
       this.axios
-        .post("https://anji.newlioncity.com/admin/order/store", this.infoForm)
+        .post("/order/store", this.infoForm)
         .then(response => {
           if (response.data.errno == 0) {
             this.$message({

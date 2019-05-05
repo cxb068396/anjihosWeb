@@ -63,7 +63,7 @@ export default {
     //     cancelButtonText: '取消',
     //     type: 'error'
     //   }).then (() => {
-    //     this.axios.post('https://anji.newlioncity.com/admin/order', { id: row.id }).then(response => {
+    //     this.axios.post('/order', { id: row.id }).then(response => {
     //       if (response.data.errno === 0) {
     //         this.$message({
     //           type: 'success',
@@ -88,7 +88,7 @@ export default {
         },
         handleServiceList() {
 
-            this.axios.get('https://anji.newlioncity.com/admin/companygoods',{params:{page: this.currentPage}}).then(response => { 
+            this.axios.get('/companygoods',{params:{page: this.currentPage}}).then(response => { 
               console.log(response.data.data.data)
                 this.ServiceList = response.data.data.data
                 this.count = response.data.data.count;

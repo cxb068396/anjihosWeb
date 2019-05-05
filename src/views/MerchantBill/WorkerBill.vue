@@ -129,7 +129,7 @@ export default {
       let company_id = userInfo.company_id;
       this.axios
         .get(
-          "https://anji.newlioncity.com/admin/worker?company_id=" + company_id,
+          "/worker?company_id=" + company_id,
           {
             params: {
               page: this.currentPage,
@@ -165,7 +165,7 @@ export default {
         });
       } else {
         this.axios
-          .post("https://anji.newlioncity.com/admin/workerbill/store", params)
+          .post("/workerbill/store", params)
           .then(response => {
             console.log(response);
             if (response.data.data.workerHasOrdersNumber) {

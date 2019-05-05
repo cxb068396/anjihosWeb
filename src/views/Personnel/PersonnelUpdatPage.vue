@@ -151,7 +151,7 @@ export default {
         this.$refs["ruleForm"].validate(valid => {
           if (valid) {
             this.axios
-              .post("https://anji.newlioncity.com/admin/worker/store", params)
+              .post("/worker/store", params)
               .then(response => {
                 if (response.data.errno === 0) {
                   this.$message({

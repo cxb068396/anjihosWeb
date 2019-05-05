@@ -66,7 +66,7 @@
               class="upload-demo"
               :headers="headers"
               name="pic"
-              action="https://anji.newlioncity.com/admin/upload/goodsPic"
+              action="https://api.anjihos.newlioncity.com/admin/upload/goodsPic"
               :limit = 1 
               :on-exceed="picLimitMes"
               :on-preview="handlePreview"
@@ -88,7 +88,7 @@
               ref="upload"
               name='pic'
               v-model="infoForm.wap_banner_url"
-              action="https://anji.newlioncity.com/admin/upload/goodsPic"
+              action="https://api.anjihos.newlioncity.com/admin/upload/goodsPic"
               :headers='headers'
               :on-preview="handlePreview"
               :on-remove="handleRemove"

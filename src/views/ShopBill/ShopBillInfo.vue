@@ -113,7 +113,7 @@ export default {
     handleFlatBillListInfo() {
       this.axios
         .get(
-          "https://anji.newlioncity.com/admin/companybill/info?id=" +
+          "/companybill/info?id=" +
             this.$route.query.id
         )
         .then(response => {

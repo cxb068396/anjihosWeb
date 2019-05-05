@@ -367,7 +367,7 @@ export default {
       let company_id = userInfo.company_id;
       this.axios
         .get(
-          "https://anji.newlioncity.com/admin/order?company_id=" + company_id,
+          "/order?company_id=" + company_id,
           {
             params: {
               page: this.currentPage
@@ -387,7 +387,7 @@ export default {
       let company_id = userInfo.company_id;
       this.axios
         .get(
-          "https://anji.newlioncity.com/admin/order?order_status=12&company_id=" +
+          "/order?order_status=12&company_id=" +
             company_id,
           {
             params: {
@@ -408,7 +408,7 @@ export default {
       let company_id = userInfo.company_id;
       this.axios
         .get(
-          "https://anji.newlioncity.com/admin/order?order_status=13&company_id=" +
+          "/order?order_status=13&company_id=" +
             company_id,
           {
             params: {
@@ -429,7 +429,7 @@ export default {
       let company_id = userInfo.company_id;
       this.axios
         .get(
-          "https://anji.newlioncity.com/admin/order?order_status=14&company_id=" +
+          "/order?order_status=14&company_id=" +
             company_id,
           {
             params: {

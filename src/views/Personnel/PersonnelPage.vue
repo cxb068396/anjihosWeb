@@ -125,7 +125,7 @@ export default {
       let company_id = userInfo.company_id;
       this.axios
         .get(
-          "https://anji.newlioncity.com/admin/worker?company_id=" + company_id,
+          "/worker?company_id=" + company_id,
           {
             params: {
               page: this.currentPage

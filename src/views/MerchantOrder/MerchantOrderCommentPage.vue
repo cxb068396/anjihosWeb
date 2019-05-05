@@ -76,7 +76,7 @@ export default {
       let userInfo = JSON.parse(localStorage.getItem("userInfo"));
       let company_id = userInfo.company_id;
       this.axios
-        .get("https://anji.newlioncity.com/admin/order/info?id=" + this.id)
+        .get("/order/info?id=" + this.id)
         .then(response => {
           // console.log(response.data.data);
           this.commentInfos = response.data.data.commentInfos;

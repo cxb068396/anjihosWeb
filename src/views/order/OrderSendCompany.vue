@@ -83,7 +83,7 @@ export default {
       if (this.$route.query.importantId) {
         this.axios
           .get(
-            "https://anji.newlioncity.com/admin/companygoods?goods_id=" +
+            "/companygoods?goods_id=" +
               this.$route.query.importantId
           )
           .then(response => {
@@ -93,7 +93,7 @@ export default {
         console.log(this.$route.query);
         this.axios
           .get(
-            "https://anji.newlioncity.com/admin/companygoods?goods_id=" +
+            "/companygoods?goods_id=" +
               this.$route.query.goodsInfos[0].id
           )
           .then(response => {
