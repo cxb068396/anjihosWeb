@@ -9,7 +9,7 @@ WORKDIR /app
 COPY package*.json ./
 COPY . /app
 
-RUN npm install && npm run build:sit
+RUN npm install && npm run build:prod
 
 RUN cp -r dist/* /var/www/html/ && cp nginx.conf /etc/nginx/conf.d/
 
