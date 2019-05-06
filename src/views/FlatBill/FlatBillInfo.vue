@@ -12,12 +12,11 @@
       </el-breadcrumb>
 
       <div class="operation-nav">
-        <router-link to="/dashboard/FlatBill">
           <el-button
             type="primary"
             icon="plus"
+            @click="goBackPage"
           >返回列表</el-button>
-        </router-link>
       </div>
 
       
@@ -170,6 +169,9 @@ export default {
     filterHandler(value, row, column) {
       const property = column["property"];
       return row[property] === value;
+    },
+    goBackPage(){
+      this.$router.push({name:"flatbill"});
     },
     //删除
     //详情

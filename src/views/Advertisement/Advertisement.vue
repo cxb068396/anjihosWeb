@@ -10,12 +10,11 @@
         <el-breadcrumb-item>小程序首页</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="operation-nav">
-        <router-link to="/dashboard/adwxadd">
           <el-button
             type="primary"
             icon="plus"
+            @click="goAdWxAdd"
           >添加广告</el-button>
-        </router-link>
       </div>
     </div>
     <div class="content-main">
@@ -105,6 +104,9 @@ export default {
         }
       });
       console.log(row);
+    },
+    goAdWxAdd(){
+      this.$router.push({name:'adwxadd'})
     },
     handleRowDelete(index, row) {
       this.$confirm("删除该图片,请谨慎操作。", "提示", {

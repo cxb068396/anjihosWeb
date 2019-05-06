@@ -31,13 +31,11 @@
       type="primary"
       icon="plus"
     >生成账单</el-button>
-    <router-link to="/dashboard/FlatBill">
       <el-button
-        class="goBackPage"
+        @click="goBackPage"
         type="primary"
         icon="plus"
       >返回列表</el-button>
-    </router-link>
     <el-table
       stripe
       style="width: 100%;"
@@ -116,7 +114,7 @@ export default {
   },
   methods: {
     goBackPage(){
-      this.$router.go(-1)
+      this.$router.push({name:"flatbill"});
     },
     //店铺选择
 
