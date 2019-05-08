@@ -10,7 +10,7 @@
         <el-breadcrumb-item>人员列表</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="operation-nav">
-        <router-link to="/dashboard/personnel/add">
+        <router-link to="personneladdpage">
           <el-button
             type="primary"
             icon="plus"
@@ -107,7 +107,7 @@ export default {
   methods: {
     handleRowUpdated(index, row) {
       this.$router.push({
-        name: "personnel_updat",
+        name: "personnelupdatepage",
         query: {
           id: row.id,
           address: row.address,

@@ -506,7 +506,7 @@ export default {
     handleRowComment(index, row) {
       console.log(row);
       this.$router.push({
-        name: "merchatOrder_comment",
+        name: "merchantordercommetpage",
         query: {
           id: row.id
         }
