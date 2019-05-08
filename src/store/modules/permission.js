@@ -30,7 +30,7 @@ function filterAsyncRouter(routes, roles) {
       res.push(tmp)
     }
   })
-  console.log(res)
+  // console.log(res)
    return res
 }
 
@@ -43,7 +43,6 @@ const permission = {
     SET_ROUTERS: (state, routers) => {
       //此句先注释，避免vue报warn
       state.addRouters = routers
-      
       state.routers = constantRouterMap.concat(routers)
     }
   },

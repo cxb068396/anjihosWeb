@@ -76,7 +76,8 @@ const user = {
           }
           setToken(data.token)
           commit('SET_TOKEN', data.token)
-          commit('SET_ROLES', data.roles)
+          
+          // commit('SET_ROLES', data.roles)
           commit('SET_NAME', data.name)
           commit('SET_AVATAR', data.avatar)
           commit('SET_INTRODUCTION', data.introduction)
