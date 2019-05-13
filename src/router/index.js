@@ -334,13 +334,13 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'contractlist',
-        component: () => import('@/views/contract/contractlist'),
+        component: () => import('@/views/contract/ContractList'),
         name: 'contractlist',
         meta: { title: '签约列表', icon: 'user' },
       },
       {
         path: 'contractaddpage',
-        component: () => import('@/views/contract/contractaddpage'),
+        component: () => import('@/views/contract/ContractAddPage'),
         name: 'contractaddpage',
         meta: { title: '签约申请', icon: 'money', noCache: true }
       },

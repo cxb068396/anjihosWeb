@@ -103,13 +103,13 @@
           >
           </el-table-column>
           <el-table-column
-            prop="workerInfo.address"
+            prop="workInfo.address"
             label="签约医生地址"
             min-width="80"
           >
           </el-table-column>
           <el-table-column
-            prop="workerInfo.name"
+            prop="workInfo.name"
             label="签约医生名称"
             min-width="80"
           >
@@ -117,7 +117,7 @@
           <!--          <el-table-column prop="sort_order" label="排序" min-width="80">
           </el-table-column>
  -->
-          <el-table-column
+          <!-- <el-table-column
             label="操作"
             min-width="80"
           >
@@ -126,9 +126,8 @@
                 size="small"
                 @click="handleRowInfo(scope.$index, scope.row)"
               >详情</el-button>
-              <!--              <el-button  size="small" type="danger" @click="handleRowDelete(scope.$index, scope.row)">删除</el-button> -->
             </template>
-          </el-table-column>
+          </el-table-column> -->
 
         </el-table>
 
@@ -217,24 +216,6 @@ export default {
       console.log(row);
       // this.$router.push({ name: "goods_add", query: { id: row.id } });
     },
-    // handleRowDelete(index, row) {
-    //   this.$confirm("确定要删除？", "提示", {
-    //     confirmButtonText: "确定",
-    //     cancelButtonText: "取消",
-    //     type: "error"
-    //   }).then(() => {
-    //     this.axios.post("goods/destroy", { id: row.id }).then(response => {
-    //       if (response.data.errno === 0) {
-    //         this.$message({
-    //           type: "success",
-    //           message: "删除成功!"
-    //         });
-
-    //         this.getList();
-    //       }
-    //     });
-    //   });
-    // },
     onSubmitFilter(event) {
       console.log(event);
       localStorage.setItem("goodsFilterForm", JSON.stringify(this.filterForm));
