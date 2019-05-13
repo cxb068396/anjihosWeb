@@ -324,6 +324,43 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/contract',
+    component: Layout,
+    meta: {
+      title: '签约管理',
+      icon: 'peoples',
+      roles:['admin'] 
+    },
+    children: [
+      {
+        path: 'contractlist',
+        component: () => import('@/views/contract/contractlist'),
+        name: 'contractlist',
+        meta: { title: '签约列表', icon: 'user' },
+      },
+      {
+        path: 'contractaddpage',
+        component: () => import('@/views/contract/contractaddpage'),
+        name: 'contractaddpage',
+        meta: { title: '签约申请', icon: 'money', noCache: true }
+      },
+      {
+        path: 'contractsendcompany',
+        component: () => import('@/views/contract/ContractSendCompany'),
+        name: 'contractsendcompany',
+        meta: { title: '签约医院', icon: 'user' },
+        hidden: true    
+      },
+      {
+        path: 'contractsendworker',
+        component: () => import('@/views/contract/ContractSendWorker'),
+        name: 'contractsendworker',
+        meta: { title: '签约医生', icon: 'user' },
+        hidden: true    
+      }
+    ]
+  },
+  {
     path: '/advertisement',
     component: Layout,
     meta: {
