@@ -10,6 +10,14 @@
         <el-breadcrumb-item>服务列表</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
+    <div class="operation-nav">
+        <router-link to="serveaddpage">
+          <el-button
+            type="primary"
+            icon="plus"
+          >申请服务</el-button>
+        </router-link>
+      </div>
     <el-tabs
       v-model="activeName"
       @tab-click="clickTab"

@@ -358,6 +358,7 @@ export default {
         retail_price: "",
         keywords: "",
         verified : 1,
+        company_id:0,
 
         gallery: [],
         deletedGalleries: [],
@@ -415,7 +416,7 @@ export default {
     },
     goBackPage() {
       this.$router.push({
-        name:'商品列表'
+        name:'agreepage'
       });
     },
     //上传之前的图片限制
@@ -584,6 +585,7 @@ export default {
       ) {
         this.$refs["infoForm"].validate(valid => {
           if (valid) {
+            this.infoForm.verified = 1
             this.axios.post("goods/store", this.infoForm).then(response => {
               if (response.data.errno === 0) {
                 this.$message({
@@ -658,6 +660,7 @@ export default {
   mounted() {
     this.getCascaderCategory();
     this.infoForm.id = this.$route.query.id || 0;
+    this.infoForm.company_id = this.$route.query.company_id || 0;
     this.getInfo();
     console.log(this.infoForm.list_pic_url);
     console.log(this.infoForm.goods_desc);

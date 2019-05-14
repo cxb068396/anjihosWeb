@@ -9,13 +9,6 @@
         <el-breadcrumb-item>商品管理</el-breadcrumb-item>
         <el-breadcrumb-item>商品列表</el-breadcrumb-item>
       </el-breadcrumb>
-      <div class="operation-nav">
-          <el-button
-            type="primary"
-            icon="plus"
-            @click="handleRowPush"
-          >添加商品</el-button>
-      </div>
     </div>
 
     <div class="content-main">
@@ -206,7 +199,10 @@ export default {
     },
     handleRowEdit(index, row) {
       console.log(row);
-      this.$router.push({ name: "goodsaddpage", query: { id: row.id } });
+      this.$router.push({ name: "agreeaddpage", query: {
+         id: row.id ,
+         company_id:row.company_id
+         } });
     },
     handleRowDelete(index, row) {
       this.$confirm("确定要删除？", "提示", {
@@ -234,7 +230,7 @@ export default {
     },
     getList() {
       this.axios
-        .get("goods?verified=1", {
+        .get("goods?verified=0", {
           params: {
             page: this.page,
             name: this.filterForm.name,

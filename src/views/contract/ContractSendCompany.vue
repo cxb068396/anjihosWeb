@@ -91,7 +91,7 @@ export default {
     },
     getList() {
       this.axios
-        .get("/company", {
+        .get("/company?is_hospital=1", {
           params: { page: this.currentPage }
         })
         .then(response => {

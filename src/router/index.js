@@ -320,6 +320,19 @@ export const asyncRouterMap = [
         component: () => import('@/views/Service/Qualification'),
         name: 'qualification',
         meta: { title: '资格申请管理', icon: 'money', noCache: true }
+      },
+      {
+        path: 'agreepage',
+        component: () => import('@/views/Service/AgreePage'),
+        name: 'agreepage',
+        meta: { title: '服务申请列表', icon: 'user', noCache: true }
+      },
+      {
+        path: 'agreeaddpage',
+        component: () => import('@/views/Service/AgreeAddPage'),
+        name: 'agreeaddpage',
+        meta: { title: '服务申请管理', icon: 'user', noCache: true },
+        hidden:true
       }
     ]
   },
@@ -473,6 +486,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/Serve/ServeAddPage'),
         name: 'serveaddpage',
         meta: { title: '服务添加申请', icon: 'money', noCache: true },
+        hidden: true 
       }
     ]
   },

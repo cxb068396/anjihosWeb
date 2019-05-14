@@ -40,6 +40,20 @@
             ></el-input>
           </el-form-item>
           <el-form-item
+            label="店铺类别"
+            prop="is_hospital"
+          >
+            <template>
+              <el-radio-group
+                v-model="infoForm.is_hospital"
+                @change="chang"
+              >
+                <el-radio :label="1">医院类</el-radio>
+                <el-radio :label="0">非医院类</el-radio>
+              </el-radio-group>
+            </template>
+          </el-form-item>
+          <el-form-item
             label="店铺地址"
             prop="address"
           >
@@ -172,6 +186,7 @@ export default {
         bank_name:'',
         bank_account:'',
         bank_username:'',
+        is_hospital:0
 
       },
       headers: {
