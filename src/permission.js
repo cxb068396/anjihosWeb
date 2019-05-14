@@ -31,6 +31,7 @@ router.beforeEach((to, from, next) => {
     console.log('store.getters.roles.length = '+store.getters.roles.length)
 
     /* has token*/
+    console.log(to.path)
     if (to.path === '/login') {
       store.dispatch('LogOut').then(()=>{
         console.log('去向路径为/login')
@@ -113,7 +114,7 @@ router.beforeEach((to, from, next) => {
     if (store.getters.roles.length === 0) { 
       const token = localStorage.getItem('token') || ''
       if (localStorage.getItem('userInfo')) {
-        console.log('执行222')
+        console.log('执行roles.push')
         const userInfo = JSON.parse(localStorage.getItem('userInfo'))
         var roles = []
         // roles.push(userInfo.admin_role_id)

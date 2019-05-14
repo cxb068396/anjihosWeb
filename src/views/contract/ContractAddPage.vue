@@ -16,49 +16,48 @@
       :data="QualificationList"
     >
       <el-table-column
-            prop="id"
-            label="id"
-            min-width="100"
+        prop="id"
+        label="签约编号"
+        min-width="100"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="addressInfo.full_region"
+        label="地址"
+        min-width="100"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="addressInfo.address"
+        label="详细地址"
+        min-width="100"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="addressInfo.name"
+        label="姓名"
+        min-width="80"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="age"
+        label="年龄"
+        min-width="180"
+      >
+        <!-- <template scope="scope">
+          <img
+            v-if="scope.row.list_pic_url"
+            :src="scope.row.list_pic_url"
+            class="image-show"
           >
-          </el-table-column>
-          <el-table-column
-            prop="addressId"
-            label="addressId"
-            min-width="100"
-          >
-          </el-table-column>
-
-          <el-table-column
-            prop="age"
-            label="年龄"
-            min-width="180"
-          >
-            <!-- <template scope="scope">
-              <img
-                v-if="scope.row.list_pic_url"
-                :src="scope.row.list_pic_url"
-                class="image-show"
-              >
-            </template> -->
-          </el-table-column>
-          <el-table-column
-            prop="create_time"
-            label="签约时间"
-            min-width="120"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="userId"
-            label="userId"
-            min-width="80"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="workerId"
-            label="workerId"
-            min-width="80"
-          >
-          </el-table-column>
+        </template> -->
+      </el-table-column>
+      <el-table-column
+        prop="create_time"
+        label="签约时间"
+        min-width="120"
+      >
+      </el-table-column>
       <!--       <el-table-column label="门店照片" prop="" min-width="250">    
       </el-table-column> -->
       <!--       <el-table-column label="申请资格" prop="goods_id" min-width="190">    

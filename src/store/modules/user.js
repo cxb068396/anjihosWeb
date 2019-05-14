@@ -76,7 +76,7 @@ const user = {
           }
           setToken(data.token)
           commit('SET_TOKEN', data.token)
-          
+
           // commit('SET_ROLES', data.roles)
           commit('SET_NAME', data.name)
           commit('SET_AVATAR', data.avatar)
@@ -143,6 +143,7 @@ const user = {
     setInfo({ commit }) {
       return new Promise(resolve => {
         const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+        console.log(userInfo)
         const data = {}
         if (userInfo.admin_role_id == 1) {
           data.token = 'admin'

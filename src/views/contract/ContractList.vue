@@ -76,11 +76,17 @@
             min-width="100"
           >
           </el-table-column>
+          <el-table-column
+            prop="addressInfo.address"
+            label="详细地址"
+            min-width="100"
+          >
+          </el-table-column>
 
           <el-table-column
             prop="age"
             label="年龄"
-            min-width="180"
+            min-width="100"
           >
             <!-- <template scope="scope">
               <img

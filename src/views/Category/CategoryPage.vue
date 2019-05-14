@@ -118,7 +118,7 @@ export default {
     },
     handleRowEdit(index, row) {
       console.log(row);
-      this.$router.push({ name: "category_add", query: { id: row.id } });
+      this.$router.push({ name: "categoryaddpage", query: { id: row.id } });
     },
     handleRowDelete(index, row) {
       console.log(row.parent_id);
