@@ -182,9 +182,9 @@ export const asyncRouterMap = [
   {
     path: '/merchant',
     component: Layout,
-    name: '店铺管理',
+    name: '医院管理',
     meta: {
-      title: '店铺管理',
+      title: '医院管理',
       icon: 'peoples',
       roles:['admin'] 
     },
@@ -192,33 +192,33 @@ export const asyncRouterMap = [
       {
         path: 'merchant',
         component: () => import('@/views/Merchant/Merchant'),
-        name: '商家列表',
-        meta: { title: '商家列表', icon: 'user' }
+        name: '医院列表',
+        meta: { title: '医院列表', icon: 'user' }
       },
       {
         path: 'approval',
         component: () => import('@/views/Merchant/Approval'),
-        name: '商家入驻审批',
-        meta: { title: '商家入驻审批', icon: 'user' }
+        name: '医院入驻审批',
+        meta: { title: '医院入驻审批', icon: 'user' }
       },
       {
         path: 'merchantgoods',
         component: () => import('@/views/Merchant/MerchantGoods'),
-        name: '商家商品审批',
-        meta: { title: '商家商品审批', icon: 'user' }
+        name: '医院商品审批',
+        meta: { title: '医院商品审批', icon: 'user' }
       },
       {
         path: 'merchantinfo',
         component: () => import('@/views/Merchant/MerchantInfo'),
         name: 'merchantinfo',
-        meta: { title: '商家详情', icon: 'user' },
+        meta: { title: '医院详情', icon: 'user' },
         hidden: true    
       },
       {
         path: 'add',
         component: () => import('@/views/Merchant/MerchantAddPage'),
         name: 'merchantaddpage',
-        meta: { title: '添加商家', icon: 'user' },
+        meta: { title: '添加医院', icon: 'user' },
         hidden: true    
       },
   
@@ -264,7 +264,7 @@ export const asyncRouterMap = [
         path: 'ordersendworker',
         component: () => import('@/views/Order/OrderSendWorker'),
         name: 'ordersendworker',
-        meta: { title: '员工指派', icon: 'list' },
+        meta: { title: '医生指派', icon: 'list' },
         hidden: true    
       }
     ]
@@ -510,26 +510,26 @@ export const asyncRouterMap = [
         path: '/MerchantBill/merchantbill',
         component: () => import('@/views/MerchantBill/MerchantBill'),
         name: 'merchantbill',
-        meta: { title: '员工账单', icon: 'money', noCache: true },
+        meta: { title: '医生账单', icon: 'money', noCache: true },
       },
       {
         path: '/MerchantBill/workerbill',
         component: () => import('@/views/MerchantBill/WorkerBill'),
         name: 'workerbill',
-        meta: { title: '员工账单', icon: 'money', noCache: true },
+        meta: { title: '医生账单', icon: 'money', noCache: true },
         hidden:true
       },
       {
         path: '/ShopBill/shopbill',
         component: () => import('@/views/ShopBill/ShopBill'),
         name: 'shopbill',
-        meta: { title: '店铺账单', icon: 'money', noCache: true },
+        meta: { title: '医院账单', icon: 'money', noCache: true },
       },
       {
         path: '/ShopBill/shopbillinfo',
         component: () => import('@/views/ShopBill/ShopBillInfo'),
         name: 'shopbillinfo',
-        meta: { title: '店铺账单详情', icon: 'money', noCache: true },
+        meta: { title: '医院账单详情', icon: 'money', noCache: true },
         hidden:true
       }
     ]

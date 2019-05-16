@@ -6,15 +6,15 @@
         separator="/"
       >
         <el-breadcrumb-item :to="{path: '/dashboard'}">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>店铺列表</el-breadcrumb-item>
-        <el-breadcrumb-item>商家详情</el-breadcrumb-item>
+        <el-breadcrumb-item>医院列表</el-breadcrumb-item>
+        <el-breadcrumb-item>医院详情</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="operation-nav">
         <router-link to="/dashboard/merchant/add">
           <el-button
             type="primary"
             icon="plus"
-          >添加店铺</el-button>
+          >添加医院</el-button>
         </router-link>
       </div>
     </div>
@@ -24,13 +24,13 @@
       :data="MerchantList"
     >
       <el-table-column
-        label="店铺编号"
+        label="医院编号"
         prop="id"
         min-width="100"
       >
       </el-table-column>
       <el-table-column
-        label="店铺名称"
+        label="医院名称"
         prop="name"
         min-width="180"
       >
@@ -42,7 +42,7 @@
       >
       </el-table-column>
       <el-table-column
-        label="店铺地址"
+        label="医院地址"
         prop="address"
         min-width="200"
       >
@@ -71,7 +71,7 @@
       </el-table-column>
       <el-table-column
         fixed="right"
-        label="店铺详情"
+        label="医院详情"
         min-width="140"
       >
         <template slot-scope="scope">

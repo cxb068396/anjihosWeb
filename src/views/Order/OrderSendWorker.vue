@@ -26,7 +26,7 @@
       <el-table-column
         fixed
         prop="id"
-        label="员工编号"
+        label="医生编号"
       >
       </el-table-column>
       <el-table-column

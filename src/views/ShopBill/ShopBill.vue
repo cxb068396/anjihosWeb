@@ -7,7 +7,7 @@
       >
         <el-breadcrumb-item :to="{path: '/dashboard'}">首页</el-breadcrumb-item>
         <el-breadcrumb-item>账单管理</el-breadcrumb-item>
-        <el-breadcrumb-item>店铺账单</el-breadcrumb-item>
+        <el-breadcrumb-item>医院账单</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <el-table
@@ -22,7 +22,7 @@
       </el-table-column>
       <el-table-column
         prop="company_name"
-        label="店铺名称"
+        label="医院名称"
         min-width="120"
       >
       </el-table-column>

@@ -7,7 +7,7 @@
       >
         <el-breadcrumb-item :to="{path: '/dashboard'}">首页</el-breadcrumb-item>
         <el-breadcrumb-item>账单管理</el-breadcrumb-item>
-        <el-breadcrumb-item>员工账单</el-breadcrumb-item>
+        <el-breadcrumb-item>医生账单</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div style="float:right; margin-bottom:5px">
@@ -120,7 +120,7 @@ export default {
         }
       });
     },
-    //员工账单列表
+    //医生账单列表
     getWorkerList() {
       let userInfo = JSON.parse(localStorage.getItem("userInfo"));
       this.axios
@@ -137,7 +137,7 @@ export default {
           this.currentPage = response.data.data.currentPage;
         });
     },
-    //跳转到员工列表
+    //跳转到医生列表
     goWorkerList() {
       this.$router.push({
         name: "workerbill"

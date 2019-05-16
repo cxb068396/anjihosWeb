@@ -6,8 +6,8 @@
         separator="/"
       >
         <el-breadcrumb-item :to="{path: '/dashboard'}">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>店铺管理</el-breadcrumb-item>
-        <el-breadcrumb-item>店铺账单</el-breadcrumb-item>
+        <el-breadcrumb-item>医院管理</el-breadcrumb-item>
+        <el-breadcrumb-item>医院账单</el-breadcrumb-item>
         <el-breadcrumb-item>账单详情</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="operation-nav">

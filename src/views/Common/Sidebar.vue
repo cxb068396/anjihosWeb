@@ -50,19 +50,19 @@
       >
         <template slot="title">
           <i class="fa fa-large fa-truck"></i>
-          <span>店铺管理</span>
+          <span>医院管理</span>
         </template>
         <el-menu-item index="/dashboard/merchant">
           <i class="fa fa-circle"></i>
-          <span>商家列表</span>
+          <span>医院列表</span>
         </el-menu-item>
         <el-menu-item index="/dashboard/approval">
           <i class="fa fa-circle"></i>
-          <span>商家入驻审批</span>
+          <span>医院入驻审批</span>
         </el-menu-item>
         <el-menu-item index="/dashboard/merchantgoods">
           <i class="fa fa-circle"></i>
-          <span>商家商品审批</span>
+          <span>医院商品审批</span>
         </el-menu-item>
       </el-submenu>
 
@@ -189,11 +189,11 @@
         </template>
         <el-menu-item index="/dashboard/merchantbill">
           <i class="fa fa-circle"></i>
-          <span>员工账单</span>
+          <span>医生账单</span>
         </el-menu-item>
         <el-menu-item index="/dashboard/shopbill">
           <i class="fa fa-circle"></i>
-          <span>店铺账单</span>
+          <span>医院账单</span>
         </el-menu-item>
       </el-submenu>
 
@@ -244,7 +244,7 @@ export default {
         this.isMerchatAdmin = false;
         this.isPlatformAdmin = true;
       } else if (userInfo.admin_role_id == 2) {
-        // 商家后台
+        // 医院后台
         this.isMerchatAdmin = true;
         this.isPlatformAdmin = false;
       }

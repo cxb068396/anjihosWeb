@@ -7,7 +7,7 @@
       >
         <el-breadcrumb-item :to="{path: '/dashboard'}">首页</el-breadcrumb-item>
         <el-breadcrumb-item>账单管理</el-breadcrumb-item>
-        <el-breadcrumb-item>员工账单</el-breadcrumb-item>
+        <el-breadcrumb-item>医生账单</el-breadcrumb-item>
         <el-breadcrumb-item>账单详情</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="operation-nav">
@@ -20,7 +20,7 @@
     </div>
     <div class='worker'>
       <span style='padding: 0 10px 0 10px;'><b>账单汇总</b></span>
-      <span style='padding: 0 10px 0 0;'>员工姓名: <b>{{ worker_name}}</b></span>
+      <span style='padding: 0 10px 0 0;'>医生姓名: <b>{{ worker_name}}</b></span>
       <span style='padding: 0 10px 0 0;'>待付款: <b>{{price}}</b> / 元</span>
       <span style='padding: 0 10px 0 0;'>是否付款: <b>{{payed===1?"是":"否"}}</b></span>
       <span style='padding: 0 10px 0 0;'>截至时间: <b>{{due_time*1000 | datetimeFilterDay}}</b></span>

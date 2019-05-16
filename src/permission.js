@@ -82,7 +82,7 @@ router.beforeEach((to, from, next) => {
     //       console.log(roles)
     //       // router.addRoutes(asyncPlatformAdminRouterMap); // 动态添加可访问路由表
     //     } else if (userInfo.admin_role_id == 2) {
-    //       // 商家后台
+    //       // 医院后台
     //       roles.push('editor')
     //       console.log(roles)
     //       // router.addRoutes(asyncMerchatAdminRouterMap); // 动态添加可访问路由表
@@ -128,7 +128,7 @@ router.beforeEach((to, from, next) => {
           console.log(roles)
           // router.addRoutes(asyncPlatformAdminRouterMap); // 动态添加可访问路由表
         } else if (userInfo.admin_role_id == 2) {
-          // 商家后台
+          // 医院后台
           roles.push('editor')
           console.log(roles)
           // router.addRoutes(asyncMerchatAdminRouterMap); // 动态添加可访问路由表

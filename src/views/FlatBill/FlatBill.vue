@@ -15,7 +15,7 @@
           <el-button
             type="primary"
             icon="plus"
-          >添加店铺</el-button>
+          >添加医院</el-button>
         </router-link>
       </div> -->
 
@@ -23,7 +23,7 @@
     </div>
     
 
-    <!-- <el-button type="primary" @click="chooseMerchant" icon="arrow-left" class="">点击选择商家</el-button>
+    <!-- <el-button type="primary" @click="chooseMerchant" icon="arrow-left" class="">点击选择医院</el-button>
     <template>   
       <span style="margin:0px 10px">你已选择 {{TCA_length}} 家商店</span>
     </template>
@@ -65,7 +65,7 @@
       >
       </el-table-column> -->
       <el-table-column
-        label="店铺名称"
+        label="医院名称"
         prop="company_name"
         min-width="200"
       >

@@ -6,8 +6,8 @@
         separator="/"
       >
         <el-breadcrumb-item :to="{path: '/dashboard'}">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>店铺列表</el-breadcrumb-item>
-        <el-breadcrumb-item>选择店铺</el-breadcrumb-item>
+        <el-breadcrumb-item>医院列表</el-breadcrumb-item>
+        <el-breadcrumb-item>选择医院</el-breadcrumb-item>
       </el-breadcrumb>
 
     </div>
@@ -47,13 +47,13 @@
         width="55">
       </el-table-column>
       <el-table-column
-        label="店铺编号"
+        label="医院编号"
         prop="id"
         min-width="180"
       >
       </el-table-column>
       <el-table-column
-        label="店铺名称"
+        label="医院名称"
         prop="name"
         min-width="180"
       >
@@ -65,7 +65,7 @@
       >
       </el-table-column>
       <el-table-column
-        label="店铺地址"
+        label="医院地址"
         prop="address"
         min-width="200"
       >
@@ -116,7 +116,7 @@ export default {
     goBackPage(){
       this.$router.push({name:"flatbill"});
     },
-    //店铺选择
+    //医院选择
 
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -158,7 +158,7 @@ export default {
       if(!this.datavalue||!this.temCompany_idArr){
         this.$message({
           type: "warning",
-          message: "请将日期和店铺编号补充完全"
+          message: "请将日期和医院编号补充完全"
         });
       }else{
         // console.log(this.temCompany_idArr)

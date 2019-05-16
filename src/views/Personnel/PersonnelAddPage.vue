@@ -183,7 +183,7 @@ export default {
                 } else {
                   this.$message({
                     type: "error",
-                    message: "员工姓名不允许重复,请重新填写"
+                    message: "医生姓名不允许重复,请重新填写"
                   });
                 }
               });

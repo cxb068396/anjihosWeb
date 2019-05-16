@@ -6,8 +6,8 @@
         separator="/"
       >
         <el-breadcrumb-item :to="{path: '/dashboard'}">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>店铺管理</el-breadcrumb-item>
-        <el-breadcrumb-item>商家商品审批</el-breadcrumb-item>
+        <el-breadcrumb-item>医院管理</el-breadcrumb-item>
+        <el-breadcrumb-item>医院商品审批</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <el-table
@@ -16,7 +16,7 @@
       :data="ApprovalList"
     >
       <el-table-column
-        label="申请商家"
+        label="申请医院"
         prop="company_name"
         min-width="180"
       >

@@ -44,7 +44,7 @@
             @click="handleClickPost(scope.row)"
             type="danger"
             size="small"
-          >选择此商家</el-button>
+          >选择此医院</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -104,7 +104,7 @@ export default {
     goBackPage() {
       this.$router.push({ name: "order" });
     },
-    //选择商家
+    //选择医院
     handleClickPost(row) {
       console.log(this.$route.query);
       this.$router.push({

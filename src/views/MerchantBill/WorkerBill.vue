@@ -7,7 +7,7 @@
       >
         <el-breadcrumb-item :to="{path: '/dashboard'}">首页</el-breadcrumb-item>
         <el-breadcrumb-item>账单管理</el-breadcrumb-item>
-        <el-breadcrumb-item>员工列表</el-breadcrumb-item>
+        <el-breadcrumb-item>医生列表</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="operation-nav">
         <el-button
@@ -21,7 +21,7 @@
       style="margin-bottom:5px"
       class='box'
     >
-      <span style='font-size:18px;color:#666;margin:10px 10px;font-family:KaiTi'>您选择了{{length}}名员工</span>
+      <span style='font-size:18px;color:#666;margin:10px 10px;font-family:KaiTi'>您选择了{{length}}名医生</span>
       <el-date-picker
         v-model="date"
         type="date"
@@ -161,7 +161,7 @@ export default {
       if (this.multipleSelection.length === 0 || !this.date) {
         this.$message({
           type: "error",
-          message: "请将生成账单所需的员工姓名和截至时间填写完整"
+          message: "请将生成账单所需的医生姓名和截至时间填写完整"
         });
       } else {
         this.axios

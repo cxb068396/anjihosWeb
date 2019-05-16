@@ -6,8 +6,8 @@
         separator="/"
       >
         <el-breadcrumb-item :to="{name: 'dashboard'}">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>商家详情</el-breadcrumb-item>
-        <el-breadcrumb-item>添加商家</el-breadcrumb-item>
+        <el-breadcrumb-item>医院详情</el-breadcrumb-item>
+        <el-breadcrumb-item>添加医院</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="operation-nav">
         <el-button
@@ -28,7 +28,7 @@
         >
 
           <el-form-item
-            label="店铺名称"
+            label="医院名称"
             prop="name"
 
           >
@@ -40,7 +40,7 @@
             ></el-input>
           </el-form-item>
           <el-form-item
-            label="店铺类别"
+            label="医院类别"
             prop="is_hospital"
           >
             <template>
@@ -54,7 +54,7 @@
             </template>
           </el-form-item>
           <el-form-item
-            label="店铺地址"
+            label="医院地址"
             prop="address"
           >
             <el-input
@@ -110,7 +110,7 @@
               style="width:25%"
             ></el-input>
           </el-form-item>
-          <!--           <el-form-item label="店铺照片">
+          <!--           <el-form-item label="医院照片">
             <el-upload
               class="upload-demo"
               :headers="headers"
@@ -127,7 +127,7 @@
               <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
             </el-upload>
           </el-form-item> -->
-          <el-form-item label="店铺照片">
+          <el-form-item label="医院照片">
             <el-upload
               class="avatar-uploader"
               ref="upload"
@@ -230,7 +230,7 @@ export default {
                 } else {
                   this.$message({
                     type: "error",
-                    message: "店铺名称不允许重复,请重新填写"
+                    message: "医院名称不允许重复,请重新填写"
                   });
                 }
               });
