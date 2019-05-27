@@ -8,11 +8,11 @@
       </el-breadcrumb>
       </div>
      <el-table stripe style="width: 100%;":data="ServiceList" >
-      <el-table-column label="医院名称" prop="company_name" min-width="220">    
+      <el-table-column label="商家名称" prop="company_name" min-width="220">    
       </el-table-column>
       <el-table-column label="服务名称" prop="goods_name" min-width="260">    
       </el-table-column>
-<!--       <el-table-column label="医院地址" prop="consignee" min-width="220">    
+<!--       <el-table-column label="店铺地址" prop="consignee" min-width="220">    
       </el-table-column> -->
 <!--       <el-table-column label="具备资格" prop="goods_id" min-width="200">    
       </el-table-column> -->

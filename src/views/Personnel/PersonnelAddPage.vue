@@ -174,6 +174,7 @@ export default {
             this.axios
               .post("/worker/store", params)
               .then(response => {
+                console.log(response.data)
                 if (response.data.errno === 0) {
                   this.$message({
                     type: "success",
@@ -183,7 +184,7 @@ export default {
                 } else {
                   this.$message({
                     type: "error",
-                    message: "医生姓名不允许重复,请重新填写"
+                    message: "已经存在该手机号的员工，请重新填写手机号！"
                   });
                 }
               });

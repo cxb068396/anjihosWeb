@@ -374,6 +374,31 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/activity',
+    component: Layout,
+    name: '活动管理',
+    meta: {
+      title: '活动管理',
+      icon: 'shopping',
+      roles:['admin'] 
+    },
+    children: [
+      {
+        path: 'activity',
+        component: () => import('@/views/Activity/GoodsPage'),
+        name: 'activity',
+        meta: { title: '活动列表', icon: 'list' }
+      },
+      {
+        path: 'activityAdd',
+        component: () => import('@/views/Activity/GoodsAddPage'),
+        name: 'activityadd',
+        meta: { title: '活动添加', icon: 'list' },
+        hidden:true
+      }
+    ]
+  },
+  {
     path: '/advertisement',
     component: Layout,
     meta: {

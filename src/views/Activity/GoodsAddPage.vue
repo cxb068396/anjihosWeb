@@ -26,13 +26,13 @@
           label-width="120px"
         >
           <el-form-item
-            label="服务名称"
+            label="商品名称"
             prop="name"
           >
             <el-input v-model="infoForm.name"></el-input>
           </el-form-item>
           <el-form-item
-            label="服务简单描述"
+            label="商品简单描述"
             name="goods_brief"
           >
             <el-input
@@ -70,6 +70,7 @@
                 @change="chang"
               >
                 <el-radio :label="1">服务类</el-radio>
+                <el-radio :label="0">商品类</el-radio>
               </el-radio-group>
             </template>
           </el-form-item>
@@ -84,14 +85,14 @@
               v-model.number="infoForm.retail_price"
             ></el-input>
           </el-form-item>
-          <!-- <el-form-item label="上架">
+          <el-form-item label="上架">
             <el-switch
               on-text=""
               off-text=""
               v-model="infoForm.is_on_sale"
             >
             </el-switch>
-          </el-form-item> -->
+          </el-form-item>
           <!--         <el-form-item label="排序">
             <el-input-number v-model="infoForm.sort_order" :min="1" :max="1000"></el-input-number>
           </el-form-item> -->
@@ -353,14 +354,14 @@ export default {
         sort_order: 100,
         is_show: true,
         category_id: 0,
-        is_on_sale: 0,
+        is_on_sale: 1,
         retail_price: "",
         keywords: "",
-        verified:0,
-        company_id:0,
+        verified : 1,
+
         gallery: [],
         deletedGalleries: [],
-        deletedDescPics: [],
+        deletedDescPics: []
       },
 
       infoRules: {
@@ -414,7 +415,7 @@ export default {
     },
     goBackPage() {
       this.$router.push({
-        name:'servecontent'
+        name:'商品列表'
       });
     },
     //上传之前的图片限制
@@ -577,10 +578,6 @@ export default {
       }
     },
     onSubmitInfo() {
-      let userInfo = JSON.parse(localStorage.getItem("userInfo"));
-      let company_id = userInfo.company_id;
-      this.infoForm.company_id = company_id
-      console.log(company_id)
       if (
         (this.isImgIn_1 && this.isImgIn_2 && this.isImgIn_3) ||
         this.$route.query.id

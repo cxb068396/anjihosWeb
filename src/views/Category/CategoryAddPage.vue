@@ -330,4 +330,9 @@ export default {
   left: 160px;
   bottom: -12px;
 }
+.avatar {
+  width: 148px;
+  height: 148px;
+  display: block;
+}
 </style>

@@ -75,7 +75,7 @@
               ref="upload"
               name='pic'
               v-model="imgForm.image_url"
-              action="https://anadminji.newlioncity.com//upload/goodsPic"
+              action="https://api.anjihos.newlioncity.com/admin/upload/goodsPic"
               :headers='headers'
               :on-success='onloadPic'
               :on-change='judgeIsImgIn'
@@ -253,5 +253,10 @@ export default {
   position: absolute;
   left: 160px;
   bottom: -12px;
+}
+.avatar {
+  width: 148px;
+  height: 148px;
+  display: block;
 }
 </style>
