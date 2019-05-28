@@ -26,28 +26,45 @@
           label-width="120px"
         >
           <el-form-item
-            label="商品名称"
+            label="活动标题"
             prop="name"
           >
             <el-input v-model="infoForm.name"></el-input>
           </el-form-item>
           <el-form-item
-            label="商品简单描述"
-            name="goods_brief"
+            label="活动简单描述"
+            name="activity_brief"
           >
             <el-input
               type="textarea"
               @input="descInput"
-              v-model="infoForm.goods_brief"
+              v-model="infoForm.activity_brief"
               maxlength='100'
-              placeholder="填写后会在商品详情页的商品名称下展现，非必填"
+              placeholder="填写后会在活动详情页的活动名称下展现，非必填"
             ></el-input>
             <span
               class="text"
               style="float: right;color: #909399;margin-right: 55px;"
             >已输入{{remnant}}/100字以内</span>
           </el-form-item>
+
           <el-form-item
+          label="选择时间"
+          name="time1"
+          >
+            <el-date-picker
+              value-format="timestamp"
+              v-model="time1"
+              type="daterange"
+              range-separator="至"
+              unlink-panels
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              @change="choosetime1">
+            </el-date-picker>
+          </el-form-item>
+
+          <!-- <el-form-item
             label="所属分类"
             prop="categorySelected"
           >
@@ -59,8 +76,8 @@
               @change="handleChange"
             >
             </el-cascader>
-          </el-form-item>
-          <el-form-item
+          </el-form-item> -->
+          <!-- <el-form-item
             label="产品类别"
             prop="is_service"
           >
@@ -73,8 +90,8 @@
                 <el-radio :label="0">商品类</el-radio>
               </el-radio-group>
             </template>
-          </el-form-item>
-          <el-form-item
+          </el-form-item> -->
+          <!-- <el-form-item
             label="价格¥"
             prop="retail_price"
             :rules="[{ type:'number', required: true, message: '请填写价格', trigger: 'blur'}]"
@@ -92,7 +109,7 @@
               v-model="infoForm.is_on_sale"
             >
             </el-switch>
-          </el-form-item>
+          </el-form-item> -->
           <!--         <el-form-item label="排序">
             <el-input-number v-model="infoForm.sort_order" :min="1" :max="1000"></el-input-number>
           </el-form-item> -->
@@ -170,7 +187,7 @@
           </el-form-item> -->
 
           <el-form-item
-            label="商品banner"
+            label="活动banner"
             prop="gallery"
           >
             <div
@@ -244,7 +261,7 @@
              </el-dialog> -->
           </el-form-item>
 
-          <el-form-item label="商品详情">
+          <el-form-item label="活动详情">
             <div
               v-for="(item, curIndex) in infoForm.goods_desc"
               :key="item"
@@ -324,6 +341,7 @@ import api from "@/config/api";
 export default {
   data() {
     return {
+      time1:'',
       remnant: 0,
       isImgIn_1: false,
       isImgIn_2: false,
@@ -366,6 +384,7 @@ export default {
 
       infoRules: {
         name: [{ required: true, message: "请输入名称", trigger: "blur" }],
+        time1:[{required: true, message: "请选择时间段", trigger: "blur"}],
         is_service: [
           { required: true, message: "请选择类别", trigger: "blur" }
         ],
@@ -388,6 +407,9 @@ export default {
     };
   },
   methods: {
+    choosetime1(){
+      console.log(this.time1)
+    },
     chang(value) {
       this.infoForm.is_service = value;
       console.log(this.infoForm.is_service);
@@ -415,7 +437,7 @@ export default {
     },
     goBackPage() {
       this.$router.push({
-        name:'商品列表'
+        name:'activity'
       });
     },
     //上传之前的图片限制
@@ -666,6 +688,11 @@ export default {
 </script>
 
 <style>
+.demonstration{
+  color: #606266;
+  font-size:14px;
+  font-weight: bold;
+}
 .imgHuge-list {
   position: absolute;
   bottom: -10px;

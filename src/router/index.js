@@ -201,12 +201,14 @@ export const asyncRouterMap = [
         name: '医院入驻审批',
         meta: { title: '医院入驻审批', icon: 'user' }
       },
-      {
-        path: 'merchantgoods',
-        component: () => import('@/views/Merchant/MerchantGoods'),
-        name: '医院商品审批',
-        meta: { title: '医院商品审批', icon: 'user' }
-      },
+
+      // 暂时没用，先注释
+      // {
+      //   path: 'merchantgoods',
+      //   component: () => import('@/views/Merchant/MerchantGoods'),
+      //   name: '医院商品审批',
+      //   meta: { title: '医院商品审批', icon: 'user' }
+      // },
       {
         path: 'merchantinfo',
         component: () => import('@/views/Merchant/MerchantInfo'),
@@ -385,13 +387,13 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'activity',
-        component: () => import('@/views/Activity/GoodsPage'),
+        component: () => import('@/views/Activity/ActivityPage'),
         name: 'activity',
         meta: { title: '活动列表', icon: 'list' }
       },
       {
         path: 'activityAdd',
-        component: () => import('@/views/Activity/GoodsAddPage'),
+        component: () => import('@/views/Activity/ActivityAddPage'),
         name: 'activityadd',
         meta: { title: '活动添加', icon: 'list' },
         hidden:true

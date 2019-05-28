@@ -14,7 +14,7 @@
             type="primary"
             icon="plus"
             @click="handleRowPush"
-          >添加商品</el-button>
+          >设置活动</el-button>
       </div>
     </div>
 
@@ -25,7 +25,7 @@
           :model="filterForm"
           class="demo-form-inline"
         >
-          <el-form-item label="商品名称">
+          <!-- <el-form-item label="商品名称">
             <el-input
               v-model.trim="filterForm.name"
               placeholder="商品名称"
@@ -42,7 +42,7 @@
               @focus="onSubmitFilter"
             >
             </el-cascader>
-          </el-form-item>
+          </el-form-item> -->
 
           <!--   <el-form-item label="排序类型">
             <el-radio-group v-model="filterForm.sortChecked">
@@ -170,7 +170,7 @@ export default {
   methods: {
     handleRowPush(){
       this.$router.push({
-        name: "goodsaddpage",
+        name: "activityadd",
       });
     },
     handleChange(item) {
@@ -206,7 +206,7 @@ export default {
     },
     handleRowEdit(index, row) {
       console.log(row);
-      this.$router.push({ name: "goodsaddpage", query: { id: row.id } });
+      this.$router.push({ name: "activityadd", query: { id: row.id } });
     },
     handleRowDelete(index, row) {
       this.$confirm("确定要删除？", "提示", {

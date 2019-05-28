@@ -87,6 +87,33 @@
             <el-form-item label="接单人员">
               <span> {{ props.row.workerInfos.name ? props.row.workerInfos.name: '暂无接单人员'}} </span>
             </el-form-item>
+            <el-form-item
+            label="快递公司"
+            prop="shipper"
+          >
+            <el-select
+              v-model="shipperLisr.name"
+              @change="chooseShipper"
+            >
+              <el-option
+                v-for="item in shipperLisr"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              >
+              </el-option>
+            </el-select>
+            <el-input 
+            style="width: 200px"
+            v-model="logistic_code" 
+            placeholder="快递单号">
+            </el-input>
+            <el-button 
+            @click="sendShipperInfo"
+            type="success"
+            >发送物流信息
+            </el-button>
+          </el-form-item>
       
           </el-form>
         </template>
@@ -133,6 +160,14 @@
 export default {
   data() {
     return {
+      shipperLisr:[
+        {
+          id:1,
+          name:"顺丰速运"
+        }
+      ],
+      shipper_id:0,
+      logistic_code:'',
       OrderList: [
         {
           id: 0,
@@ -154,9 +189,54 @@ export default {
     };
   },
   created() {
+    this.getShipperLisr()
     // this.handleOrderList()
   },
   methods: {
+    getShipperLisr(){
+      this.axios.get('order/shipperInfo').then(
+        res=>{
+          console.log(res)
+          this.shipperLisr = res.data.data
+        }
+      )
+    },
+    chooseShipper(s){
+      this.shipper_id = s
+    },
+    sendShipperInfo(){
+      if(!this.shipper_id ||!this.logistic_code){
+        this.$message({
+          showClose: true,
+          message: '请将物流信息填写正确',
+          type: 'error'
+        });
+      }else{
+        this.axios.post('order/store',{
+          id: this.OrderList.id,
+          order_status: 22,
+          expressInfo: {
+            shipper_id: this.shipper_id,
+            logistic_code: this.logistic_code
+          }
+        }).then(res=>{
+          if(res.data.errno ==1000){
+            this.$message({
+              showClose: true,
+              message: '无该物流相关信息',
+              type: 'error'
+            });
+          }else{
+            this.$message({
+              showClose: true,
+              message: '物流信息已更新',
+            });
+          }
+        })
+      console.log(this.shipper_id)
+      console.log(this.logistic_code)
+      }
+    },
     goBackPage() {
       this.$router.back(-1);
     },
