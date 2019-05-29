@@ -465,7 +465,7 @@ export default {
     },
     handOut(row) {
       this.$router.push({
-        name: "merchatOrder_post",
+        name: "merchantorderpostpage",
         query: {
           id: row.id
         }

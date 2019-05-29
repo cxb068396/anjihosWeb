@@ -66,13 +66,13 @@
         >
           <el-table-column
             prop="id"
-            label="ID"
+            label="活动编号"
             min-width="100"
           >
           </el-table-column>
           <el-table-column
             prop="name"
-            label="商品名称"
+            label="活动名称"
             min-width="100"
           >
           </el-table-column>
@@ -91,18 +91,21 @@
             </template>
           </el-table-column>
           <el-table-column
-            prop="retail_price"
-            label="售价¥"
-            min-width="120"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="is_show"
-            label="上架"
+            prop="start_time"
+            label="开始时间"
             min-width="80"
           >
-            <template scope="scope">
-              {{ scope.row.is_on_sale == 1 ? '是' : '否'}}
+            <template slot-scope="scope">
+              {{scope.row.start_time*1000 | datetimeFilter}}
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="end_time"
+            label="结束时间"
+            min-width="80"
+          >
+            <template slot-scope="scope">
+              {{scope.row.end_time*1000 | datetimeFilter}}
             </template>
           </el-table-column>
           <!--          <el-table-column prop="sort_order" label="排序" min-width="80">
@@ -234,7 +237,7 @@ export default {
     },
     getList() {
       this.axios
-        .get("goods?verified=1", {
+        .get("activity", {
           params: {
             page: this.page,
             name: this.filterForm.name,

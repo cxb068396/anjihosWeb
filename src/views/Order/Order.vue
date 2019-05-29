@@ -287,7 +287,6 @@ export default {
     //派单
     orderSend(index, row) {
       if (row.order_status == 11 || row.order_status == 12) {
-        // 有bug。先注释
         console.log(row)
         this.$router.push({
           name: "ordersendcompany",
@@ -369,7 +368,7 @@ export default {
         })
         .then(response => {
           //this.OrderList = response.data.data.data;
-          //  console.log(response.data.data.data);
+           console.log(response.data.data.data);
           this.OrderListService = response.data.data.data;
 
           this.count = response.data.data.count;

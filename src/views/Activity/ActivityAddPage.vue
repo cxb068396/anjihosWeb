@@ -29,16 +29,28 @@
             label="活动标题"
             prop="name"
           >
-            <el-input v-model="infoForm.name"></el-input>
+            <el-input v-model="infoForm.name" style="width:30%"></el-input>
+          </el-form-item>
+          <el-form-item
+            label="活动地点"
+            prop="address"
+          >
+            <el-input v-model="infoForm.address"></el-input>
+          </el-form-item>
+          <el-form-item
+            label="联系方式"
+            prop="contact"
+          >
+            <el-input v-model="infoForm.contact" style="width:30%"></el-input>
           </el-form-item>
           <el-form-item
             label="活动简单描述"
-            name="activity_brief"
+            name="brief"
           >
             <el-input
               type="textarea"
               @input="descInput"
-              v-model="infoForm.activity_brief"
+              v-model="infoForm.brief"
               maxlength='100'
               placeholder="填写后会在活动详情页的活动名称下展现，非必填"
             ></el-input>
@@ -150,7 +162,7 @@
                class="upload-uploader"
                 ref="upload"
                 name='pic'
-                v-model="infoForm.goods_desc[0]"
+                v-model="infoForm.desc[0]"
                 action="https://api.anjihos.newlioncity.com/admin/upload/goodsPic"
                 :headers='header'
                 :on-preview="handlePreview"
@@ -161,7 +173,7 @@
                 :before-upload="beforeAvatarUpload"
 
                 >
-                <img width="100%" v-if="infoForm.goods_desc[0]" :src="infoForm.goods_desc[0]" alt="">
+                <img width="100%" v-if="infoForm.desc[0]" :src="infoForm.desc[0]" alt="">
                 <i class="el-icon-plus"></i>
               </el-upload>
               <el-upload
@@ -170,7 +182,7 @@
                class="upload-uploader"
                 ref="upload"
                 name='pic'
-                v-model="infoForm.goods_desc[1]"
+                v-model="infoForm.desc[1]"
                 action="https://api.anjihos.newlioncity.com/admin/upload/goodsPic"
                 :headers='header'
                 :on-preview="handlePreview"
@@ -180,7 +192,7 @@
                 :file-list="fileList"
                 :before-upload="beforeAvatarUpload"
                 >
-                <img width="100%" v-if="infoForm.goods_desc[1]" :src="infoForm.goods_desc[1]" alt="">
+                <img width="100%" v-if="infoForm.desc[1]" :src="infoForm.desc[1]" alt="">
                 <i class="el-icon-plus"></i>
               </el-upload>
               <el-dialog :visible.sync="dialogVisible"></el-dialog>
@@ -263,7 +275,7 @@
 
           <el-form-item label="活动详情">
             <div
-              v-for="(item, curIndex) in infoForm.goods_desc"
+              v-for="(item, curIndex) in infoForm.desc"
               :key="item"
               class='image-div'
             >
@@ -300,7 +312,7 @@
                 @click="handleImgSort('desc', curIndex, true)"
               >↑上移</el-button>
               <el-button
-                v-if="curIndex != infoForm.goods_desc.length - 1"
+                v-if="curIndex != infoForm.desc.length - 1"
                 class="image-delete"
                 size="small"
                 type="primary"
@@ -316,7 +328,7 @@
               :show-file-list="false"
               :on-success="handleUploadImageSuccess"
               :headers="header"
-              :data="{index: infoForm.goods_desc.length, type: 'desc'}"
+              :data="{index: infoForm.desc.length, type: 'desc'}"
             >
               <i class="el-icon-plus image-uploader-icon"></i>
             </el-upload>
@@ -341,7 +353,7 @@ import api from "@/config/api";
 export default {
   data() {
     return {
-      time1:'',
+      time1:[],
       remnant: 0,
       isImgIn_1: false,
       isImgIn_2: false,
@@ -364,22 +376,17 @@ export default {
       infoForm: {
         id: 0,
         list_pic_url: "",
-        goods_desc: [],
+        contact:'',
+        desc: [],
         name: "",
-        goods_brief: "",
+        brief: "",
         sort_order: 1,
-        is_service: 1,
         sort_order: 100,
         is_show: true,
-        category_id: 0,
         is_on_sale: 1,
-        retail_price: "",
-        keywords: "",
-        verified : 1,
-
+        start_time:123,
+        end_time:456,
         gallery: [],
-        deletedGalleries: [],
-        deletedDescPics: []
       },
 
       infoRules: {
@@ -408,14 +415,15 @@ export default {
   },
   methods: {
     choosetime1(){
-      console.log(this.time1)
+      this.infoForm.start_time = this.time1[0]/1000
+      this.infoForm.end_time = this.time1[1]/1000
+      console.log(this.infoForm)
     },
     chang(value) {
       this.infoForm.is_service = value;
-      console.log(this.infoForm.is_service);
     },
     descInput() {
-      var txtVal = this.infoForm.goods_brief.length;
+      var txtVal = this.infoForm.brief.length;
       this.remnant = txtVal;
     },
     judgeIsImgIn_1() {
@@ -476,8 +484,8 @@ export default {
     },
     //详情图片
     goodsDesc(response, file, fileList) {
-      console.log(this.infoForm.goods_desc);
-      this.infoForm.goods_desc.push(response.data.fileUrl);
+      // console.log(this.infoForm.desc);
+      this.infoForm.desc.push(response.data.fileUrl);
     },
     //轮播图片
     banner(response, file, fileList) {
@@ -497,7 +505,7 @@ export default {
       switch (type) {
         case "desc":
           {
-            let arr = this.infoForm.goods_desc;
+            let arr = this.infoForm.desc;
             if (index >= 0 && index < arr.length) {
               if (upOrDown) {
                 if (index === 0) {
@@ -511,8 +519,8 @@ export default {
                 [arr[index + 1], arr[index]] = [arr[index], arr[index + 1]];
               }
             }
-            this.infoForm.goods_desc = [];
-            this.infoForm.goods_desc = arr;
+            this.infoForm.desc = [];
+            this.infoForm.desc = arr;
           }
 
           break;
@@ -533,8 +541,8 @@ export default {
 
         case "desc":
           {
-            if (index >= 0 && index < this.infoForm.goods_desc.length) {
-              let deletedUrls = this.infoForm.goods_desc.splice(index, 1);
+            if (index >= 0 && index < this.infoForm.desc.length) {
+              let deletedUrls = this.infoForm.desc.splice(index, 1);
               this.infoForm.deletedDescPics.push(deletedUrls[0]);
             }
           }
@@ -577,10 +585,10 @@ export default {
                 this.infoForm.deletedDescPics.push(preUrl);
               }
 
-              if (index >= this.infoForm.goods_desc.length) {
-                this.infoForm.goods_desc.push(res.data.fileUrl);
+              if (index >= this.infoForm.desc.length) {
+                this.infoForm.desc.push(res.data.fileUrl);
               } else {
-                this.infoForm.goods_desc.splice(index, 1, res.data.fileUrl);
+                this.infoForm.desc.splice(index, 1, res.data.fileUrl);
               }
             }
 
@@ -606,7 +614,7 @@ export default {
       ) {
         this.$refs["infoForm"].validate(valid => {
           if (valid) {
-            this.axios.post("goods/store", this.infoForm).then(response => {
+            this.axios.post("activity/store", this.infoForm).then(response => {
               if (response.data.errno === 0) {
                 this.$message({
                   type: "success",
@@ -659,20 +667,24 @@ export default {
 
       let that = this;
       this.axios
-        .get("goods/info", {
+        .get("activity/info", {
           params: {
             id: that.infoForm.id
           }
         })
         .then(response => {
+          console.log(response)
           let resInfo = response.data.data;
           resInfo.is_on_sale = resInfo.is_on_sale ? true : false;
 
           that.infoForm = Object.assign(that.infoForm, resInfo);
 
           this.handleCategorySelected();
-          console.log(this.infoForm.list_pic_url);
-          console.log(this.infoForm.goods_desc[0]);
+          console.log(that.time1)
+          that.time1.push(that.infoForm.start_time * 1000)
+          that.time1.push(that.infoForm.end_time * 1000)
+          // console.log(this.infoForm.list_pic_url);
+          // console.log(this.infoForm.desc[0]);
         });
     }
   },
@@ -681,8 +693,8 @@ export default {
     this.getCascaderCategory();
     this.infoForm.id = this.$route.query.id || 0;
     this.getInfo();
-    console.log(this.infoForm.list_pic_url);
-    console.log(this.infoForm.goods_desc);
+    // console.log(this.infoForm.list_pic_url);
+    // console.log(this.infoForm.desc);
   }
 };
 </script>
