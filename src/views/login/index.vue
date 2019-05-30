@@ -39,7 +39,7 @@
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">{{ $t('login.logIn') }}</el-button>
 
-      <div class="tips">
+      <!-- <div class="tips">
         <span>{{ $t('login.username') }} : admin</span>
         <span>{{ $t('login.password') }} : {{ $t('login.any') }}</span>
       </div>
@@ -48,7 +48,7 @@
         <span>{{ $t('login.password') }} : {{ $t('login.any') }}</span>
       </div>
 
-      <el-button class="thirdparty-button" type="primary" @click="showDialog=true">{{ $t('login.thirdparty') }}</el-button>
+      <el-button class="thirdparty-button" type="primary" @click="showDialog=true">{{ $t('login.thirdparty') }}</el-button> -->
     </el-form>
 
     <el-dialog :title="$t('login.thirdparty')" :visible.sync="showDialog" append-to-body>
@@ -143,7 +143,7 @@ export default {
       //       this.loading = false;
       //       if (res.data.errno === 0) {
 
-      //         localStorage.setItem("token", res.data.data.token);
+      //         localStorage.https://api.anjihos.newlioncity.com/admin("token", res.data.data.token);
       //         localStorage.setItem(
       //           "userInfo",
       //           JSON.stringify(res.data.data.userInfo)

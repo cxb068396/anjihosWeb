@@ -6,15 +6,15 @@
         separator="/"
       >
         <el-breadcrumb-item :to="{path: '/dashboard'}">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>商品管理</el-breadcrumb-item>
-        <el-breadcrumb-item>商品列表</el-breadcrumb-item>
+        <el-breadcrumb-item>签约管理</el-breadcrumb-item>
+        <el-breadcrumb-item>签约列表</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="operation-nav">
           <el-button
             type="primary"
             icon="plus"
             @click="handleRowPush"
-          >设置活动</el-button>
+          >返回活动列表</el-button>
       </div>
     </div>
 
@@ -25,14 +25,14 @@
           :model="filterForm"
           class="demo-form-inline"
         >
-          <!-- <el-form-item label="商品名称">
+          <!-- <el-form-item label="姓名">
             <el-input
               v-model.trim="filterForm.name"
-              placeholder="商品名称"
+              placeholder="姓名"
               v-on:input="onSubmitFilter"
             ></el-input>
           </el-form-item>
-          <el-form-item label="所属分类">
+          <el-form-item label="是否签约">
             <el-cascader
               :options="categoryOptions"
               :props="categoryCascaderConfig"
@@ -65,68 +65,82 @@
           stripe
         >
           <el-table-column
-            prop="id"
-            label="活动编号"
+            prop="userInfo.nickname"
+            label="签约人昵称"
             min-width="100"
           >
           </el-table-column>
           <el-table-column
-            prop="name"
-            label="活动名称"
+            prop="userInfo.mobile"
+            label="联系方式"
+            min-width="100"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="add_time"
+            label="活动报名时间"
             min-width="100"
           >
           </el-table-column>
 
           <el-table-column
-            prop="list_pic_url"
-            label="封面"
-            min-width="180"
+            prop="age"
+            label="年龄"
+            min-width="100"
           >
-            <template scope="scope">
+            <!-- <template scope="scope">
               <img
                 v-if="scope.row.list_pic_url"
                 :src="scope.row.list_pic_url"
                 class="image-show"
               >
-            </template>
+            </template> -->
           </el-table-column>
-          <el-table-column
-            prop="start_time"
-            label="开始时间"
+          <!-- <el-table-column
+            prop="userInfo.avatar"
+            label="微信头像"
+            min-width="120"
+          >
+            <template scope="scope">
+              <img
+                v-if="scope.row.userInfo.avatar"
+                :src="scope.row.userInfo.avatar"
+                class="image-show"
+              >
+            </template>
+          </el-table-column> -->
+          <!-- <el-table-column
+            prop="addressInfo.name"
+            label="姓名"
             min-width="80"
           >
-            <template slot-scope="scope">
-              {{scope.row.start_time*1000 | datetimeFilter}}
-            </template>
           </el-table-column>
           <el-table-column
-            prop="end_time"
-            label="结束时间"
+            prop="workInfo.address"
+            label="签约医生地址"
             min-width="80"
           >
-            <template slot-scope="scope">
-              {{scope.row.end_time*1000 | datetimeFilter}}
-            </template>
           </el-table-column>
+          <el-table-column
+            prop="workInfo.name"
+            label="签约医生名称"
+            min-width="80"
+          >
+          </el-table-column> -->
           <!--          <el-table-column prop="sort_order" label="排序" min-width="80">
           </el-table-column>
  -->
-          <el-table-column
+          <!-- <el-table-column
             label="操作"
-            min-width="100"
+            min-width="80"
           >
             <template scope="scope">
               <el-button
                 size="small"
-                @click="handleRowEdit(scope.$index, scope.row)"
-              >编辑</el-button>
-              <el-button
-                size="small"
-                @click="handleRowUserInfo(scope.$index, scope.row)"
-              >查看</el-button>
-              <!--   <el-button  size="small" type="danger" @click="handleRowDelete(scope.$index, scope.row)">删除</el-button> -->
+                @click="handleRowInfo(scope.$index, scope.row)"
+              >详情</el-button>
             </template>
-          </el-table-column>
+          </el-table-column> -->
 
         </el-table>
 
@@ -175,16 +189,9 @@ export default {
     };
   },
   methods: {
-    handleRowUserInfo(index,row){
-      console.log(row)
-      this.$router.push({
-        name: "activityuserlist",
-        query: { id: row.id }
-      });
-    },
     handleRowPush(){
       this.$router.push({
-        name: "activityadd",
+        name: "activity",
       });
     },
     handleChange(item) {
@@ -218,27 +225,9 @@ export default {
       localStorage.setItem("goodsFilterForm", JSON.stringify(this.filterForm));
       this.getList();
     },
-    handleRowEdit(index, row) {
+    handleRowInfo(index, row) {
       console.log(row);
-      this.$router.push({ name: "activityadd", query: { id: row.id } });
-    },
-    handleRowDelete(index, row) {
-      this.$confirm("确定要删除？", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "error"
-      }).then(() => {
-        this.axios.post("goods/destroy", { id: row.id }).then(response => {
-          if (response.data.errno === 0) {
-            this.$message({
-              type: "success",
-              message: "删除成功!"
-            });
-
-            this.getList();
-          }
-        });
-      });
+      // this.$router.push({ name: "goods_add", query: { id: row.id } });
     },
     onSubmitFilter(event) {
       console.log(event);
@@ -248,13 +237,10 @@ export default {
     },
     getList() {
       this.axios
-        .get("activity", {
+        .get("activityuser?activity_id="+this.$route.query.id, {
           params: {
             page: this.page,
-            name: this.filterForm.name,
-            category_id: this.filterForm.category_id,
-            sortChecked: this.filterForm.sortChecked,
-            goodsTypeSelected: this.filterForm.goodsTypeSelected
+
           }
         })
         .then(response => {
@@ -277,7 +263,7 @@ export default {
         Object.assign(this.filterForm, savedFilterForm);
       } catch (e) {}
     }
-
+    console.log(this.$route.query.id)
     this.getCascaderCategory();
     this.getList();
   }
