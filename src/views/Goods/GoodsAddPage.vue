@@ -85,6 +85,30 @@
               v-model.number="infoForm.retail_price"
             ></el-input>
           </el-form-item>
+          <el-form-item
+            label="选择图标"
+          >
+          <el-select v-model="IconValue" @change="IconChange" placeholder="请选择图标，非必选">
+            <el-option
+              v-for="item in IconOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          </el-form-item>
+          <el-form-item
+            label="选择颜色"
+          >
+          <el-select v-model="colorValue" @change="colorChange" placeholder="请选择颜色，非必选">
+            <el-option
+              v-for="item in colorOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          </el-form-item>
           <el-form-item label="上架">
             <el-switch
               on-text=""
@@ -324,6 +348,67 @@ import api from "@/config/api";
 export default {
   data() {
     return {
+      IconOptions:[{
+        value: 'cardboardfill',
+        label: 'cardboardfill'
+      }, {
+        value: 'recordfill',
+        label: 'recordfill'
+      }, {
+        value: 'picfill',
+        label: 'picfill'
+      }, {
+        value: 'noticefill',
+        label: 'noticefill'
+      }, {
+        value: 'upstagefill',
+        label: 'upstagefill'
+      },{
+        value: 'clothesfill',
+        label: 'clothesfill'
+      },{
+        value: 'discoverfill',
+        label: 'discoverfill'
+      },{
+        value: 'questionfill',
+        label: 'questionfill'
+      },{
+        value: 'commandfill',
+        label: 'commandfill'
+      },{
+        value: 'brandfill',
+        label: 'brandfill'
+      }],
+      IconValue:'',
+      colorOptions:[{
+        value: 'red',
+        label: 'red'
+      }, {
+        value: 'orange',
+        label: 'orange'
+      }, {
+        value: 'yellow',
+        label: 'yellow'
+      }, {
+        value: 'olive',
+        label: 'olive'
+      }, {
+        value: 'cyan',
+        label: 'cyan'
+      },{
+        value: 'blue',
+        label: 'blue'
+      },{
+        value: 'purple',
+        label: 'purple'
+      },{
+        value: 'mauve',
+        label: 'mauve'
+      }],
+      colorValue:'',
+
+
+
       remnant: 0,
       isImgIn_1: false,
       isImgIn_2: false,
@@ -358,7 +443,8 @@ export default {
         retail_price: "",
         keywords: "",
         verified : 1,
-
+        icon:'',
+        color:'',
         gallery: [],
         deletedGalleries: [],
         deletedDescPics: []
@@ -439,6 +525,16 @@ export default {
     },
     handleChange(item) {
       this.infoForm.category_id = item[item.length - 1];
+    },
+    IconChange(item){
+      // console.log(this.IconValue)
+      this.infoForm.icon = this.IconValue
+      console.log(this.infoForm.icon )
+    },
+    colorChange(item){
+      // console.log(this.IconValue)
+      this.infoForm.color = this.colorValue
+      console.log(this.infoForm.color )
     },
     handlePreview(file) {
       //预览图片时调用
@@ -645,9 +741,9 @@ export default {
         .then(response => {
           let resInfo = response.data.data;
           resInfo.is_on_sale = resInfo.is_on_sale ? true : false;
-
           that.infoForm = Object.assign(that.infoForm, resInfo);
-
+          this.IconValue = resInfo.icon
+          this.colorValue = resInfo.color
           this.handleCategorySelected();
           console.log(this.infoForm.list_pic_url);
           console.log(this.infoForm.goods_desc[0]);
