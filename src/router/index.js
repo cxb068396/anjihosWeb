@@ -404,6 +404,20 @@ export const asyncRouterMap = [
         name: 'activityuserlist',
         meta: { title: '活动人员', icon: 'list' },
         hidden:true
+      },
+      {
+        path: 'ActivityCategoryAddPage',
+        component: () => import('@/views/Activity/ActivityCategoryAddPage'),
+        name: 'activitycategoryaddpage',
+        meta: { title: '添加活动分类', icon: 'list' },
+        hidden:true
+      },
+      {
+        path: 'ActivityCategoryPage',
+        component: () => import('@/views/Activity/ActivityCategoryPage'),
+        name: 'activitycategorypage',
+        meta: { title: '活动分类', icon: 'list' },
+        
       }
     ]
   },

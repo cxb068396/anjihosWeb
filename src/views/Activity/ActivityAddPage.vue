@@ -65,7 +65,19 @@
               style="float: right;color: #909399;margin-right: 55px;"
             >已输入{{remnant}}/100字以内</span>
           </el-form-item>
-
+          <el-form-item
+            label="所属分类"
+            prop="categorySelected"
+          >
+            <el-cascader
+              :options="categoryOptions"
+              :props="categoryCascaderConfig"
+              placeholder="请选择分类"
+              v-model="categorySelected"
+              @change="handleChange"
+            >
+            </el-cascader>
+          </el-form-item>
           <el-form-item
           label="选择时间"
           name="time1"
@@ -389,6 +401,7 @@ export default {
         brief: "",
         sort_order: 1,
         sort_order: 100,
+        activity_category_id:0,
         is_show: true,
         is_on_sale: 1,
         start_time:123,
@@ -475,7 +488,7 @@ export default {
       return testmsg && isLt2M;
     },
     handleChange(item) {
-      this.infoForm.category_id = item[item.length - 1];
+      this.infoForm.activity_category_id = item[item.length - 1];
     },
     handlePreview(file) {
       //预览图片时调用
@@ -648,18 +661,18 @@ export default {
     },
 
     getCascaderCategory() {
-      this.axios.get("category/cascader").then(response => {
+      this.axios.get("activitycategory/cascader").then(response => {
         this.categoryOptions = this.categoryOptions.concat(response.data.data);
         this.handleCategorySelected();
       });
     },
 
     handleCategorySelected() {
-      if (this.categoryOptions.length > 0 && this.infoForm.category_id > 0) {
+      if (this.categoryOptions.length > 0 && this.infoForm.activity_category_id > 0) {
         this.categoryOptions.map(item => {
           item.children.map(itemChild => {
-            if (itemChild.id === this.infoForm.category_id) {
-              this.categorySelected = [item.id, this.infoForm.category_id];
+            if (itemChild.id === this.infoForm.activity_category_id) {
+              this.categorySelected = [item.id, this.infoForm.activity_category_id];
               return;
             }
           });

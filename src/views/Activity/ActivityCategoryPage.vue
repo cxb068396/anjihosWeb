@@ -114,56 +114,56 @@ export default {
   methods: {
     handleRowPush(){
       this.$router.push({
-        name: "categoryaddpage",
+        name: "activitycategoryaddpage",
       });
     },
     handleRowEdit(index, row) {
       console.log(row);
-      this.$router.push({ name: "categoryaddpage", query: { id: row.id } });
+      this.$router.push({ name: "activitycategoryaddpage", query: { id: row.id } });
     },
-    handleRowDelete(index, row) {
-      console.log(row.parent_id);
-      if (row.parent_id == 0) {
-        this.$confirm("删除一级分类将删除其下所有子分类,请谨慎操作。", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(() => {
-          this.axios.post("category/destroy", { id: row.id }).then(response => {
-            console.log(response.data);
-            if (response.data.errno === 0) {
-              this.$message({
-                type: "success",
-                message: "删除成功"
-              });
+    // handleRowDelete(index, row) {
+    //   console.log(row.parent_id);
+    //   if (row.parent_id == 0) {
+    //     this.$confirm("删除一级分类将删除其下所有子分类,请谨慎操作。", "提示", {
+    //       confirmButtonText: "确定",
+    //       cancelButtonText: "取消",
+    //       type: "warning"
+    //     }).then(() => {
+    //       this.axios.post("category/destroy", { id: row.id }).then(response => {
+    //         console.log(response.data);
+    //         if (response.data.errno === 0) {
+    //           this.$message({
+    //             type: "success",
+    //             message: "删除成功"
+    //           });
 
-              this.getList();
-            }
-          });
-        });
-      } else {
-        this.$confirm("确定要删除？", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(() => {
-          this.axios.post("category/destroy", { id: row.id }).then(response => {
-            console.log(response.data);
-            if (response.data.errno === 0) {
-              this.$message({
-                type: "success",
-                message: "删除成功"
-              });
+    //           this.getList();
+    //         }
+    //       });
+    //     });
+    //   } else {
+    //     this.$confirm("确定要删除？", "提示", {
+    //       confirmButtonText: "确定",
+    //       cancelButtonText: "取消",
+    //       type: "warning"
+    //     }).then(() => {
+    //       this.axios.post("category/destroy", { id: row.id }).then(response => {
+    //         console.log(response.data);
+    //         if (response.data.errno === 0) {
+    //           this.$message({
+    //             type: "success",
+    //             message: "删除成功"
+    //           });
 
-              this.getList();
-            }
-          });
-        });
-      }
-    },
+    //           this.getList();
+    //         }
+    //       });
+    //     });
+    //   }
+    // },
     getList() {
       this.axios
-        .get("category", {
+        .get("activitycategory", {
           params: {
             page: this.page,
             name: this.filterForm.name
