@@ -69,8 +69,8 @@
                 v-model="infoForm.is_service"
                 @change="chang"
               >
-                <el-radio :label="1">服务类</el-radio>
-                <el-radio :label="0">商品类</el-radio>
+                <el-radio :label=1>服务类</el-radio>
+                <el-radio :label=0>商品类</el-radio>
               </el-radio-group>
             </template>
           </el-form-item>
@@ -310,7 +310,7 @@
             <el-button
               type="primary"
               @click="onSubmitInfo"
-            >确定保存</el-button>
+            >通过申请</el-button>
             <el-button @click="goBackPage">取消</el-button>
           </el-form-item>
         </el-form>
@@ -352,7 +352,6 @@ export default {
         sort_order: 1,
         is_service: 1,
         sort_order: 100,
-        is_show: true,
         category_id: 0,
         is_on_sale: 1,
         retail_price: "",
@@ -586,6 +585,7 @@ export default {
         this.$refs["infoForm"].validate(valid => {
           if (valid) {
             this.infoForm.verified = 1
+            console.log(this.infoForm)
             this.axios.post("goods/store", this.infoForm).then(response => {
               if (response.data.errno === 0) {
                 this.$message({
@@ -646,10 +646,10 @@ export default {
         })
         .then(response => {
           let resInfo = response.data.data;
-          resInfo.is_on_sale = resInfo.is_on_sale ? true : false;
+          // resInfo.is_on_sale = resInfo.is_on_sale ? 1 : 0;
 
           that.infoForm = Object.assign(that.infoForm, resInfo);
-
+          that.infoForm.is_on_sale = 1
           this.handleCategorySelected();
           console.log(this.infoForm.list_pic_url);
           console.log(this.infoForm.goods_desc[0]);

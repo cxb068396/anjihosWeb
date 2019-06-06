@@ -103,13 +103,18 @@
  -->
           <el-table-column
             label="操作"
-            min-width="80"
+            min-width="100"
           >
             <template scope="scope">
               <el-button
                 size="small"
                 @click="handleRowEdit(scope.$index, scope.row)"
-              >编辑</el-button>
+              >查看</el-button>
+              <el-button
+                size="small"
+                type="primary"
+                @click="handleRowAgree(scope.$index, scope.row)"
+              >通过</el-button>
               <!--              <el-button  size="small" type="danger" @click="handleRowDelete(scope.$index, scope.row)">删除</el-button> -->
             </template>
           </el-table-column>
@@ -157,10 +162,63 @@ export default {
         label: "name",
         children: "children"
       },
-      categorySelected: []
+      categorySelected: [],
+      // infoForm: {
+      //   id: 0,
+      //   list_pic_url: "",
+      //   goods_desc: [],
+      //   name: "",
+      //   goods_brief: "",
+      //   sort_order: 1,
+      //   is_service: 1,
+      //   sort_order: 100,
+      //   is_show: true,
+      //   category_id: 0,
+      //   is_on_sale: 1,
+      //   retail_price: "",
+      //   keywords: "",
+      //   verified : 1,
+      //   company_id:0,
+
+      //   gallery: [],
+      //   deletedGalleries: [],
+      //   deletedDescPics: []
+      // },
     };
   },
   methods: {
+    handleRowAgree(index,row){
+      this.$confirm('通过商家服务申请', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          console.log(row)
+          row.verified = 1
+   
+            this.axios.post("goods/store", {id:row.id,verified:1}).then(response => {
+            if (response.data.errno === 0) {
+              this.$message({
+                type: "success",
+                message: "保存成功"
+              });
+              this.getList();
+            } else {
+              this.$message({
+                type: "error",
+                message: "保存失败,请检查相关内容"
+              });
+            }
+          });
+
+          this.$message({
+            type: 'success',
+            message: '通过该申请!'
+          });
+        }).catch(() => {
+       
+        });
+    },
     handleRowPush(){
       this.$router.push({
         name: "goodsaddpage",

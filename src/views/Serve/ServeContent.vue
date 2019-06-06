@@ -15,7 +15,7 @@
           <el-button
             type="primary"
             icon="plus"
-          >申请服务</el-button>
+          >申请自创服务</el-button>
         </router-link>
       </div>
     <el-tabs
@@ -67,7 +67,7 @@
         </el-table>
       </el-tab-pane>
       <el-tab-pane
-        label="可申请服务"
+        label="可申请平台服务"
         name="second"
       >
         <el-table
@@ -126,7 +126,7 @@ export default {
     clickTab(tab) {
       if (tab.label == "已接入服务") {
         this.getContentList();
-      } else if (tab.label == "可申请服务") {
+      } else if (tab.label == "可申请平台服务") {
         this.auditClick();
       }
     },
@@ -143,7 +143,7 @@ export default {
           this.contentData = result;
         });
     },
-    //可申请服务
+    //可申请平台服务
     auditClick() {
       let userInfo = JSON.parse(localStorage.getItem("userInfo"));
       let company_id = userInfo.company_id;

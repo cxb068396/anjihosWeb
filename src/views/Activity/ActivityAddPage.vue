@@ -32,6 +32,12 @@
             <el-input v-model="infoForm.name" style="width:30%"></el-input>
           </el-form-item>
           <el-form-item
+            label="承办方"
+            prop="organizer"
+          >
+            <el-input v-model="infoForm.organizer" style="width:30%"></el-input>
+          </el-form-item>
+          <el-form-item
             label="活动地点"
             prop="address"
           >
@@ -67,7 +73,7 @@
             <el-date-picker
               value-format="timestamp"
               v-model="time1"
-              type="daterange"
+              type="datetimerange"
               range-separator="至"
               unlink-panels
               start-placeholder="开始日期"
@@ -379,6 +385,7 @@ export default {
         contact:'',
         desc: [],
         name: "",
+        organizer:'',
         brief: "",
         sort_order: 1,
         sort_order: 100,

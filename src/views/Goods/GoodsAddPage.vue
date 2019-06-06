@@ -69,8 +69,8 @@
                 v-model="infoForm.is_service"
                 @change="chang"
               >
-                <el-radio :label="1">服务类</el-radio>
-                <el-radio :label="0">商品类</el-radio>
+                <el-radio :label=1>服务类</el-radio>
+                <el-radio :label=0>商品类</el-radio>
               </el-radio-group>
             </template>
           </el-form-item>
@@ -116,6 +116,13 @@
               v-model="infoForm.is_on_sale"
             >
             </el-switch>
+          </el-form-item>
+          <el-form-item label="排序">
+            <el-input-number
+              v-model="infoForm.sort_order"
+              :min="1"
+              :max="1000"
+            ></el-input-number>
           </el-form-item>
           <!--         <el-form-item label="排序">
             <el-input-number v-model="infoForm.sort_order" :min="1" :max="1000"></el-input-number>
@@ -434,10 +441,8 @@ export default {
         goods_desc: [],
         name: "",
         goods_brief: "",
-        sort_order: 1,
         is_service: 1,
         sort_order: 100,
-        is_show: true,
         category_id: 0,
         is_on_sale: 1,
         retail_price: "",
@@ -740,7 +745,7 @@ export default {
         })
         .then(response => {
           let resInfo = response.data.data;
-          resInfo.is_on_sale = resInfo.is_on_sale ? true : false;
+          resInfo.is_on_sale = resInfo.is_on_sale ? 1 : 0;
           that.infoForm = Object.assign(that.infoForm, resInfo);
           this.IconValue = resInfo.icon
           this.colorValue = resInfo.color

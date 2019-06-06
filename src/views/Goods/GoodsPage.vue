@@ -105,6 +105,14 @@
               {{ scope.row.is_on_sale == 1 ? '是' : '否'}}
             </template>
           </el-table-column>
+           <el-table-column
+            label="自创服务"
+            min-width="80"
+          >
+            <template scope="scope">
+              {{ JSON.stringify(scope.row.companyInfo) == '{}' ? '否' : '是'}}
+            </template>
+          </el-table-column>
           <!--          <el-table-column prop="sort_order" label="排序" min-width="80">
           </el-table-column>
  -->

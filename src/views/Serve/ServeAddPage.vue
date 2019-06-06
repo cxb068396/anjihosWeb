@@ -309,7 +309,7 @@
             <el-button
               type="primary"
               @click="onSubmitInfo"
-            >确定保存</el-button>
+            >申请新自创服务</el-button>
             <el-button @click="goBackPage">取消</el-button>
           </el-form-item>
         </el-form>
