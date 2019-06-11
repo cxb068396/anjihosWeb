@@ -744,13 +744,13 @@ export default {
           }
         })
         .then(response => {
+          console.log(response.data.data);
           let resInfo = response.data.data;
-          resInfo.is_on_sale = resInfo.is_on_sale ? 1 : 0;
+          resInfo.is_on_sale = resInfo.is_on_sale ? true : false;
           that.infoForm = Object.assign(that.infoForm, resInfo);
           this.IconValue = resInfo.icon
           this.colorValue = resInfo.color
           this.handleCategorySelected();
-          console.log(this.infoForm.list_pic_url);
           console.log(this.infoForm.goods_desc[0]);
         });
     }

@@ -294,9 +294,12 @@ export default {
           }
         })
         .then(response => {
+          console.log(response.data.data)
           let resInfo = response.data.data;
           resInfo.is_show = resInfo.is_show ? true : false;
           that.infoForm = resInfo;
+          that.handleChange()
+          that.descInputCategory()
         });
     },
     handleRemove(file, fileList) {
