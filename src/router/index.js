@@ -158,7 +158,7 @@ export const asyncRouterMap = [
         meta: { title: '商品列表', icon: 'shopping' }
       },
       {
-        path: 'add',
+        path: 'goodsaddpage',
         component: () => import('@/views/Goods/GoodsAddPage'),
         name: 'goodsaddpage',
         meta: { title: '商品添加', icon: 'shopping' },
@@ -171,7 +171,7 @@ export const asyncRouterMap = [
         meta: { title: '商品分类', icon: 'shopping' }
       },
       {
-        path: 'add',
+        path: 'categoryaddpage',
         component: () => import('@/views/Category/CategoryAddPage'),
         name: 'categoryaddpage',
         meta: { title: '分类添加', icon: 'shopping' },
@@ -480,7 +480,20 @@ export const asyncRouterMap = [
         name: 'personnelupdatepage',
         meta: { title: '人员更新', icon: 'money', noCache: true },
         hidden: true 
-      }
+      },
+      {
+        path: 'doctorteampage',
+        component: () => import('@/views/Personnel/DoctorteamPage'),
+        name: 'doctorteampage',
+        meta: { title: '医生团队列表', icon: 'user' },
+      },
+      {
+        path: 'doctorteamaddpage',
+        component: () => import('@/views/Personnel/DoctorteamAddPage'),
+        name: 'doctorteamaddpage',
+        meta: { title: '医生团队添加', icon: 'money', noCache: true },
+        hidden: true 
+      },
     ]
   },
   {
@@ -539,7 +552,7 @@ export const asyncRouterMap = [
     ]
   },
   {
-    path: '',
+    path: '/MerchantBill',
     component: Layout,
     meta: {
       title: '账单管理',
@@ -548,20 +561,20 @@ export const asyncRouterMap = [
     },
     children: [
       {
-        path: '/MerchantBill/billgeneration',
+        path: '/billgeneration',
         component: () => import('@/views/MerchantBill/BillGeneration'),
         name: 'billgeneration',
         meta: { title: '服务列表', icon: 'money' },
         hidden:true
       },
       {
-        path: '/MerchantBill/merchantbill',
+        path: '/merchantbill',
         component: () => import('@/views/MerchantBill/MerchantBill'),
         name: 'merchantbill',
         meta: { title: '医生账单', icon: 'money', noCache: true },
       },
       {
-        path: '/MerchantBill/workerbill',
+        path: '/workerbill',
         component: () => import('@/views/MerchantBill/WorkerBill'),
         name: 'workerbill',
         meta: { title: '医生账单', icon: 'money', noCache: true },

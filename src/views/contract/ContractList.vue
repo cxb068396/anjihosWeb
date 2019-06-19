@@ -109,13 +109,13 @@
           >
           </el-table-column>
           <el-table-column
-            prop="workInfo.address"
-            label="签约医生地址"
+            prop="teamInfo.id"
+            label="签约团队编号"
             min-width="80"
           >
           </el-table-column>
           <el-table-column
-            prop="workInfo.name"
+            prop="teamInfo.doctorInfo.name"
             label="签约医生名称"
             min-width="80"
           >

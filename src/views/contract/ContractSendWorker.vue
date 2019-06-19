@@ -24,27 +24,58 @@
       style="width: 100%"
     >
       <el-table-column
-        fixed
         prop="id"
-        label="医生编号"
+        label="团队编号"
+        min-width="120"
       >
       </el-table-column>
       <el-table-column
-        prop="name"
-        label="姓名"
+        prop="doctorInfo.name"
+        label="医生姓名"
+        min-width="120"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="nurseInfo.name"
+        label="护士姓名"
+        min-width="120"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="pharmacistInfo.name"
+        label="药师姓名"
+        min-width='120'
+      >
+      </el-table-column>
+      <el-table-column
+        prop="healthManagerInfo.name"
+        label="健康管家姓名"
+        min-width='160'
+      >
+      </el-table-column>
+      <el-table-column
+        prop="serviceStaffInfo.name"
+        label="服务人员姓名"
+        min-width="160"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="doctorInfo.mobile"
+        label="医生电话"
+        min-width="160"
       >
       </el-table-column>
       <el-table-column
         fixed="right"
         label="操作"
-        width="100"
+        width="160"
       >
         <template slot-scope="scope">
           <el-button
             @click="handleClickPost(scope.$index, scope.row)"
             type="danger"
             size="small"
-          >签约此医生</el-button>
+          >签约此团队</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -75,7 +106,7 @@ export default {
       this.importantId = this.$route.query.contractid ? this.$route.query.contractid : this.$route.query.importantId
       this.axios
         .get(
-          "/worker?company_id=" +
+          "/doctorteam?company_id=" +
             this.$route.query.company_id
         )
         .then(response => {
@@ -125,7 +156,7 @@ export default {
           .post("/contract/store", {
             id: this.$route.query.contractid ? this.$route.query.contractid : this.$route.query.importantId,
             completed: 1,
-            workerId:row.id
+            doctor_team_id:row.id
           })
           .then(response => {
             if (response.data.errno === 0) {

@@ -41,6 +41,28 @@
           placeholder="请输入可以联系的手机号码"
         ></el-input>
       </el-form-item>
+       <el-form-item
+        label="员工角色"
+        prop="worker_role_id"
+      >
+        <!-- <template>
+          <el-radio v-model="ruleForm.worker_role_id" label=1>医生</el-radio>
+          <el-radio v-model="ruleForm.worker_role_id" label=2>护士</el-radio>
+          <el-radio v-model="ruleForm.worker_role_id" label=3>药师</el-radio>
+          <el-radio v-model="ruleForm.worker_role_id" label=4>健康管家</el-radio>
+          <el-radio v-model="ruleForm.worker_role_id" label=5>上门服务人员</el-radio>
+        </template> -->
+
+        <template>
+          <el-radio-group v-model="ruleForm.worker_role_id" @change="worker_rolr_idChange">
+            <el-radio :label=1>医生</el-radio>
+            <el-radio :label=2>护士</el-radio>
+            <el-radio :label=3>药师</el-radio>
+            <el-radio :label=4>健康管家</el-radio>
+            <el-radio :label=5>上门服务人员</el-radio>
+          </el-radio-group>
+        </template>
+      </el-form-item>
       <el-form-item
         label="年龄"
         prop="age"
@@ -106,7 +128,8 @@ export default {
         address: "",
         age: "",
         hiredate: "",
-        mobile: ""
+        mobile: "",
+        worker_role_id:0,
       },
 
       rules: {
@@ -137,6 +160,10 @@ export default {
   },
 
   methods: {
+    worker_rolr_idChange(value){
+      this.worker_role_id = value
+      console.log(this.worker_role_id)
+    },
     goBackPage() {
       this.$router.go(-1);
     },
@@ -153,7 +180,8 @@ export default {
         address: this.ruleForm.address.trim(),
         age: this.ruleForm.age,
         mobile: this.ruleForm.mobile,
-        hiredate: parseInt(this.ruleForm.hiredate / 1000)
+        hiredate: parseInt(this.ruleForm.hiredate / 1000),
+        worker_role_id:this.worker_role_id
       };
 
       // const self = this;

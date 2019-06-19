@@ -10,11 +10,11 @@
         <el-breadcrumb-item>人员列表</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="operation-nav">
-        <router-link to="personneladdpage">
+        <router-link to="doctorteamaddpage">
           <el-button
             type="primary"
             icon="plus"
-          >添加成员</el-button>
+          >添加新团队</el-button>
         </router-link>
       </div>
     </div>
@@ -24,48 +24,47 @@
     >
       <el-table-column
         prop="id"
-        label="编号"
+        label="团队编号"
         min-width="120"
       >
       </el-table-column>
       <el-table-column
-        prop="name"
-        label="姓名"
+        prop="doctorInfo.name"
+        label="医生姓名"
         min-width="120"
       >
       </el-table-column>
       <el-table-column
-        prop="age"
-        label="年龄"
+        prop="nurseInfo.name"
+        label="护士姓名"
         min-width="120"
       >
       </el-table-column>
       <el-table-column
-        prop="sex"
-        label="性别"
+        prop="pharmacistInfo.name"
+        label="药师姓名"
         min-width='120'
       >
       </el-table-column>
       <el-table-column
-        label="入职日期"
+        prop="healthManagerInfo.name"
+        label="健康管家姓名"
         min-width='160'
-        prop='hiredate'
-        :formatter='formatDate'
       >
       </el-table-column>
       <el-table-column
-        prop="address"
-        label="住址"
+        prop="serviceStaffInfo.name"
+        label="服务人员姓名"
         min-width="160"
       >
       </el-table-column>
       <el-table-column
-        prop="mobile"
-        label="联系方式"
+        prop="doctorInfo.mobile"
+        label="医生电话"
         min-width="160"
       >
       </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         fixed="right"
         label="操作"
         min-width="120"
@@ -77,7 +76,7 @@
             @click="handleRowUpdated(scope.$index, scope.row)"
           >更新</el-button>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
     <div style="text-align: center;margin-top: 30px;">
       <el-pagination
@@ -126,7 +125,7 @@ export default {
       let company_id = userInfo.company_id;
       this.axios
         .get(
-          "/worker?company_id=" + company_id,
+          "/doctorteam?company_id=" + company_id,
           {
             params: {
               page: this.currentPage
