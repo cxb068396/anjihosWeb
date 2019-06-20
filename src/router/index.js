@@ -372,6 +372,12 @@ export const asyncRouterMap = [
         name: 'contractsendworker',
         meta: { title: '签约医生', icon: 'form' },
         hidden: true    
+      },
+      {
+        path: 'contractadminaddpage',
+        component: () => import('@/views/contract/ContractAdminAddPage'),
+        name: 'contractadminaddpage',
+        meta: { title: '主动申请', icon: 'form' },  
       }
     ]
   },

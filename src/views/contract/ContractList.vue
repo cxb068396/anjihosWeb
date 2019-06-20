@@ -233,11 +233,8 @@ export default {
         .get("contract", {
           params: {
             page: this.page,
-            completed:1
-            // name: this.filterForm.name,
-            // category_id: this.filterForm.category_id,
-            // sortChecked: this.filterForm.sortChecked,
-            // goodsTypeSelected: this.filterForm.goodsTypeSelected
+            completed:1,
+            // started_by_admin:1
           }
         })
         .then(response => {

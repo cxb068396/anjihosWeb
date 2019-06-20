@@ -155,11 +155,11 @@ export default {
     },
     handleQualificationList() {
       this.axios
-        .get("/contract?completed=0", {
+        .get("/contract?completed=0&started_by_admin=0", {
           params: { page: this.currentPage }
         })
         .then(response => {
-          // console.log(response.data.data.data)
+          console.log(response.data.data.data)
           this.QualificationList = response.data.data.data;
           // .filter((x)=>x.verified==0)
           this.count = response.data.data.count;

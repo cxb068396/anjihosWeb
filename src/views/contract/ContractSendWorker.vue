@@ -97,6 +97,9 @@ export default {
         order_status: 12 //派单状态
         // worker_id:0 //工作人员的id
       },
+      adminAddInfoForm:{
+
+      },
       importantId: 0 //contractid
     };
   },
@@ -146,17 +149,22 @@ export default {
     // }
 
     handleClickPost(index, row) {
-      console.log(row)
-      this.$confirm("通过签约请求？", "提示", {
+      if(this.adminAddInfoForm){
+        this.$confirm("通过签约请求？", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "error"
       }).then(() => {
         this.axios
           .post("/contract/store", {
-            id: this.$route.query.contractid ? this.$route.query.contractid : this.$route.query.importantId,
-            completed: 1,
-            doctor_team_id:row.id
+            completed: 0,
+            doctor_team_id:row.id,
+            real_name:this.adminAddInfoForm.real_name,
+            second_address:this.adminAddInfoForm.second_address,
+            mobile:this.adminAddInfoForm.mobile,
+            id_card:this.adminAddInfoForm.id_card,
+            sex:this.adminAddInfoForm.sex,
+            started_by_admin:1
           })
           .then(response => {
             if (response.data.errno === 0) {
@@ -168,10 +176,34 @@ export default {
             }
           });
       });
+      }else{
+        this.$confirm("通过签约请求？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "error"
+      }).then(() => {
+        this.axios
+          .post("/contract/store", {
+            id: this.$route.query.contractid ? this.$route.query.contractid : this.$route.query.importantId,
+            completed: 1,
+            doctor_team_id:row.id,
+          })
+          .then(response => {
+            if (response.data.errno === 0) {
+              this.$message({
+                type: "success",
+                message: "签约完成!"
+              });
+              this.$router.push({ name: "contractlist" });
+            }
+          });
+      });
+      }
     },
   },
   mounted() {
     this.getList();
+    this.adminAddInfoForm = this.$route.query.adminAddInfoForm
   }
 };
 </script>

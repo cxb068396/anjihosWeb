@@ -71,6 +71,9 @@ export default {
         id: 0, //订单id
         order_status: 12, //派单状态
         worker_id: 0 //工作人员的id
+      },
+      adminAddInfoForm:{
+
       }
     };
   },
@@ -80,6 +83,7 @@ export default {
       ? this.$route.query.id
       : this.$route.query.contractid;
     this.infoForm.id = this.contractid;
+    this.adminAddInfoForm = this.$route.query.adminAddInfoForm
     console.log(this.infoForm.id + "+" + this.contractid);
   },
   mounted() {},
@@ -112,7 +116,8 @@ export default {
         query: {
           contractid: this.$route.query.contractid ? this.$route.query.contractid : this.contractid,
           company_id: row.id,
-          importantId: this.contractid ? this.contractid : this.$route.query.importantId
+          importantId: this.contractid ? this.contractid : this.$route.query.importantId,
+          adminAddInfoForm:this.adminAddInfoForm
         }
       });
     }
