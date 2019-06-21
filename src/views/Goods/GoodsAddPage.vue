@@ -117,6 +117,14 @@
             >
             </el-switch>
           </el-form-item>
+          <el-form-item label="是否热卖">
+            <el-switch
+              on-text=""
+              off-text=""
+              v-model="infoForm.is_hot"
+            >
+            </el-switch>
+          </el-form-item>
           <el-form-item label="排序">
             <el-input-number
               v-model="infoForm.sort_order"
@@ -452,7 +460,8 @@ export default {
         color:'',
         gallery: [],
         deletedGalleries: [],
-        deletedDescPics: []
+        deletedDescPics: [],
+        is_hot:0,
       },
 
       infoRules: {
@@ -747,6 +756,7 @@ export default {
           console.log(response.data.data);
           let resInfo = response.data.data;
           resInfo.is_on_sale = resInfo.is_on_sale ? true : false;
+          resInfo.is_hot = resInfo.is_on_sale ? true : false;
           that.infoForm = Object.assign(that.infoForm, resInfo);
           this.IconValue = resInfo.icon
           this.colorValue = resInfo.color
