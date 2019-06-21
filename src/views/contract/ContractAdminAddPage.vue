@@ -75,16 +75,15 @@
               style="width:30%"
             ></el-input>
           </el-form-item>
+      
           <el-form-item
             label="性别"
             prop="sex"
           >
-            <el-input
-              type="textarea"
-              v-model="adminAddInfoForm.sex"
-              :rows="1"
-              style="width:30%"
-            ></el-input>
+            <el-radio-group v-model="adminAddInfoForm.sex">
+              <el-radio label="男"></el-radio>
+              <el-radio label="女"></el-radio>
+            </el-radio-group>
           </el-form-item>
           <!-- <el-form-item label="医院照片">
             <el-upload

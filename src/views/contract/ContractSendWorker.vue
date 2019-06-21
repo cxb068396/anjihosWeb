@@ -150,7 +150,7 @@ export default {
 
     handleClickPost(index, row) {
       if(this.adminAddInfoForm){
-        this.$confirm("通过签约请求？", "提示", {
+        this.$confirm("主动发起签约请求？", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "error"
