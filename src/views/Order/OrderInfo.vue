@@ -87,34 +87,36 @@
             <el-form-item label="接单人员">
               <span> {{ props.row.workerInfos.name ? props.row.workerInfos.name: '暂无接单人员'}} </span>
             </el-form-item>
-            <el-form-item
-            label="快递公司"
-            prop="shipper"
-          >
-            <el-select
-              v-model="shipperLisr.name"
-              @change="chooseShipper"
+            <template v-if= '!this.is_service '>
+              <el-form-item
+              label="快递公司"
+              prop="shipper"
+              
             >
-              <el-option
-                v-for="item in shipperLisr"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
+              <el-select
+                v-model="shipperLisr.name"
+                @change="chooseShipper"
               >
-              </el-option>
-            </el-select>
-            <el-input 
-            style="width: 200px"
-            v-model="logistic_code" 
-            placeholder="快递单号">
-            </el-input>
-            <el-button 
-            @click="sendShipperInfo"
-            type="success"
-            >发送物流信息
-            </el-button>
-          </el-form-item>
-      
+                <el-option
+                  v-for="item in shipperLisr"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                >
+                </el-option>
+              </el-select>
+              <el-input 
+              style="width: 200px"
+              v-model="logistic_code" 
+              placeholder="快递单号">
+              </el-input>
+              <el-button 
+              @click="sendShipperInfo"
+              type="success"
+              >发送物流信息
+              </el-button>
+            </el-form-item>
+          </template>
           </el-form>
         </template>
       </el-table-column>
@@ -166,6 +168,7 @@ export default {
           name:"顺丰速运"
         }
       ],
+      is_service:0,
       shipper_id:0,
       logistic_code:'',
       OrderList: [
@@ -191,12 +194,36 @@ export default {
   created() {
     this.getShipperLisr()
     // this.handleOrderList()
+    this.OrderList[0].id = this.$route.query.id || 0;
+    this.OrderList[0].order_status = this.$route.query.order_status || 0;
+    this.OrderList[0].consignee = this.$route.query.consignee || "";
+    this.OrderList[0].address = this.$route.query.address || "";
+    this.OrderList[0].mobile = this.$route.query.mobile || "";
+    this.OrderList[0].actual_price = this.$route.query.actual_price || 0;
+    this.OrderList[0].order_status_text =
+      this.$route.query.order_status_text || "";
+    this.OrderList[0].workerInfos = this.$route.query.workerInfos
+      ? this.$route.query.workerInfos
+      : "";
+    this.OrderList[0].goodsInfos = this.$route.query.goodsInfos;
+    this.OrderList[0].goodsList = this.$route.query.goodsList;
+    this.OrderList[0].service_need_time = this.$route.query.service_need_time;
+    this.OrderList[0].companyInfos = this.$route.query.companyInfos;
+    this.OrderList[0].add_time = this.$route.query.add_time;
+    // console.log(this.OrderList[0])
+    if(this.OrderList[0].service_need_time ==10000){
+      this.OrderList[0].service_need_time = '无预约时间'
+    }else{
+      this.OrderList[0].service_need_time = this.datetimeFilter(this.OrderList[0].service_need_time)
+    }
+    console.log(this.$route.query.goodsInfos)
+    this.is_service = this.$route.query.goodsInfos[0].is_service
+    console.log(this.is_service)
   },
   methods: {
     getShipperLisr(){
       this.axios.get('order/shipperInfo').then(
         res=>{
-          console.log(res)
           this.shipperLisr = res.data.data
         }
       )
@@ -265,29 +292,7 @@ export default {
   },
 
   mounted() {
-    this.OrderList[0].id = this.$route.query.id || 0;
-    this.OrderList[0].order_status = this.$route.query.order_status || 0;
-    this.OrderList[0].consignee = this.$route.query.consignee || "";
-    this.OrderList[0].address = this.$route.query.address || "";
-    this.OrderList[0].mobile = this.$route.query.mobile || "";
-    this.OrderList[0].actual_price = this.$route.query.actual_price || 0;
-    this.OrderList[0].order_status_text =
-      this.$route.query.order_status_text || "";
-    this.OrderList[0].workerInfos = this.$route.query.workerInfos
-      ? this.$route.query.workerInfos
-      : "";
-    this.OrderList[0].goodsInfos = this.$route.query.goodsInfos;
-    this.OrderList[0].goodsList = this.$route.query.goodsList;
-    this.OrderList[0].service_need_time = this.$route.query.service_need_time;
-    this.OrderList[0].companyInfos = this.$route.query.companyInfos;
-    this.OrderList[0].add_time = this.$route.query.add_time;
-    // console.log(this.OrderList[0])
-    if(this.OrderList[0].service_need_time ==10000){
-      this.OrderList[0].service_need_time = '无预约时间'
-    }else{
-      this.OrderList[0].service_need_time = this.datetimeFilter(this.OrderList[0].service_need_time)
-    }
-    console.log(this.OrderList[0])
+    
   }
 };
 </script>

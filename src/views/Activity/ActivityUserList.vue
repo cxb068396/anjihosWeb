@@ -83,19 +83,13 @@
           >
           </el-table-column>
 
-          <el-table-column
+          <!-- <el-table-column
             prop="age"
             label="年龄"
             min-width="100"
           >
-            <!-- <template scope="scope">
-              <img
-                v-if="scope.row.list_pic_url"
-                :src="scope.row.list_pic_url"
-                class="image-show"
-              >
-            </template> -->
-          </el-table-column>
+            
+          </el-table-column> -->
           <!-- <el-table-column
             prop="userInfo.avatar"
             label="微信头像"
