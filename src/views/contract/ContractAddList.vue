@@ -71,21 +71,15 @@
           >
           </el-table-column>
           <el-table-column
-            prop="addressInfo.full_region"
+            prop="second_address"
             label="地址"
-            min-width="100"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="addressInfo.address"
-            label="详细地址"
             min-width="100"
           >
           </el-table-column>
 
           <el-table-column
-            prop="age"
-            label="年龄"
+            prop="mobile"
+            label="联系方式"
             min-width="100"
           >
             <!-- <template scope="scope">
@@ -103,7 +97,7 @@
           >
           </el-table-column>
           <el-table-column
-            prop="addressInfo.name"
+            prop="real_name"
             label="姓名"
             min-width="80"
           >
@@ -233,8 +227,8 @@ export default {
         .get("contract", {
           params: {
             page: this.page,
-            completed:1,
-            started_by_admin:0
+            completed:0,
+            started_by_admin:1
           }
         })
         .then(response => {

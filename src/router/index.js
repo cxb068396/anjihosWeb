@@ -351,7 +351,13 @@ export const asyncRouterMap = [
         path: 'contractlist',
         component: () => import('@/views/contract/ContractList'),
         name: 'contractlist',
-        meta: { title: '签约列表', icon: 'form' },
+        meta: { title: '用户签约列表', icon: 'form' },
+      },
+      {
+        path: 'contractaddlist',
+        component: () => import('@/views/contract/ContractAddList'),
+        name: 'contractaddlist',
+        meta: { title: '平台签约列表', icon: 'form' },
       },
       {
         path: 'contractaddpage',

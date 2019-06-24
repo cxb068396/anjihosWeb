@@ -107,7 +107,7 @@ export default {
               type: "success",
               message: "派单成功"
             });
-            this.$router.push({ name: "platformOrder" });
+            this.$router.push({ name: "order" });
           } else {
             this.$message({
               type: "error",
