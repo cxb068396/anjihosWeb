@@ -227,7 +227,7 @@ export default {
         .get("contract", {
           params: {
             page: this.page,
-            completed:1,
+            completed:0,
             started_by_admin:1
           }
         })
