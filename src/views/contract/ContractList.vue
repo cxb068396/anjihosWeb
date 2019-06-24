@@ -75,12 +75,17 @@
             label="姓名"
             min-width="100"
           >
+          <template slot-scope="scope">
+                {{scope.row.started_by_admin == 0 ? scope.row.addressInfo.name : scope.row.real_name }}
+          </template>
           </el-table-column>
           <el-table-column
-            prop="second_address"
             label="详细地址"
             min-width="100"
           >
+          <template slot-scope="scope">
+                {{scope.row.started_by_admin == 0 ? scope.row.addressInfo.address : scope.row.second_address }}
+          </template>
           </el-table-column>
 
           <el-table-column
@@ -88,6 +93,9 @@
             label="联系方式"
             min-width="100"
           >
+          <template slot-scope="scope">
+                {{scope.row.started_by_admin == 0 ? scope.row.addressInfo.mobile : scope.row.mobile }}
+          </template>
             <!-- <template scope="scope">
               <img
                 v-if="scope.row.list_pic_url"
@@ -102,12 +110,7 @@
             min-width="120"
           >
           </el-table-column>
-          <el-table-column
-            prop="addressInfo.name"
-            label="姓名"
-            min-width="80"
-          >
-          </el-table-column>
+  
           <el-table-column
             prop="teamInfo.id"
             label="签约团队编号"
