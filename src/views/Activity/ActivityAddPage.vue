@@ -407,6 +407,9 @@ export default {
         start_time:123,
         end_time:456,
         gallery: [],
+        deletedGalleries:[],
+        deletedDescPics:[],
+
       },
 
       infoRules: {
