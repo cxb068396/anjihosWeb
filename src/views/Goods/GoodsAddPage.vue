@@ -109,6 +109,28 @@
             </el-option>
           </el-select>
           </el-form-item>
+          <el-form-item
+            label="选择可接单角色"
+            prop="worker_role_id"
+          >
+            <!-- <template>
+              <el-radio v-model="ruleForm.worker_role_id" label=1>医生</el-radio>
+              <el-radio v-model="ruleForm.worker_role_id" label=2>护士</el-radio>
+              <el-radio v-model="ruleForm.worker_role_id" label=3>药师</el-radio>
+              <el-radio v-model="ruleForm.worker_role_id" label=4>健康管家</el-radio>
+              <el-radio v-model="ruleForm.worker_role_id" label=5>上门服务人员</el-radio>
+            </template> -->
+
+            <template>
+              <el-radio-group v-model="infoForm.worker_role_id" @change="worker_rolr_idChange">
+                <el-radio :label=1>医生</el-radio>
+                <el-radio :label=2>护士</el-radio>
+                <el-radio :label=3>药师</el-radio>
+                <el-radio :label=4>健康管家</el-radio>
+                <el-radio :label=5>上门服务人员</el-radio>
+              </el-radio-group>
+            </template>
+          </el-form-item>
           <el-form-item label="上架">
             <el-switch
               on-text=""
@@ -462,6 +484,7 @@ export default {
         deletedGalleries: [],
         deletedDescPics: [],
         is_hot:0,
+        worker_role_id:1,
       },
 
       infoRules: {
@@ -488,6 +511,10 @@ export default {
     };
   },
   methods: {
+    worker_rolr_idChange(value){
+      this.worker_role_id = value
+      console.log(this.worker_role_id)
+    },
     chang(value) {
       this.infoForm.is_service = value;
       console.log(this.infoForm.is_service);
