@@ -25,7 +25,7 @@
     >
       <el-table-column
         prop="name"
-        label="可签约医院"
+        label="可签约机构"
       >
       </el-table-column>
       <el-table-column

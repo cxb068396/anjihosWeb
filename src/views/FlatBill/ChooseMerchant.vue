@@ -47,13 +47,13 @@
         width="55">
       </el-table-column>
       <el-table-column
-        label="医院编号"
+        label="机构编号"
         prop="id"
         min-width="180"
       >
       </el-table-column>
       <el-table-column
-        label="医院名称"
+        label="机构名称"
         prop="name"
         min-width="180"
       >
@@ -65,7 +65,7 @@
       >
       </el-table-column>
       <el-table-column
-        label="医院地址"
+        label="机构地址"
         prop="address"
         min-width="200"
       >
@@ -158,7 +158,7 @@ export default {
       if(!this.datavalue||!this.temCompany_idArr){
         this.$message({
           type: "warning",
-          message: "请将日期和医院编号补充完全"
+          message: "请将日期和机构编号补充完全"
         });
       }else{
         // console.log(this.temCompany_idArr)

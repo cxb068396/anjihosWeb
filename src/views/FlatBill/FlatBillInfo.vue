@@ -28,7 +28,7 @@
       截止时间:<b>{{FlatBillInfo[0].due_time*1000 | datetimeFilterDay}}</b>
       </span>
       <span>
-      医院名称:<b>{{FlatBillInfo[0].company_name}}</b>
+      机构名称:<b>{{FlatBillInfo[0].company_name}}</b>
       </span>
       <span>
       账单总价:<b>{{FlatBillInfo[0].price}}</b>

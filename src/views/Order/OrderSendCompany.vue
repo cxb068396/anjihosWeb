@@ -44,7 +44,7 @@
             @click="handleClickPost(scope.row)"
             type="danger"
             size="small"
-          >选择此医院</el-button>
+          >选择此机构</el-button>
         </template>
       </el-table-column>
     </el-table>

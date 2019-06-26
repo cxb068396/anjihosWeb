@@ -6,15 +6,15 @@
         separator="/"
       >
         <el-breadcrumb-item :to="{path: '/dashboard'}">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>医院列表</el-breadcrumb-item>
-        <el-breadcrumb-item>医院详情</el-breadcrumb-item>
+        <el-breadcrumb-item>机构列表</el-breadcrumb-item>
+        <el-breadcrumb-item>机构详情</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="operation-nav">
           <el-button
             type="primary"
             icon="plus"
             @click="handleRowPush"
-          >添加医院</el-button>
+          >添加机构</el-button>
       </div>
     </div>
     <el-table
@@ -23,13 +23,13 @@
       :data="MerchantList"
     >
       <el-table-column
-        label="医院编号"
+        label="机构编号"
         prop="id"
         min-width="100"
       >
       </el-table-column>
       <el-table-column
-        label="医院名称"
+        label="机构名称"
         prop="name"
         min-width="180"
       >
@@ -41,7 +41,7 @@
       >
       </el-table-column>
       <el-table-column
-        label="医院地址"
+        label="机构地址"
         prop="address"
         min-width="200"
       >
@@ -70,7 +70,7 @@
       </el-table-column>
       <el-table-column
         fixed="right"
-        label="医院详情"
+        label="机构详情"
         min-width="140"
       >
         <template slot-scope="scope">
@@ -144,11 +144,13 @@ export default {
           bank_name:row.bank_name,
           bank_account:row.bank_account,
           bank_username:row.bank_username,
+          is_hospital:row.is_hospital
         }
       });
     },
     //详情
     handleRowInfo(index, row) {
+      console.log(row)
       this.$router.push({
         name: "merchantinfo",
         query: {
@@ -163,6 +165,7 @@ export default {
           bank_name:row.bank_name,
           bank_account:row.bank_account,
           bank_username:row.bank_username,
+          is_hospital:row.is_hospital
         }
       });
     },

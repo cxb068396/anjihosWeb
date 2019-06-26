@@ -182,9 +182,9 @@ export const asyncRouterMap = [
   {
     path: '/merchant',
     component: Layout,
-    name: '医院管理',
+    name: '机构管理',
     meta: {
-      title: '医院管理',
+      title: '机构管理',
       icon: 'peoples',
       roles:['admin'] 
     },
@@ -192,35 +192,35 @@ export const asyncRouterMap = [
       {
         path: 'merchant',
         component: () => import('@/views/Merchant/Merchant'),
-        name: '医院列表',
-        meta: { title: '医院列表', icon: 'user' }
+        name: '机构列表',
+        meta: { title: '机构列表', icon: 'user' }
       },
       {
         path: 'approval',
         component: () => import('@/views/Merchant/Approval'),
-        name: '医院入驻审批',
-        meta: { title: '医院入驻审批', icon: 'user' }
+        name: '机构入驻审批',
+        meta: { title: '机构入驻审批', icon: 'user' }
       },
 
       // 暂时没用，先注释
       // {
       //   path: 'merchantgoods',
       //   component: () => import('@/views/Merchant/MerchantGoods'),
-      //   name: '医院商品审批',
-      //   meta: { title: '医院商品审批', icon: 'user' }
+      //   name: '机构商品审批',
+      //   meta: { title: '机构商品审批', icon: 'user' }
       // },
       {
         path: 'merchantinfo',
         component: () => import('@/views/Merchant/MerchantInfo'),
         name: 'merchantinfo',
-        meta: { title: '医院详情', icon: 'user' },
+        meta: { title: '机构详情', icon: 'user' },
         hidden: true    
       },
       {
         path: 'add',
         component: () => import('@/views/Merchant/MerchantAddPage'),
         name: 'merchantaddpage',
-        meta: { title: '添加医院', icon: 'user' },
+        meta: { title: '添加机构', icon: 'user' },
         hidden: true    
       },
   
@@ -369,7 +369,7 @@ export const asyncRouterMap = [
         path: 'contractsendcompany',
         component: () => import('@/views/contract/ContractSendCompany'),
         name: 'contractsendcompany',
-        meta: { title: '签约医院', icon: 'form' },
+        meta: { title: '签约机构', icon: 'form' },
         hidden: true    
       },
       {
@@ -596,13 +596,13 @@ export const asyncRouterMap = [
         path: '/ShopBill/shopbill',
         component: () => import('@/views/ShopBill/ShopBill'),
         name: 'shopbill',
-        meta: { title: '医院账单', icon: 'money', noCache: true },
+        meta: { title: '机构账单', icon: 'money', noCache: true },
       },
       {
         path: '/ShopBill/shopbillinfo',
         component: () => import('@/views/ShopBill/ShopBillInfo'),
         name: 'shopbillinfo',
-        meta: { title: '医院账单详情', icon: 'money', noCache: true },
+        meta: { title: '机构账单详情', icon: 'money', noCache: true },
         hidden:true
       }
     ]

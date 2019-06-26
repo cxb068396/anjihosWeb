@@ -6,8 +6,8 @@
         separator="/"
       >
         <el-breadcrumb-item :to="{name: 'dashboard'}">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>医院详情</el-breadcrumb-item>
-        <el-breadcrumb-item>添加医院</el-breadcrumb-item>
+        <el-breadcrumb-item>机构详情</el-breadcrumb-item>
+        <el-breadcrumb-item>添加机构</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="operation-nav">
         <el-button
@@ -28,7 +28,7 @@
         >
 
           <el-form-item
-            label="医院名称"
+            label="机构名称"
             prop="name"
 
           >
@@ -40,21 +40,21 @@
             ></el-input>
           </el-form-item>
           <el-form-item
-            label="医院类别"
+            label="机构类别"
             prop="is_hospital"
           >
             <template>
               <el-radio-group
                 v-model="infoForm.is_hospital"
-                @change="chang"
+                
               >
-                <el-radio :label="1">医院类</el-radio>
-                <el-radio :label="0">非医院类</el-radio>
+                <el-radio :label="1">机构类</el-radio>
+                <el-radio :label="0">非机构类</el-radio>
               </el-radio-group>
             </template>
           </el-form-item>
           <el-form-item
-            label="医院地址"
+            label="机构地址"
             prop="address"
           >
             <el-input
@@ -110,7 +110,7 @@
               style="width:25%"
             ></el-input>
           </el-form-item>
-          <!--           <el-form-item label="医院照片">
+          <!--           <el-form-item label="机构照片">
             <el-upload
               class="upload-demo"
               :headers="headers"
@@ -127,7 +127,7 @@
               <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
             </el-upload>
           </el-form-item> -->
-          <el-form-item label="医院照片">
+          <el-form-item label="机构照片">
             <el-upload
               class="avatar-uploader"
               ref="upload"
@@ -230,7 +230,7 @@ export default {
                 } else {
                   this.$message({
                     type: "error",
-                    message: "医院名称不允许重复,请重新填写"
+                    message: "机构名称不允许重复,请重新填写"
                   });
                 }
               });
@@ -307,7 +307,7 @@ export default {
     }
   },
   components: {},
-  mounted() {
+  created() {
     this.infoForm.id = this.$route.query.id || 0;
     this.infoForm.address = this.$route.query.address || "";
     this.infoForm.name = this.$route.query.name || "";
@@ -315,6 +315,8 @@ export default {
     this.infoForm.bank_name = this.$route.query.bank_name || "";
     this.infoForm.bank_account = this.$route.query.bank_account || "";
     this.infoForm.bank_username = this.$route.query.bank_username || "";
+    this.infoForm.is_hospital = this.$route.query.is_hospital || 0;
+    console.log(this.infoForm.is_hospital)
     // this.getTopCategory();
     // this.infoForm.id = this.$route.query.id || 0;
     // this.getInfo();

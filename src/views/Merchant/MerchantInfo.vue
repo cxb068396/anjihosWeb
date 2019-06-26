@@ -6,8 +6,8 @@
         separator="/"
       >
         <el-breadcrumb-item :to="{path: '/dashboard'}">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>医院管理</el-breadcrumb-item>
-        <el-breadcrumb-item>医院详情</el-breadcrumb-item>
+        <el-breadcrumb-item>机构管理</el-breadcrumb-item>
+        <el-breadcrumb-item>机构详情</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="operation-nav">
         <el-button
@@ -22,7 +22,7 @@
       :data="MerchantList"
       style="width: 100%"
     >
-      <el-table-column label="医院详情">
+      <el-table-column label="机构详情">
         <template slot-scope="props">
           <el-form
             label-position="left"
@@ -30,7 +30,7 @@
             class="demo-table-expand"
           >
             <el-form-item
-              label="医院名称"
+              label="机构名称"
               prop="name"
             >
               <span>{{ props.row.name }}</span>
@@ -59,21 +59,21 @@
             </el-form-item>
 
             <el-form-item
-              label="医院编号"
+              label="机构编号"
               prop="id"
             >
               <span>{{ props.row.id }}</span>
             </el-form-item>
-            <el-form-item label="医院资格">
+            <el-form-item label="机构资格">
               <span>{{ props.row.verified== 1?'通过':'未通过'}}</span>
             </el-form-item>
             <el-form-item label="添加时间">
               <span>{{ props.row.addtime }}</span>
             </el-form-item>
-            <el-form-item label="医院地址">
+            <el-form-item label="机构地址">
               <span>{{ props.row.address }}</span>
             </el-form-item>
-            <el-form-item label="医院照片">
+            <el-form-item label="机构照片">
               <template>
                 <img
                   :src="props.row.image_url"

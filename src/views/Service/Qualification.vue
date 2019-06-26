@@ -22,7 +22,7 @@
       >
       </el-table-column>
       <el-table-column
-        label="申请医院"
+        label="申请机构"
         prop="company_name"
         min-width="220"
       >

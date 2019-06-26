@@ -16,7 +16,7 @@
       :data="ApprovalList"
     >
       <el-table-column
-        label="申请医院"
+        label="申请机构"
         prop="name"
         min-width="180"
       >
@@ -37,7 +37,7 @@
       </template>
       </el-table-column>
       <el-table-column
-        label="医院编号"
+        label="机构编号"
         prop="id"
         min-width="200"
       >

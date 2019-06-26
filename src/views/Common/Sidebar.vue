@@ -50,19 +50,19 @@
       >
         <template slot="title">
           <i class="fa fa-large fa-truck"></i>
-          <span>医院管理</span>
+          <span>机构管理</span>
         </template>
         <el-menu-item index="/dashboard/merchant">
           <i class="fa fa-circle"></i>
-          <span>医院列表</span>
+          <span>机构列表</span>
         </el-menu-item>
         <el-menu-item index="/dashboard/approval">
           <i class="fa fa-circle"></i>
-          <span>医院入驻审批</span>
+          <span>机构入驻审批</span>
         </el-menu-item>
         <el-menu-item index="/dashboard/merchantgoods">
           <i class="fa fa-circle"></i>
-          <span>医院商品审批</span>
+          <span>机构商品审批</span>
         </el-menu-item>
       </el-submenu>
 
@@ -193,7 +193,7 @@
         </el-menu-item>
         <el-menu-item index="/dashboard/shopbill">
           <i class="fa fa-circle"></i>
-          <span>医院账单</span>
+          <span>机构账单</span>
         </el-menu-item>
       </el-submenu>
 

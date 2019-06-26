@@ -22,7 +22,7 @@
       </el-table-column>
       <el-table-column
         prop="company_name"
-        label="医院名称"
+        label="机构名称"
         min-width="120"
       >
       </el-table-column>
