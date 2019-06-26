@@ -48,8 +48,8 @@
                 v-model="infoForm.is_hospital"
                 
               >
-                <el-radio :label="1">机构类</el-radio>
-                <el-radio :label="0">非机构类</el-radio>
+                <el-radio :label="1">医院类</el-radio>
+                <el-radio :label="0">非医院类</el-radio>
               </el-radio-group>
             </template>
           </el-form-item>
