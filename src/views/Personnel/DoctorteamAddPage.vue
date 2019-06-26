@@ -149,7 +149,7 @@ export default {
       let that = this
       this.axios
         .get(
-          "/company",
+          "/company?is_hospital=0",
           {
             params: {
               size:1000,
