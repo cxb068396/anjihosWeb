@@ -74,7 +74,7 @@ export const constantRouterMap = [
         meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
       }
     ]
-  },
+  }
   // {
   //   path: '/documentation',
   //   component: Layout,
@@ -148,7 +148,7 @@ export const asyncRouterMap = [
     meta: {
       title: '商品管理',
       icon: 'shopping',
-      roles:['admin'] 
+      roles: ['admin']
     },
     children: [
       {
@@ -162,7 +162,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/Goods/GoodsAddPage'),
         name: 'goodsaddpage',
         meta: { title: '商品添加', icon: 'shopping' },
-        hidden:true
+        hidden: true
       },
       {
         path: 'Category',
@@ -175,8 +175,8 @@ export const asyncRouterMap = [
         component: () => import('@/views/Category/CategoryAddPage'),
         name: 'categoryaddpage',
         meta: { title: '分类添加', icon: 'shopping' },
-        hidden:true
-      },
+        hidden: true
+      }
     ]
   },
   {
@@ -186,7 +186,7 @@ export const asyncRouterMap = [
     meta: {
       title: '机构管理',
       icon: 'peoples',
-      roles:['admin'] 
+      roles: ['admin']
     },
     children: [
       {
@@ -214,16 +214,16 @@ export const asyncRouterMap = [
         component: () => import('@/views/Merchant/MerchantInfo'),
         name: 'merchantinfo',
         meta: { title: '机构详情', icon: 'user' },
-        hidden: true    
+        hidden: true
       },
       {
         path: 'add',
         component: () => import('@/views/Merchant/MerchantAddPage'),
         name: 'merchantaddpage',
         meta: { title: '添加机构', icon: 'user' },
-        hidden: true    
-      },
-  
+        hidden: true
+      }
+
     ]
   },
   {
@@ -232,7 +232,7 @@ export const asyncRouterMap = [
     meta: {
       title: '订单中心',
       icon: 'list',
-      roles:['admin'] 
+      roles: ['admin']
     },
     children: [
       {
@@ -246,28 +246,28 @@ export const asyncRouterMap = [
         component: () => import('@/views/Order/OrderCommentPage'),
         name: 'ordercommentpage',
         meta: { title: '订单评价', icon: 'list' },
-        hidden: true    
+        hidden: true
       },
       {
         path: 'orderinfo',
         component: () => import('@/views/Order/OrderInfo'),
         name: 'orderinfo',
         meta: { title: '订单详情', icon: 'list' },
-        hidden: true    
+        hidden: true
       },
       {
         path: 'ordersendcompany',
         component: () => import('@/views/Order/OrderSendCompany'),
         name: 'ordersendcompany',
         meta: { title: '公司指派', icon: 'list' },
-        hidden: true    
+        hidden: true
       },
       {
         path: 'ordersendworker',
         component: () => import('@/views/Order/OrderSendWorker'),
         name: 'ordersendworker',
         meta: { title: '医生指派', icon: 'list' },
-        hidden: true    
+        hidden: true
       }
     ]
   },
@@ -277,7 +277,7 @@ export const asyncRouterMap = [
     meta: {
       title: '账单功能',
       icon: 'peoples',
-      roles:['admin'] 
+      roles: ['admin']
     },
     children: [
       {
@@ -291,14 +291,32 @@ export const asyncRouterMap = [
         component: () => import('@/views/FlatBill/ChooseMerchant'),
         name: 'choosemerchant',
         meta: { title: '选择商店', icon: 'user' },
-        hidden: true    
+        hidden: true
       },
       {
         path: 'flatbillinfo',
         component: () => import('@/views/FlatBill/FlatBillInfo'),
         name: 'flatbillinfo',
         meta: { title: '账单详情', icon: 'user' },
-        hidden: true    
+        hidden: true
+      }
+    ]
+  },
+  // 测试---------------------------------------------------------------------
+  {
+    path: '/map',
+    component: Layout,
+    meta: {
+      title: '医生位置',
+      icon: 'peoples',
+      roles: ['admin']
+    },
+    children: [
+      {
+        path: 'map',
+        component: () => import('@/views/Map/Map'),
+        name: 'map',
+        meta: { title: '医生位置', icon: 'chart' }
       }
     ]
   },
@@ -326,14 +344,14 @@ export const asyncRouterMap = [
     meta: {
       title: '服务管理',
       icon: 'peoples',
-      roles:['admin'] 
+      roles: ['admin']
     },
     children: [
       {
         path: 'service',
         component: () => import('@/views/Service/Service'),
         name: 'service',
-        meta: { title: '申请服务列表', icon: 'user' },
+        meta: { title: '申请服务列表', icon: 'user' }
       },
       {
         path: 'qualification',
@@ -352,7 +370,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/Service/AgreeAddPage'),
         name: 'agreeaddpage',
         meta: { title: '服务申请管理', icon: 'user', noCache: true },
-        hidden:true
+        hidden: true
       }
     ]
   },
@@ -362,20 +380,20 @@ export const asyncRouterMap = [
     meta: {
       title: '签约管理',
       icon: 'form',
-      roles:['admin'] 
+      roles: ['admin']
     },
     children: [
       {
         path: 'contractlist',
         component: () => import('@/views/contract/ContractList'),
         name: 'contractlist',
-        meta: { title: '用户签约列表', icon: 'form' },
+        meta: { title: '用户签约列表', icon: 'form' }
       },
       {
         path: 'contractaddlist',
         component: () => import('@/views/contract/ContractAddList'),
         name: 'contractaddlist',
-        meta: { title: '平台签约列表', icon: 'form' },
+        meta: { title: '平台签约列表', icon: 'form' }
       },
       {
         path: 'contractaddpage',
@@ -388,20 +406,20 @@ export const asyncRouterMap = [
         component: () => import('@/views/contract/ContractSendCompany'),
         name: 'contractsendcompany',
         meta: { title: '签约机构', icon: 'form' },
-        hidden: true    
+        hidden: true
       },
       {
         path: 'contractsendworker',
         component: () => import('@/views/contract/ContractSendWorker'),
         name: 'contractsendworker',
         meta: { title: '签约医生', icon: 'form' },
-        hidden: true    
+        hidden: true
       },
       {
         path: 'contractadminaddpage',
         component: () => import('@/views/contract/ContractAdminAddPage'),
         name: 'contractadminaddpage',
-        meta: { title: '主动申请', icon: 'form' },  
+        meta: { title: '主动申请', icon: 'form' }
       }
     ]
   },
@@ -412,7 +430,7 @@ export const asyncRouterMap = [
     meta: {
       title: '活动管理',
       icon: 'shopping',
-      roles:['admin'] 
+      roles: ['admin']
     },
     children: [
       {
@@ -426,28 +444,28 @@ export const asyncRouterMap = [
         component: () => import('@/views/Activity/ActivityAddPage'),
         name: 'activityadd',
         meta: { title: '活动添加', icon: 'list' },
-        hidden:true
+        hidden: true
       },
       {
         path: 'activityuserlist',
         component: () => import('@/views/Activity/ActivityUserList'),
         name: 'activityuserlist',
         meta: { title: '活动人员', icon: 'list' },
-        hidden:true
+        hidden: true
       },
       {
         path: 'ActivityCategoryAddPage',
         component: () => import('@/views/Activity/ActivityCategoryAddPage'),
         name: 'activitycategoryaddpage',
         meta: { title: '添加活动分类', icon: 'list' },
-        hidden:true
+        hidden: true
       },
       {
         path: 'ActivityCategoryPage',
         component: () => import('@/views/Activity/ActivityCategoryPage'),
         name: 'activitycategorypage',
-        meta: { title: '活动分类', icon: 'list' },
-        
+        meta: { title: '活动分类', icon: 'list' }
+
       }
     ]
   },
@@ -457,28 +475,28 @@ export const asyncRouterMap = [
     meta: {
       title: '广告管理',
       icon: 'international',
-      roles:['admin'] 
+      roles: ['admin']
     },
     children: [
       {
         path: 'advertisement',
         component: () => import('@/views/Advertisement/Advertisement'),
         name: 'advertisement',
-        meta: { title: '广告管理', icon: 'international' },
+        meta: { title: '广告管理', icon: 'international' }
       },
       {
         path: 'adwxadd',
         component: () => import('@/views/Advertisement/AdWxAdd'),
         name: 'adwxadd',
         meta: { title: '小程序广告添加', icon: 'international', noCache: true },
-        hidden: true 
+        hidden: true
       },
       {
         path: 'adwxupdate',
         component: () => import('@/views/Advertisement/AdWxUpdate'),
         name: 'adwxupdate',
         meta: { title: '小程序广告更新', icon: 'international', noCache: true },
-        hidden: true 
+        hidden: true
       }
     ]
   },
@@ -488,42 +506,42 @@ export const asyncRouterMap = [
     meta: {
       title: '人员管理',
       icon: 'peoples',
-      roles:['editor'] 
+      roles: ['editor']
     },
     children: [
       {
         path: 'personnelpage',
         component: () => import('@/views/Personnel/PersonnelPage'),
         name: 'personnelpage',
-        meta: { title: '人员列表', icon: 'user' },
+        meta: { title: '人员列表', icon: 'user' }
       },
       {
         path: 'personneladdpage',
         component: () => import('@/views/Personnel/PersonnelAddPage'),
         name: 'personneladdpage',
         meta: { title: '人员添加', icon: 'money', noCache: true },
-        hidden: true 
+        hidden: true
       },
       {
         path: 'personnelupdatepage',
         component: () => import('@/views/Personnel/PersonnelUpdatPage'),
         name: 'personnelupdatepage',
         meta: { title: '人员更新', icon: 'money', noCache: true },
-        hidden: true 
+        hidden: true
       },
       {
         path: 'doctorteampage',
         component: () => import('@/views/Personnel/DoctorteamPage'),
         name: 'doctorteampage',
-        meta: { title: '医生团队列表', icon: 'user' },
+        meta: { title: '医生团队列表', icon: 'user' }
       },
       {
         path: 'doctorteamaddpage',
         component: () => import('@/views/Personnel/DoctorteamAddPage'),
         name: 'doctorteamaddpage',
         meta: { title: '医生团队添加', icon: 'money', noCache: true },
-        hidden: true 
-      },
+        hidden: true
+      }
     ]
   },
   {
@@ -532,28 +550,28 @@ export const asyncRouterMap = [
     meta: {
       title: '订单管理',
       icon: 'list',
-      roles:['editor'] 
+      roles: ['editor']
     },
     children: [
       {
         path: 'merchantorderpage',
         component: () => import('@/views/MerchantOrder/MerchantOrderPage'),
         name: 'merchantorderpage',
-        meta: { title: '订单列表', icon: 'list' },
+        meta: { title: '订单列表', icon: 'list' }
       },
       {
         path: 'merchantordercommentpage',
         component: () => import('@/views/MerchantOrder/MerchantOrderCommentPage'),
         name: 'merchantordercommetpage',
         meta: { title: '订单评论', icon: 'list', noCache: true },
-        hidden: true 
+        hidden: true
       },
       {
         path: 'merchantorderpostpage',
         component: () => import('@/views/MerchantOrder/MerchantOrderPostPage'),
         name: 'merchantorderpostpage',
         meta: { title: '订单操作', icon: 'list', noCache: true },
-        hidden: true 
+        hidden: true
       }
     ]
   },
@@ -563,21 +581,21 @@ export const asyncRouterMap = [
     meta: {
       title: '服务管理',
       icon: 'peoples',
-      roles:['editor'] 
+      roles: ['editor']
     },
     children: [
       {
         path: 'servecontent',
         component: () => import('@/views/Serve/ServeContent'),
         name: 'servecontent',
-        meta: { title: '服务列表', icon: 'user' },
+        meta: { title: '服务列表', icon: 'user' }
       },
       {
         path: 'serveaddpage',
         component: () => import('@/views/Serve/ServeAddPage'),
         name: 'serveaddpage',
         meta: { title: '服务添加申请', icon: 'money', noCache: true },
-        hidden: true 
+        hidden: true
       }
     ]
   },
@@ -587,7 +605,7 @@ export const asyncRouterMap = [
     meta: {
       title: '账单管理',
       icon: 'money',
-      roles:['editor'] 
+      roles: ['editor']
     },
     children: [
       {
@@ -595,33 +613,33 @@ export const asyncRouterMap = [
         component: () => import('@/views/MerchantBill/BillGeneration'),
         name: 'billgeneration',
         meta: { title: '服务列表', icon: 'money' },
-        hidden:true
+        hidden: true
       },
       {
         path: '/merchantbill',
         component: () => import('@/views/MerchantBill/MerchantBill'),
         name: 'merchantbill',
-        meta: { title: '医生账单', icon: 'money', noCache: true },
+        meta: { title: '医生账单', icon: 'money', noCache: true }
       },
       {
         path: '/workerbill',
         component: () => import('@/views/MerchantBill/WorkerBill'),
         name: 'workerbill',
         meta: { title: '医生账单', icon: 'money', noCache: true },
-        hidden:true
+        hidden: true
       },
       {
         path: '/ShopBill/shopbill',
         component: () => import('@/views/ShopBill/ShopBill'),
         name: 'shopbill',
-        meta: { title: '机构账单', icon: 'money', noCache: true },
+        meta: { title: '机构账单', icon: 'money', noCache: true }
       },
       {
         path: '/ShopBill/shopbillinfo',
         component: () => import('@/views/ShopBill/ShopBillInfo'),
         name: 'shopbillinfo',
         meta: { title: '机构账单详情', icon: 'money', noCache: true },
-        hidden:true
+        hidden: true
       }
     ]
   },
@@ -689,7 +707,7 @@ export const asyncRouterMap = [
   //   path: '/order',
   //   component: Layout,
   //   meta: {
-  //     roles:['editor'] 
+  //     roles:['editor']
   //   },
   //   children: [
   //     {
@@ -704,7 +722,7 @@ export const asyncRouterMap = [
   //   path: '/bill',
   //   component: Layout,
   //   meta: {
-  //     roles:['editor'] 
+  //     roles:['editor']
   //   },
   //   children: [
   //     {
@@ -719,7 +737,7 @@ export const asyncRouterMap = [
   //   path: '/sign',
   //   component: Layout,
   //   meta: {
-  //     roles:['editor'] 
+  //     roles:['editor']
   //   },
   //   children: [
   //     {
@@ -737,9 +755,6 @@ export const asyncRouterMap = [
   // nestedRouter,
   // tableRouter,
 
-
-
-
   // {
   //   path: '/localhospital',
   //   component: Layout,
@@ -748,7 +763,7 @@ export const asyncRouterMap = [
   //   meta: {
   //     title: '卫生院',
   //     icon: 'tree',
-  //     roles:['admin'] 
+  //     roles:['admin']
   //   },
   //   children: [
   //     {
@@ -767,7 +782,7 @@ export const asyncRouterMap = [
   //   meta: {
   //     title: '人员管理',
   //     icon: 'peoples',
-  //     roles:['editor'] 
+  //     roles:['editor']
   //   },
   //   children: [
   //     {
@@ -792,7 +807,7 @@ export const asyncRouterMap = [
   //   meta: {
   //     title: 'example',
   //     icon: 'example',
-  //     roles:['admin'] 
+  //     roles:['admin']
   //   },
   //   children: [
   //     {
