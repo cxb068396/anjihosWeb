@@ -73,25 +73,25 @@ service.interceptors.response.use(
 
     //   return response.data
     // }
-    if (res.errno === 0 || res.code == 20000) {
-      console.log('return response.data')
-      return response.data
+    if (response.data.errno === 0 || response.data.code == 20000||response.status==200) {
+      console.log('return response')
+      return response
     } else {
       Message({
-        message: res.errmsg,
+        message: response.data.errmsg,
         type: 'error',
         duration: 5 * 1000
       })
 
-      // if (res.code !== 20000) {
+      // if (response.data.code !== 20000) {
       //   Message({
-      //     message: res.message,
+      //     message: response.data.message,
       //     type: 'error',
       //     duration: 5 * 1000
       //   })
 
       // 50008:非法的token; 50012:其他客户端登录了;  50014:Token 过期了;
-      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
+      if (response.data.code === 50008 || response.data.code === 50012 || response.data.code === 50014) {
         MessageBox.confirm(
           '你已被登出，可以取消继续留在该页面，或者重新登录',
           '确定登出',
@@ -107,7 +107,7 @@ service.interceptors.response.use(
           })
         })
       }
-
+      console.log('promise返回状态码不对，reject')
       return Promise.reject('error')
     }
   },

@@ -6,7 +6,7 @@ export function loginByUsername(username, password) {
     password
   }
   return request({
-    url: 'https://anji.newlioncity.com/admin/auth/login',
+    url: 'https://api.anjihos.newlioncity.com/admin/auth/login',
     method: 'post',
     data
   })

@@ -220,7 +220,7 @@ export default {
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
-        }, 1.5 * 1000)
+        }, 500)
       })
     },
     handleFilter() {
@@ -264,7 +264,9 @@ export default {
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
       this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
+        this.$refs['dataForm'].clearValidate() 
+
+
       })
     },
     createData() {

@@ -85,7 +85,9 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
+      console.log('getList执行了')
       fetchList(this.listQuery).then(response => {
+        console.log(response)
         const items = response.data.items
         this.list = items.map(v => {
           this.$set(v, 'edit', false) // https://vuejs.org/v2/guide/reactivity.html

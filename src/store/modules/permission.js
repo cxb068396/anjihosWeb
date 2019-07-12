@@ -30,8 +30,8 @@ function filterAsyncRouter(routes, roles) {
       res.push(tmp)
     }
   })
-
-  return res
+  // console.log(res)
+   return res
 }
 
 const permission = {
@@ -41,6 +41,7 @@ const permission = {
   },
   mutations: {
     SET_ROUTERS: (state, routers) => {
+      //此句先注释，避免vue报warn
       state.addRouters = routers
       state.routers = constantRouterMap.concat(routers)
     }
@@ -50,11 +51,12 @@ const permission = {
       return new Promise(resolve => {
         const { roles } = data
         let accessedRouters
-        if (roles.includes('admin')) {
-          accessedRouters = asyncRouterMap
-        } else {
-          accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
-        }
+        accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
+        // if (roles.includes('admin')) {
+        //   accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
+        // } else {
+        //   accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
+        // }
         commit('SET_ROUTERS', accessedRouters)
         resolve()
       })

@@ -76,7 +76,10 @@ export default {
     title: '系统登录',
     logIn: '登录',
     username: '账号',
-    password: '密码',
+    password: '密码',  
+
+
+     
     any: '随便填',
     thirdparty: '第三方登录',
     thirdpartyTips: '本地不能模拟，请结合自己业务进行模拟！！！'
@@ -103,6 +106,21 @@ export default {
     imageUploadTips: '由于我在使用时它只有vue@1版本，而且和mockjs不兼容，所以自己改造了一下，如果大家要使用的话，优先还是使用官方版本。'
   },
   table: {
+    ID:'身份证',
+    phone:'电话',
+    age:'年龄',
+    sex:'性别',
+    name:'姓名',
+    avatar:'头像',
+    address:'地址',
+    job:'职称',
+    introduction:'介绍',
+    update:'更新',
+
+
+
+
+
     dynamicTips1: '固定表头, 按照表头顺序排序',
     dynamicTips2: '不固定表头, 按照点击顺序排序',
     dragTips1: '默认顺序',
