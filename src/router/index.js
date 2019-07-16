@@ -302,24 +302,6 @@ export const asyncRouterMap = [
       }
     ]
   },
-  // 测试---------------------------------------------------------------------
-  {
-    path: '/map',
-    component: Layout,
-    meta: {
-      title: '医生位置',
-      icon: 'peoples',
-      roles: ['admin']
-    },
-    children: [
-      {
-        path: 'map',
-        component: () => import('@/views/Map/Map'),
-        name: 'map',
-        meta: { title: '医生位置', icon: 'chart' }
-      }
-    ]
-  },
   {
     path: '/map',
     component: Layout,

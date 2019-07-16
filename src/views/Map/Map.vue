@@ -1,9 +1,20 @@
 <template>
+
   <div class="amap">
     <div class="doctor">
+      <div class="buttons">
+        <div>服务状态：</div>
+          <template>
+            <el-radio-group v-model="type" @change="typeChange">
+              <el-radio :label=1>开始</el-radio>
+              <el-radio :label=2>完成</el-radio>
+            </el-radio-group>
+          </template>
+      </div>
       <div class="choose">
         <el-checkbox-group
           v-model="checkedCities1"
+          @change="handleCheckedRolesChange"
         >
           <el-checkbox v-for="city in cities" :label="city" :key="city" >{{ city }}</el-checkbox>
         </el-checkbox-group>
@@ -16,19 +27,27 @@
           v-model="search"
           style="display: inline-block;width:50%;"
           size="small"
+          v-on:input="onSubmitFilter"
           placeholder="请输入医生姓名"/>
       </div>
       <el-table
         :data="circles"
         style="width: 100%">
         <el-table-column
-          prop="name"
+          prop="worker_name"
           label="医生姓名"
           max-width="80"
         />
         <el-table-column prop="createdate" header-align="center" align="center" label="选择日期" >
           <template scope="scope">
-            <el-date-picker v-model="scope.row.createdate" type="date" placeholder="日期" size="mini" />
+            <el-date-picker 
+            v-model="scope.row.createdate" 
+            type="datetimerange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            value-format='yyyy-MM-dd HH:mm:ss'
+            />
           </template>
         </el-table-column>
         <el-table-column
@@ -40,7 +59,7 @@
             <el-button
               size="mini"
               type="danger"
-              @click="handleRowAgree(scope.$index, scope.row)"
+              @click="markerClick(scope.$index, scope.row)"
             >查看</el-button>
           </template>
         </el-table-column>
@@ -52,32 +71,252 @@
           :total="count"
           layout="total, prev, pager, next, jumper"
           @current-change="handlePageChange"
+          @page-size="pagesizeChange"
         />
       </div>
 
     </div>
     <div class="amap-page-container">
-      <div id="map" style="width:100%;height:1000px"/>
+      <el-amap vid="amapDemo"  
+      :center="center" 
+      :amap-manager="AMapManager" 
+      :zoom="zoom" 
+      :events="events" 
+      class="amap-demo">
+      </el-amap>
     </div>
   </div>
 </template>
 
-  <style>
+<script>
+
+import VueAMap from 'vue-amap';
+VueAMap.initAMapApiLoader({
+  key: '8b8f50d6273a3793e7f2e353861bb427',
+  plugin: [],
+  v: '1.4.4'
+});
+let AMapManager = new VueAMap.AMapManager();
+export default {
+  data() {
+    return {
+      zoom: 10,
+      center: [120.130001,30.030001],
+      AMapManager,
+      lineArr :[],
+      copyLineArr:[],
+      marker:{},
+      createdate:'',
+      events: {
+        init:(map)=> {
+          console.log(map)
+        }
+      },
+      map: {},
+      search: '',
+      checkedCities1: [],
+      checkedCities2: [],
+      cities: ['家庭医生', '健康管家', '服务人员', '护士', '药师'],
+      currentPage: 1,
+      count: 0,
+      pagesize: 2,
+      circles: [],
+      type:'',
+    }
+  },
+  mounted() {
+    this.people()
+  },
+
+  methods: {
+    markerClick(index,row){
+      let map = AMapManager.getMap();
+      //判断this.marker，如果存在，则remove
+      if(Object.keys(this.marker).length == 0){
+        //donothing
+      }else{
+        let polyline = map.getAllOverlays(polyline)
+        map.remove(polyline)
+        map.remove(this.marker)
+      }
+      this.marker = new AMap.Marker({
+        icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
+        position: row.center,
+        offset: new AMap.Pixel(-13, -30)
+      });
+      this.marker.setMap(map);
+      //如果选择时间了，则绘制路径，否则绘制标记
+      if(row.createdate){
+        //获取路径
+        let that = this
+        this.axios
+          .get('https://api.anjihos.newlioncity.com/admin/position',{
+            params: {
+              worker_id : row.worker_id,
+              time_after : row.createdate[0],
+              time_before : row.createdate[1]
+            }
+          })
+          .then(res => {
+            that.lineArr = []
+            let i = []
+            let p = []
+            console.log(res.data.data)
+            for (let index = 0; index < res.data.data.length; index++) {
+              i.push(res.data.data[index].lng,res.data.data[index].lat)
+            }
+            i.forEach((item, index) => {
+                const page = Math.floor(index / 2)
+                if (!p[page]) {
+                  p[page] = []
+                }
+                p[page].push(item)
+            });
+            console.log(p)
+            that.lineArr = [...p] 
+            console.log(p)
+            console.log(that.lineArr)
+            //根据不同的lineArr,绘制不同路径方法
+            this.polyClick()
+          })
+      }
+    },
+    polyClick: function() {
+      let map = AMapManager.getMap();
+      this.copyLineArr = JSON.parse(JSON.stringify(this.lineArr))
+      console.log(this.lineArr)
+      let polyline = new AMap.Polyline({
+          map:map,
+          path: this.copyLineArr,
+          showDir:true,
+          strokeColor: "#28F",  //线颜色
+          strokeOpacity: 1,     //线透明度
+          strokeWeight: 6,      //线宽
+          strokeStyle: "solid"  //线样式
+      });
+      let passedPolyline = new AMap.Polyline({
+          map:map,
+          path: this.copyLineArr,
+          strokeColor: "#AF5",  //线颜色
+          strokeOpacity: 1,     //线透明度
+          strokeWeight: 6,      //线宽
+          strokeStyle: "solid"  //线样式
+      });
+      console.log(this.copyLineArr)
+      this.marker.on('moving', function (e) {
+          passedPolyline.setPath(e.passedPath);
+      });
+
+      // map.setFitView();
+      //true跟false是动画是否循环，但是true有bug
+      this.marker.moveAlong(this.copyLineArr, 100000,function(k){return k},false ),1000
+    },
+    onSubmitFilter(event) {
+        this.people()
+    },
+    people() {
+      //如果搜索框有内容，则只显示所匹配的，否则显示所有。
+      console.log(this.search)
+      if(this.search.length == 0){
+        this.axios
+        .get('https://api.anjihos.newlioncity.com/admin/position')
+        .then(res => {
+          this.circles = res.data.data
+          this.count = this.circles.length
+          this.circles.map(function(item){
+            item.center = []
+            // item.center.push(item.lng)
+            // item.center.push(item.lat)
+            item.center.push(item.lng,item.lat)
+          })
+          console.log(this.circles)
+        })
+      }else{
+        let that = this
+         this.axios.get('https://api.anjihos.newlioncity.com/admin/position')
+        .then(res => {
+          this.circles = res.data.data.filter(
+            item => item.worker_name == that.search
+          )
+          this.count = this.circles.length
+          console.log(this.circles)
+        })
+      }
+    },
+    typeChange:function(val){
+      this.type = val;
+      this.axios.get('https://api.anjihos.newlioncity.com/admin/position',{
+            params: {
+              type:this.type
+            }
+          })
+      .then(res => {
+        this.circles = res.data.data
+        this.count = this.circles.length
+      })
+    },
+    handleCheckedRolesChange(){
+      this.checkedCities2 = this.checkedCities1.map(function(item){
+        switch (item) {
+          case '家庭医生':
+            return 1 
+            break;
+          case '护士':
+            return 2 
+            break;
+          case '药师':
+            return 3 
+            break;
+          case '健康管家':
+            return 4 
+            break;
+          case '服务人员':
+            return 5 
+            break;
+          default:
+          return item
+        }
+      }).join(',')
+      let that = this
+         this.axios.get('https://api.anjihos.newlioncity.com/admin/position',{
+            params: {
+              worker_role_id:this.checkedCities2
+            }
+          })
+        .then(res => {
+          this.circles = res.data.data
+          this.count = this.circles.length
+        })
+      console.log(this.checkedCities2)
+    },
+    // 分页
+    pagesizeChange: function(size) {
+      this.pagesize = size
+    },
+    handlePageChange: function(val) {
+      this.currentPage = val
+      this.people()
+    }
+  }
+}
+</script>
+<style>
+
   .searchWord{
     padding: 5px 0 5px 5px;
     background-color: #fff;
   }
-.el-input--mini .el-input__inner {
+  .el-input--mini .el-input__inner {
     height: 28px;
     line-height: 28px;
     width: 100px;
     }
   .el-checkbox+.el-checkbox {
-margin-left: 0px;
-}
-.el-checkbox {
-margin-right: 25px;
-}
+    margin-left: 0px;
+  }
+  .el-checkbox {
+    margin-right: 25px;
+  }
   .amap{
     display:flex;
     flex-direction: row;
@@ -96,178 +335,23 @@ margin-right: 25px;
     justify-content: flex-end;
     flex-direction: row;
   }
-
-    .amap-page-container {
-      height: 1000px;
-      flex: 4
-    }
-  </style>
-<script>
-export default {
-  data() {
-    return {
-      map: {},
-      search: '',
-      checkedCities1: [],
-      cities: ['家庭医生', '健康管家', '服务人员', '护士', '药师'],
-      currentPage: 1,
-      count: 0,
-      pagesize: 10,
-      circles: [
-        {
-          name: '张医生',
-          center: [116.397428, 39.90923]
-        },
-        {
-          name: '张医生',
-          center: [116.397428, 39.90923]
-        },
-        {
-          name: '张医生',
-          center: [116.397428, 39.90923]
-        },
-        {
-          name: '张医生',
-          center: [116.397428, 39.90923]
-        },
-        {
-          name: '张医生',
-          center: [116.397428, 39.90923]
-        }
-      ]
-    }
-  },
-  mounted() {
-    this.peopele()
-    // 间隔3分钟发送一次请求
-    //     window.setInterval(() => {
-    //   setTimeout(console.log('123'), 0)
-    //     }, 30000)
-    //     /**一辆小车的运动轨迹* */
-    //  var marker, lineArr = [[116.478935,39.997761],[116.478939,39.997825],[116.478912,39.998549],[116.478912,39.998549],[116.478998,39.998555],[116.478998,39.998555],[116.479282,39.99856],[116.479658,39.998528],[116.480151,39.998453],[116.480784,39.998302],[116.480784,39.998302],[116.481149,39.998184],[116.481573,39.997997],[116.481863,39.997846],[116.482072,39.997718],[116.482362,39.997718],[116.483633,39.998935],[116.48367,39.998968],[116.484648,39.999861]];
-
-    //   this.map = new AMap.Map("map", {
-    //       resizeEnable: true,
-    //       center: [116.397428, 39.90923],
-    //       zoom: 17,
-    //       layers: [
-    //           // 卫星
-    //           new AMap.TileLayer.Satellite(),
-    //           // 路网
-    //           new AMap.TileLayer.RoadNet()
-    //       ],
-    //   });
-
-    //   marker = new AMap.Marker({
-    //       map: this.map,
-    //       position: [116.478935,39.997761],
-    //       icon: "https://webapi.amap.com/images/car.png",
-    //       offset: new AMap.Pixel(-26, -13),
-    //       autoRotation: true,
-    //       angle:-90,
-    //   });
-
-    //   // 绘制轨迹
-    //   var polyline = new AMap.Polyline({
-    //       map: this.map,
-    //       path: lineArr,
-    //       showDir:true,
-    //       strokeColor: "#28F",  //线颜色
-    //       // strokeOpacity: 1,     //线透明度
-    //       strokeWeight: 6,      //线宽
-    //       // strokeStyle: "solid"  //线样式
-    //   });
-
-    //   var passedPolyline = new AMap.Polyline({
-    //       map: this.map,
-    //       // path: lineArr,
-    //       strokeColor: "#AF5",  //线颜色
-    //       // strokeOpacity: 1,     //线透明度
-    //       strokeWeight: 6,      //线宽
-    //       // strokeStyle: "solid"  //线样式
-    //   });
-
-    //   marker.on('moving', function (e) {
-    //       passedPolyline.setPath(e.passedPath);
-    //   });
-    //   this.map.setFitView();
-    //  marker.moveAlong(lineArr, 100);
-
-    //  简单的轨迹图
-
-    /** 弹跳的marker* */
-    //   var map = new AMap.Map('map', {
-    //     resizeEnable: true,
-    //     center: [116.397428, 39.90923],
-    //     zoom: 13
-    // });
-
-    // var marker = new AMap.Marker({
-    //     position: map.getCenter(),
-    //     icon: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png',
-    //     offset: new AMap.Pixel(-13, -30),
-    //     // 设置是否可拖拽
-    //     draggable: true,
-    //     cursor: 'move'
-    // });
-
-    // marker.setMap(map);
-
-    // // 设置点标记的动画效果，此处为弹跳效果
-    // marker.setAnimation('AMAP_ANIMATION_BOUNCE');
-    //     map.on("complete", function(){
-    //    console.log("地图加载完成！");
-    // });
-    /** 区域掩膜* */
-    var map = new AMap.Map('map', {
-      zoom: 13,
-      center: [116.43, 39.92],
-      resizeEnable: true
-    })
-
-    var lnglats = [[116.39, 39.92], [116.41, 39.93], [116.43, 39.91], [116.46, 39.93], [116.40, 39.93], [116.4, 39.93]]
-    var markers = []
-
-    for (var i = 0; i < lnglats.length; i++) {
-      var lnglat = lnglats[i]
-      // 创建点实例
-      var marker = new AMap.Marker({
-        position: new AMap.LngLat(lnglat[0], lnglat[1]),
-        icon: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_b' + (i + 1) + '.png',
-        extData: {
-          id: i + 1
-        }
-      })
-
-      markers.push(marker)
-    }
-
-    // 将点添加到地图
-    map.add(markers)
-  },
-
-  methods: {
-    handleRowAgree: function() {
-      this.map && this.map.destroy()
-      console.log('地图已销毁')
-      this.map = new AMap.Map('map')
-    },
-    peopele() {
-      this.axios
-        .get('https://api.anjihos.newlioncity.com/admin/position')
-        .then(res => {
-          console.log(res.data.data)
-        })
-    },
-
-    // 分页
-    handleSizeChange: function(size) {
-      this.pagesize = size
-    },
-    handlePageChange: function(val) {
-      this.currentPage = val
-      this.handleApprovalList()
-    }
+  .buttons{
+    padding: 20px;
+    background-color: #fff;
+    border-bottom: 1px solid rgb(220, 223, 230);
+    display: flex;
+    justify-content:space-between;
+    flex-direction: row;
+    align-items: center;
+    font-size:14px;
+    color:#606266
   }
-}
-</script>
+  .amap-page-container {
+    height: 100vh;
+    flex: 4
+  }
+  .amapDemo{
+    width:100%;
+    height: 100%;
+  }
+  </style>
