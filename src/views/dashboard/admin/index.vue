@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-editor-container">
 
-    <github-corner style="position: absolute; top: 0px; border: 0; right: 0;"/>
+<!--    <github-corner style="position: absolute; top: 0px; border: 0; right: 0;"/>-->
 
     <panel-group @handleSetLineChartData="handleSetLineChartData"/>
 
@@ -52,24 +52,25 @@ import BarChart from './components/BarChart'
 import TransactionTable from './components/TransactionTable'
 import TodoList from './components/TodoList'
 import BoxCard from './components/BoxCard'
+import api from "@/config/api";
 
-const lineChartData = {
-  newVisitis: {
-    expectedData: [100, 120, 161, 134, 105, 160, 165],
-    actualData: [120, 82, 91, 154, 162, 140, 145]
-  },
-  messages: {
-    expectedData: [200, 192, 120, 144, 160, 130, 140],
-    actualData: [180, 160, 151, 106, 145, 150, 130]
-  },
-  purchases: {
-    expectedData: [80, 100, 121, 104, 105, 90, 100],
-    actualData: [120, 90, 100, 138, 142, 130, 130]
-  },
-  shoppings: {
-    expectedData: [130, 140, 141, 142, 145, 150, 160],
-    actualData: [120, 82, 91, 154, 162, 140, 130]
-  }
+let lineChartData = {
+  // newVisitis: {
+  //   expectedData: [100, 120, 161, 134, 105, 160, 165],
+  //   actualData: [120, 82, 91, 154, 162, 140, 145]
+  // },
+  // messages: {
+  //   expectedData: [200, 192, 120, 144, 160, 130, 140],
+  //   actualData: [180, 160, 151, 106, 145, 150, 130]
+  // },
+  // purchases: {
+  //   expectedData: [80, 100, 121, 104, 105, 90, 100],
+  //   actualData: [120, 90, 100, 138, 142, 130, 130]
+  // },
+  // shoppings: {
+  //   expectedData: [130, 140, 141, 142, 145, 150, 160],
+  //   actualData: [120, 82, 91, 154, 162, 140, 130]
+  // }
 }
 
 export default {
@@ -87,12 +88,26 @@ export default {
   },
   data() {
     return {
-      lineChartData: lineChartData.newVisitis
+      lineChartData: lineChartData.userCounts
     }
+  },
+  created() {
+    this.handleGetLineChartData()
   },
   methods: {
     handleSetLineChartData(type) {
       this.lineChartData = lineChartData[type]
+    },
+    handleGetLineChartData() {
+      this.axios
+        .get('/dashboard', {
+          params: { type: 'linechart' }
+        })
+        .then(response => {
+          //this.OrderList = response.data.data.data;
+          lineChartData = response.data.data
+          this.handleSetLineChartData('userCounts')
+        })
     }
   }
 }

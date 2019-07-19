@@ -33,7 +33,8 @@ export default {
   data() {
     return {
       chart: null,
-      sidebarElm: null
+      sidebarElm: null,
+      data: []
     }
   },
   watch: {
@@ -43,6 +44,12 @@ export default {
         this.setOptions(val)
       }
     }
+  },
+  created() {
+    for (var x = 6; x >= 0; x--) {
+      this.data.push(this.getData(x))
+    }
+    this.data[6] = '今天'
   },
   mounted() {
     this.initChart()
@@ -73,6 +80,21 @@ export default {
     this.chart = null
   },
   methods: {
+    getData(x) {
+      var date = new Date()
+      var seperator1 = '-'
+      // var year = date.getFullYear()
+      var month = date.getMonth() + 1
+      var strDate = date.getDate() - x
+      if (month >= 1 && month <= 9) {
+        month = '0' + month
+      }
+      if (strDate >= 0 && strDate <= 9) {
+        strDate = '0' + strDate
+      }
+      var currentdate = month + seperator1 + strDate
+      return currentdate
+    },
     sidebarResizeHandler(e) {
       if (e.propertyName === 'width') {
         this.__resizeHandler()
@@ -81,7 +103,7 @@ export default {
     setOptions({ expectedData, actualData } = {}) {
       this.chart.setOption({
         xAxis: {
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: this.data,
           boundaryGap: false,
           axisTick: {
             show: false
