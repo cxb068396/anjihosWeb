@@ -19,7 +19,7 @@
           <el-checkbox v-for="city in cities" :label="city" :key="city" >{{ city }}</el-checkbox>
         </el-checkbox-group>
         <div class="button">
-          <el-button type="primary" icon="el-icon-search" size="mini"/>
+          <el-button type="primary" icon="el-icon-search" size="mini" @click="display">查看所有人</el-button>
         </div>
       </div>
       <div class="searchWord">
@@ -31,7 +31,7 @@
           placeholder="请输入医生姓名"/>
       </div>
       <el-table
-        :data="circles"
+        :data="tables.slice((currentPage - 1) * pagesize, currentPage * pagesize)"
         style="width: 100%">
         <el-table-column
           prop="worker_name"
@@ -66,12 +66,11 @@
       </el-table>
       <div style="text-align: center;margin-top: 30px;">
         <el-pagination
-          :current-page="currentPage"
           :page-size="pagesize"
-          :total="count"
+          :total="total"
           layout="total, prev, pager, next, jumper"
-          @current-change="handlePageChange"
-          @page-size="pagesizeChange"
+          @current-change="handleCurrentChange"
+			    @size-change="handleSizeChange"
         />
       </div>
 
@@ -109,7 +108,7 @@ export default {
       createdate:'',
       events: {
         init:(map)=> {
-          console.log(map)
+          console.log('init事件')
         }
       },
       map: {},
@@ -119,15 +118,31 @@ export default {
       cities: ['家庭医生', '健康管家', '服务人员', '护士', '药师'],
       currentPage: 1,
       count: 0,
-      pagesize: 2,
+      pagesize: 10,
       circles: [],
+      markerList:[],
       type:'',
     }
   },
   mounted() {
     this.people()
   },
-
+  computed:{
+    tables(){
+      if (this.search) {
+        return this.circles.filter(dataNews => {
+          return Object.keys(dataNews).some(key => {
+            return String(dataNews[key]).toLowerCase().indexOf(search) > -1
+          })
+        })
+      }
+      console.log(this.circles)
+      return this.circles
+    },
+    total () {
+      return this.tables.length
+    }
+  },
   methods: {
     markerClick(index,row){
       let map = AMapManager.getMap();
@@ -145,6 +160,7 @@ export default {
         offset: new AMap.Pixel(-13, -30)
       });
       this.marker.setMap(map);
+      console.log()
       //如果选择时间了，则绘制路径，否则绘制标记
       if(row.createdate){
         //获取路径
@@ -179,6 +195,23 @@ export default {
             //根据不同的lineArr,绘制不同路径方法
             this.polyClick()
           })
+      }
+    },
+    //展示所有人的位置信息
+    display(){
+      let map = AMapManager.getMap()
+      //如果有，则清空数组，没有则添加
+      if(this.markerList.length == 0 ){
+        this.circles.map(item => {
+          let marker = new AMap.Marker({
+              position: new AMap.LngLat(item.center[0], item.center[1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+          });
+          this.markerList.push(marker)
+        })
+        map.add(this.markerList)
+      }else{
+        map.remove(this.markerList)
+        this.markerList = []
       }
     },
     polyClick: function() {
@@ -290,13 +323,12 @@ export default {
       console.log(this.checkedCities2)
     },
     // 分页
-    pagesizeChange: function(size) {
-      this.pagesize = size
+    handleCurrentChange(val) {
+      this.currentPage = val;
     },
-    handlePageChange: function(val) {
-      this.currentPage = val
-      this.people()
-    }
+    handleSizeChange(val) {
+      this.pagesize = val;
+    },
   }
 }
 </script>
