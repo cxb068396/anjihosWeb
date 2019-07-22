@@ -160,6 +160,7 @@ export default {
         position: row.center,
         offset: new AMap.Pixel(-13, -30)
       });
+      this.displayLabel(this.marker)
       this.marker.setMap(map);
       console.log()
       //如果选择时间了，则绘制路径，否则绘制标记
@@ -198,24 +199,36 @@ export default {
           })
       }
     },
+    displayLabel(marker){
+      //鼠标悬浮事件
+      marker.on('mouseover',function () {
+        console.log(marker)
+        marker.setLabel({
+          offset: new AMap.Pixel(-100,-110),
+          content:`<div class='input-card content-window-card'><div><img style=\"float:left;\" src=\" https://webapi.amap.com/images/autonavi.png \"/></div> <div style=\"padding:7px 0px 0px 0px;\"><h4>高德软件</h4><p class='input-item'>电话 : 010-84107000   邮编 : 100102</p> <p class='input-item'>地址 :${marker.Uh.position.lng}  ${marker.Uh.position.lng}</p></div></div>`
+        });
+      })
+      marker.on('mouseout',function () {
+        marker.setLabel({
+          offset: new AMap.Pixel(-100,-110),
+          content:''
+        });
+      })
+    },
     //展示所有人的位置信息
     display(){
+      //将markerList中的人员展示到地图上
       let map = AMapManager.getMap()
-      console.log(this.markerList)
-      console.log(this.circles)
-      //如果有，则清空数组，没有则添加
-      if(this.markerList.length == 0 ){
-        this.circles.map(item => {
-          let marker = new AMap.Marker({
-              position: new AMap.LngLat(item.lng, item.lat),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-          });
-          this.markerList.push(marker)
-        })
-        map.add(this.markerList)
-      }else{
-        map.remove(this.markerList)
-        this.markerList = []
-      }
+      map.remove(this.markerList)
+      this.markerList = []
+      this.circles.map(item => {
+        let marker = new AMap.Marker({
+            position: new AMap.LngLat(item.lng, item.lat),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+        });
+        this.displayLabel(marker)
+        this.markerList.push(marker)
+      })
+      map.add(this.markerList)
     },
     polyClick: function() {
       let map = AMapManager.getMap();
@@ -265,7 +278,7 @@ export default {
             // item.center.push(item.lat)
             item.center.push(item.lng,item.lat)
           })
-          console.log(this.circles)
+          this.display()
         })
       }else{
         let that = this
@@ -275,7 +288,7 @@ export default {
             item => item.worker_name == that.search
           )
           this.count = this.circles.length
-          console.log(this.circles)
+          this.display()
         })
       }
     },
@@ -289,6 +302,7 @@ export default {
       .then(res => {
         this.circles = res.data.data
         this.count = this.circles.length
+        this.display()
       })
     },
     handleCheckedRolesChange(){
@@ -322,6 +336,7 @@ export default {
         .then(res => {
           this.circles = res.data.data
           this.count = this.circles.length
+          this.display()
         })
       console.log(this.checkedCities2)
     },
