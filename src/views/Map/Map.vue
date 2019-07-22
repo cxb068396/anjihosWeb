@@ -19,7 +19,7 @@
           <el-checkbox v-for="city in cities" :label="city" :key="city" >{{ city }}</el-checkbox>
         </el-checkbox-group>
         <div class="button">
-          <el-button type="primary" icon="el-icon-search" size="mini" @click="display">查看所有人</el-button>
+          <el-button type="primary" icon="el-icon-search" size="mini" @click="display">查看列表人员定位信息</el-button>
         </div>
       </div>
       <div class="searchWord">
@@ -32,13 +32,14 @@
       </div>
       <el-table
         :data="tables.slice((currentPage - 1) * pagesize, currentPage * pagesize)"
-        style="width: 100%">
+        style="width: 100%"
+        class='el-input--mini'>
         <el-table-column
           prop="worker_name"
           label="医生姓名"
           max-width="80"
         />
-        <el-table-column prop="createdate" header-align="center" align="center" label="选择日期" >
+        <el-table-column prop="createdate" header-align="center" align="center" label="选择日期" class='el-input__inner'>
           <template scope="scope">
             <el-date-picker 
             v-model="scope.row.createdate" 
@@ -200,11 +201,13 @@ export default {
     //展示所有人的位置信息
     display(){
       let map = AMapManager.getMap()
+      console.log(this.markerList)
+      console.log(this.circles)
       //如果有，则清空数组，没有则添加
       if(this.markerList.length == 0 ){
         this.circles.map(item => {
           let marker = new AMap.Marker({
-              position: new AMap.LngLat(item.center[0], item.center[1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+              position: new AMap.LngLat(item.lng, item.lat),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
           });
           this.markerList.push(marker)
         })
@@ -341,7 +344,7 @@ export default {
   .el-input--mini .el-input__inner {
     height: 28px;
     line-height: 28px;
-    width: 100px;
+    width: 180px;
     }
   .el-checkbox+.el-checkbox {
     margin-left: 0px;
