@@ -303,6 +303,29 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/disease',
+    component: Layout,
+    meta: {
+      title: '病种管理',
+      icon: 'peoples',
+      roles: ['admin']
+    },
+    children: [
+      {
+        path: 'diseaselist',
+        component: () => import('@/views/Disease/DiseaseList'),
+        name: 'diseaselist',
+        meta: { title: '服务列表', icon: 'form', noCache: true }
+      },
+      {
+        path: 'diseasedefend',
+        component: () => import('@/views/Disease/DiseaseDefend'),
+        name: 'diseasedefend',
+        meta: { title: '病种维护', icon: 'form' },
+      }
+    ]
+  },
+  {
     path: '/map',
     component: Layout,
     meta: {
@@ -316,6 +339,24 @@ export const asyncRouterMap = [
         component: () => import('@/views/Map/Map'),
         name: 'map',
         meta: { title: '地图展示', icon: 'money', noCache: true }
+      },
+  
+    ]
+  },
+  {
+    path: '/location',
+    component: Layout,
+    meta: {
+      title: '人员位置',
+      icon: 'peoples',
+      roles:['admin'] 
+    },
+    children: [
+      {
+        path: 'location',
+        component: () => import('@/views/Location/Location'),
+        name: 'location',
+        meta: { title: '人员位置', icon: 'peoples', noCache: true }
       },
   
     ]

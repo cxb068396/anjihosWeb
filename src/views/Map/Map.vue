@@ -123,6 +123,7 @@ export default {
       circles: [],
       markerList:[],
       type:'',
+      nfoWindow:{},
     }
   },
   mounted() {
@@ -162,7 +163,6 @@ export default {
       });
       this.displayLabel(this.marker,row.center)
       this.marker.setMap(map);
-      console.log()
       //如果选择时间了，则绘制路径，否则绘制标记
       if(row.createdate){
         //获取路径
@@ -180,39 +180,63 @@ export default {
             let i = []
             let p = []
             console.log(res.data.data)
-            for (let index = 0; index < res.data.data.length; index++) {
-              i.push(res.data.data[index].lng,res.data.data[index].lat)
+            if(res.data.data.length == 0){
+              that.$message({
+                message: '您选中的时间段，没有路径信息',
+                type: 'error'
+              });
+            }else{
+              for (let index = 0; index < res.data.data.length; index++) {
+                i.push(res.data.data[index].lng,res.data.data[index].lat)
+              }
+              i.forEach((item, index) => {
+                  const page = Math.floor(index / 2)
+                  if (!p[page]) {
+                    p[page] = []
+                  }
+                  p[page].push(item)
+              });
+              that.lineArr = [...p] 
+              //根据不同的lineArr,绘制不同路径方法
+              this.polyClick()
             }
-            i.forEach((item, index) => {
-                const page = Math.floor(index / 2)
-                if (!p[page]) {
-                  p[page] = []
-                }
-                p[page].push(item)
-            });
-            console.log(p)
-            that.lineArr = [...p] 
-            console.log(p)
-            console.log(that.lineArr)
-            //根据不同的lineArr,绘制不同路径方法
-            this.polyClick()
           })
       }
     },
     displayLabel(marker,position){
+      let map = AMapManager.getMap()
       //鼠标悬浮事件
-      marker.on('mouseover',function () {
-        marker.setLabel({
-          offset: new AMap.Pixel(-100,-110),
-          content:`<div class='input-card content-window-card'><div><img style=\"float:left;\" src=\" https://webapi.amap.com/images/autonavi.png \"/></div> <div style=\"padding:7px 0px 0px 0px;\"><h4>高德软件</h4><p class='input-item'>电话 : 无   邮编 : 无</p> <p class='input-item'>地址 :${marker.Uh.position.lng}  ${marker.Uh.position.lng}</p></div></div>`
+      marker.on('mousedown',function () {
+        console.log('mousedown或moving执行')
+        var info = [];
+        info.push("<div class='input-card content-window-card'><div><img style=\"float:left;\" src=\" https://webapi.amap.com/images/autonavi.png \"/></div> ");
+        info.push("<div style=\"padding:7px 0px 0px 0px;\"><h4>高德软件</h4>");
+        info.push("<p class='input-item'>电话 : 010-84107000   邮编 : 100102</p>");
+        info.push("<p class='input-item'>地址 :北京市朝阳区望京阜荣街10号首开广场4层</p></div></div>");
+
+        this.infoWindow = new AMap.InfoWindow({
+            content: info.join("")  //使用默认信息窗体框样式，显示信息内容
         });
+        console.log(marker.getPosition())
+        this.infoWindow.open(map, marker.getPosition());
       })
-      marker.on('mouseout',function () {
-        marker.setLabel({
-          offset: new AMap.Pixel(-100,-110),
-          content:''
-        });
-      })
+      // marker.on('mousedown',function () {
+      //   console.log('mousedown或moving执行')
+      //   var info = [];
+      //   info.push("<div class='input-card content-window-card'><div><img style=\"float:left;\" src=\" https://webapi.amap.com/images/autonavi.png \"/></div> ");
+      //   info.push("<div style=\"padding:7px 0px 0px 0px;\"><h4>高德软件</h4>");
+      //   info.push("<p class='input-item'>电话 : 010-84107000   邮编 : 100102</p>");
+      //   info.push("<p class='input-item'>地址 :北京市朝阳区望京阜荣街10号首开广场4层</p></div></div>");
+
+      //   this.infoWindow = new AMap.InfoWindow({
+      //       content: info.join("")  //使用默认信息窗体框样式，显示信息内容
+      //   });
+
+      //   this.infoWindow.open(map, map.getCenter());
+      // })
+      // marker.on('mouseout',function () {
+      //   this.infoWindow.close()
+      // })
     },
     //展示所有人的位置信息
     display(){
