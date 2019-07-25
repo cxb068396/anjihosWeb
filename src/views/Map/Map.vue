@@ -19,7 +19,7 @@
           <el-checkbox v-for="city in cities" :label="city" :key="city" >{{ city }}</el-checkbox>
         </el-checkbox-group>
         <div class="button">
-          <el-button type="primary" icon="el-icon-search" size="mini" @click="display">查看所有人</el-button>
+          <el-button type="primary" icon="el-icon-search" size="mini" @click="display">查看列表人员定位信息</el-button>
         </div>
       </div>
       <div class="searchWord">
@@ -32,13 +32,14 @@
       </div>
       <el-table
         :data="tables.slice((currentPage - 1) * pagesize, currentPage * pagesize)"
-        style="width: 100%">
+        style="width: 100%"
+        class='el-input--mini'>
         <el-table-column
           prop="worker_name"
           label="医生姓名"
           max-width="80"
         />
-        <el-table-column prop="createdate" header-align="center" align="center" label="选择日期" >
+        <el-table-column prop="createdate" header-align="center" align="center" label="选择日期" class='el-input__inner'>
           <template scope="scope">
             <el-date-picker 
             v-model="scope.row.createdate" 
@@ -122,6 +123,7 @@ export default {
       circles: [],
       markerList:[],
       type:'',
+      nfoWindow:{},
     }
   },
   mounted() {
@@ -159,8 +161,8 @@ export default {
         position: row.center,
         offset: new AMap.Pixel(-13, -30)
       });
+      this.displayLabel(this.marker,row.center)
       this.marker.setMap(map);
-      console.log()
       //如果选择时间了，则绘制路径，否则绘制标记
       if(row.createdate){
         //获取路径
@@ -178,41 +180,92 @@ export default {
             let i = []
             let p = []
             console.log(res.data.data)
-            for (let index = 0; index < res.data.data.length; index++) {
-              i.push(res.data.data[index].lng,res.data.data[index].lat)
+            if(res.data.data.length == 0){
+              that.$message({
+                message: '您选中的时间段，没有路径信息',
+                type: 'error'
+              });
+            }else{
+              for (let index = 0; index < res.data.data.length; index++) {
+                i.push(res.data.data[index].lng,res.data.data[index].lat)
+              }
+              i.forEach((item, index) => {
+                  const page = Math.floor(index / 2)
+                  if (!p[page]) {
+                    p[page] = []
+                  }
+                  p[page].push(item)
+              });
+              that.lineArr = [...p] 
+              //根据不同的lineArr,绘制不同路径方法
+              this.polyClick()
             }
-            i.forEach((item, index) => {
-                const page = Math.floor(index / 2)
-                if (!p[page]) {
-                  p[page] = []
-                }
-                p[page].push(item)
-            });
-            console.log(p)
-            that.lineArr = [...p] 
-            console.log(p)
-            console.log(that.lineArr)
-            //根据不同的lineArr,绘制不同路径方法
-            this.polyClick()
           })
       }
     },
+    displayLabel(marker,position){
+      let map = AMapManager.getMap()
+      //鼠标悬浮事件
+      marker.on('mousedown',function () {
+        console.log('mousedown或moving执行')
+        var info = [];
+        info.push("<div class='input-card content-window-card'><div><img style=\"float:left;\" src=\" https://webapi.amap.com/images/autonavi.png \"/></div> ");
+        info.push("<div style=\"padding:7px 0px 0px 0px;\"><h4>高德软件</h4>");
+        info.push("<p class='input-item'>电话 : 010-84107000   邮编 : 100102</p>");
+        info.push("<p class='input-item'>地址 :北京市朝阳区望京阜荣街10号首开广场4层</p></div></div>");
+
+        this.infoWindow = new AMap.InfoWindow({
+            content: info.join("")  //使用默认信息窗体框样式，显示信息内容
+        });
+        console.log(marker.getPosition())
+        this.infoWindow.open(map, marker.getPosition());
+      })
+      // marker.on('mousedown',function () {
+      //   console.log('mousedown或moving执行')
+      //   var info = [];
+      //   info.push("<div class='input-card content-window-card'><div><img style=\"float:left;\" src=\" https://webapi.amap.com/images/autonavi.png \"/></div> ");
+      //   info.push("<div style=\"padding:7px 0px 0px 0px;\"><h4>高德软件</h4>");
+      //   info.push("<p class='input-item'>电话 : 010-84107000   邮编 : 100102</p>");
+      //   info.push("<p class='input-item'>地址 :北京市朝阳区望京阜荣街10号首开广场4层</p></div></div>");
+
+      //   this.infoWindow = new AMap.InfoWindow({
+      //       content: info.join("")  //使用默认信息窗体框样式，显示信息内容
+      //   });
+
+      //   this.infoWindow.open(map, map.getCenter());
+      // })
+      // marker.on('mouseout',function () {
+      //   this.infoWindow.close()
+      // })
+    },
     //展示所有人的位置信息
     display(){
+      //将markerList中的人员展示到地图上
       let map = AMapManager.getMap()
-      //如果有，则清空数组，没有则添加
-      if(this.markerList.length == 0 ){
+      map.remove(this.markerList)
+      this.markerList = []
+      //根据不同的type，绘制不同的icon
+      console.log(this.type)
+      if(this.type == 1){
         this.circles.map(item => {
           let marker = new AMap.Marker({
-              position: new AMap.LngLat(item.center[0], item.center[1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+            icon: "https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+            position: new AMap.LngLat(item.lng, item.lat),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
           });
+          this.displayLabel(marker)
           this.markerList.push(marker)
         })
-        map.add(this.markerList)
       }else{
-        map.remove(this.markerList)
-        this.markerList = []
+        this.circles.map(item => {
+          let marker = new AMap.Marker({
+            icon: "https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+            position: new AMap.LngLat(item.lng, item.lat),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+          });
+          this.displayLabel(marker)
+          this.markerList.push(marker)
+        })
       }
+      map.add(this.markerList)
     },
     polyClick: function() {
       let map = AMapManager.getMap();
@@ -262,7 +315,7 @@ export default {
             // item.center.push(item.lat)
             item.center.push(item.lng,item.lat)
           })
-          console.log(this.circles)
+          this.display()
         })
       }else{
         let that = this
@@ -271,8 +324,7 @@ export default {
           this.circles = res.data.data.filter(
             item => item.worker_name == that.search
           )
-          this.count = this.circles.length
-          console.log(this.circles)
+          this.display()
         })
       }
     },
@@ -285,7 +337,7 @@ export default {
           })
       .then(res => {
         this.circles = res.data.data
-        this.count = this.circles.length
+        this.display()
       })
     },
     handleCheckedRolesChange(){
@@ -319,6 +371,7 @@ export default {
         .then(res => {
           this.circles = res.data.data
           this.count = this.circles.length
+          this.display()
         })
       console.log(this.checkedCities2)
     },
@@ -341,7 +394,7 @@ export default {
   .el-input--mini .el-input__inner {
     height: 28px;
     line-height: 28px;
-    width: 100px;
+    width: 180px;
     }
   .el-checkbox+.el-checkbox {
     margin-left: 0px;
