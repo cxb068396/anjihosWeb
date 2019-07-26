@@ -1,5 +1,4 @@
 <template>
-
   <div class="amap">
     <div class="doctor">
       <div class="buttons">
@@ -74,7 +73,6 @@
 			    @size-change="handleSizeChange"
         />
       </div>
-
     </div>
     <div class="amap-page-container">
       <el-amap vid="amapDemo"  
@@ -123,7 +121,7 @@ export default {
       circles: [],
       markerList:[],
       type:'',
-      nfoWindow:{},
+      infoWindow:{},
     }
   },
   mounted() {
@@ -394,7 +392,7 @@ export default {
   .el-input--mini .el-input__inner {
     height: 28px;
     line-height: 28px;
-    width: 180px;
+    width: 100px;
     }
   .el-checkbox+.el-checkbox {
     margin-left: 0px;
