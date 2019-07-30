@@ -89,6 +89,9 @@
 <script>
 
 import VueAMap from 'vue-amap';
+import yellow_drip from '../../assets/yellow-drip.png';
+import blue_drip from '../../assets/blue-drip.png';
+import red_drip from '../../assets/red-drip.png';
 VueAMap.initAMapApiLoader({
   key: '8b8f50d6273a3793e7f2e353861bb427',
   plugin: [],
@@ -130,9 +133,9 @@ export default {
   computed:{
     tables(){
       if (this.search) {
-        return this.circles.filter(dataNews => {
-          return Object.keys(dataNews).some(key => {
-            return String(dataNews[key]).toLowerCase().indexOf(search) > -1
+        return this.circles.filter(item => {
+          return Object.keys(item).some(key => {
+            return String(item[key]).toLowerCase().indexOf(this.search) > -1
           })
         })
       }
@@ -146,6 +149,7 @@ export default {
   methods: {
     markerClick(index,row){
       let map = AMapManager.getMap();
+      map.remove(this.markerList)
       //判断this.marker，如果存在，则remove
       if(Object.keys(this.marker).length == 0){
         //donothing
@@ -155,7 +159,11 @@ export default {
         map.remove(this.marker)
       }
       this.marker = new AMap.Marker({
-        icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
+        icon: new AMap.Icon({
+          size: new AMap.Size(20, 30),
+          image:yellow_drip,
+          imageSize: new AMap.Size(20, 30),
+        }),
         position: row.center,
         offset: new AMap.Pixel(-13, -30)
       });
@@ -205,7 +213,7 @@ export default {
       let map = AMapManager.getMap()
       //鼠标悬浮事件
       marker.on('mousedown',function () {
-        console.log('mousedown或moving执行')
+        let that = this
         var info = [];
         info.push("<div class='input-card content-window-card'><div><img style=\"float:left;\" src=\" https://webapi.amap.com/images/autonavi.png \"/></div> ");
         info.push("<div style=\"padding:7px 0px 0px 0px;\"><h4>高德软件</h4>");
@@ -215,8 +223,13 @@ export default {
         this.infoWindow = new AMap.InfoWindow({
             content: info.join("")  //使用默认信息窗体框样式，显示信息内容
         });
-        console.log(marker.getPosition())
-        this.infoWindow.open(map, marker.getPosition());
+        
+        // this.infoWindow.setAnchor('top-left')
+        console.log(map.getCenter())
+        //使用其它坐标会有bug
+        setTimeout(function(){
+            that.infoWindow.open(map, marker.getPosition());
+        },200)
       })
       // marker.on('mousedown',function () {
       //   console.log('mousedown或moving执行')
@@ -247,7 +260,11 @@ export default {
       if(this.type == 1){
         this.circles.map(item => {
           let marker = new AMap.Marker({
-            icon: "https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+            icon: new AMap.Icon({
+              size: new AMap.Size(20, 30),
+              image:blue_drip,
+              imageSize: new AMap.Size(20, 30),
+            }),
             position: new AMap.LngLat(item.lng, item.lat),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
           });
           this.displayLabel(marker)
@@ -256,7 +273,11 @@ export default {
       }else{
         this.circles.map(item => {
           let marker = new AMap.Marker({
-            icon: "https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+            icon: new AMap.Icon({
+              size: new AMap.Size(20, 30),
+              image:red_drip,
+              imageSize: new AMap.Size(20, 30),
+            }),
             position: new AMap.LngLat(item.lng, item.lat),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
           });
           this.displayLabel(marker)
@@ -296,7 +317,8 @@ export default {
       this.marker.moveAlong(this.copyLineArr, 100000,function(k){return k},false ),1000
     },
     onSubmitFilter(event) {
-        this.people()
+      // 已经做好，此处重复，故注释。
+      // this.people()
     },
     people() {
       //如果搜索框有内容，则只显示所匹配的，否则显示所有。
