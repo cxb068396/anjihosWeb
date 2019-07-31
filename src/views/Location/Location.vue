@@ -41,7 +41,6 @@ import doctor from '../../assets/doctor.jpeg';
 import yellow_drip from '../../assets/yellow-drip.png';
 import blue_drip from '../../assets/blue-drip.png';
 import red_drip from '../../assets/red-drip.png';
-import star from '../../assets/star.gif';
 VueAMap.initAMapApiLoader({
   key: '8b8f50d6273a3793e7f2e353861bb427',
   plugin: [],
@@ -283,7 +282,7 @@ export default {
         let that = this
         var info 
         if(marker.order_status == 11){
-          info ='<div className="custom-infowindow input-card" style="width:200px;border-radius:20px;">' +
+          info ='<div className="custom-infowindow input-card" style="width:200px;border-radius:20px;font-size:10px">' +
           '<div>' +
             `<img src=${oldman} style="width:100px;height:100px;border-radius:4em"/ >` +
             '<div class="input-item">' +
@@ -293,12 +292,12 @@ export default {
                     `<div class="input-item-text" >订单状态：${marker.order_status == 11? '未接单' :(marker.order_status == 12? '已接单，未服务' :'正在服务')}</div>` +
                 '</div>' +
             '</div>' +
-            '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()"/>' +
+            '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()" style="margin-right:40px"/>' +
              '<input id="btn3" type="button" class="btn" value="生命体征" onclick="showMoreMessage1()"/>' +
           '</div>' +
         '</div>';
         }else{
-          info = '<div className="custom-infowindow input-card" style="width:200px;border-radius:20px;">' +
+          info = '<div className="custom-infowindow input-card" style="width:200px;border-radius:20px;font-size:10px">' +
           '<div>' +
             `<img src=${oldman} style="width:100px;height:100px;border-radius:4em"/ >` +
             '<div class="input-item">' +
@@ -308,7 +307,7 @@ export default {
                     `<div class="input-item-text" >订单状态：${marker.order_status == 11? '未接单' :(marker.order_status == 12? '已接单，未服务' :'正在服务')}</div>` +
                 '</div>' +
             '</div>' +
-            '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()"/>' +
+            '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()" style="margin-right:40px"/>' +
              '<input id="btn3" type="button" class="btn" value="生命体征" onclick="showMoreMessage1()"/>' +
           '</div>' +
           '<div style="width:100%;height:3px;background-color:grey;margin:16px 0">' +

@@ -18,9 +18,9 @@
         <el-table-column
           prop="worker_name"
           label="医生姓名"
-          max-width="80"
+          width="100"
         />
-        <el-table-column prop="createdate" header-align="center" align="center" label="选择日期" >
+        <el-table-column prop="createdate" header-align="center" align="center" label="选择日期" width="450">
           <template scope="scope">
             <el-date-picker 
             v-model="scope.row.createdate" 
