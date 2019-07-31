@@ -209,26 +209,41 @@ export default {
           })
       }
     },
+    getLngLat(){
+          var lnglatInput = document.getElementById('lnglat');
+          lnglatInput.setAttribute('value', lnglat.toString());
+        },
     displayLabel(marker,position){
       let map = AMapManager.getMap()
       //鼠标悬浮事件
       marker.on('mousedown',function () {
         let that = this
-        var info = [];
-        info.push("<div class='input-card content-window-card'><div><img style=\"float:left;\" src=\" https://webapi.amap.com/images/autonavi.png \"/></div> ");
-        info.push("<div style=\"padding:7px 0px 0px 0px;\"><h4>高德软件</h4>");
-        info.push("<p class='input-item'>电话 : 010-84107000   邮编 : 100102</p>");
-        info.push("<p class='input-item'>地址 :北京市朝阳区望京阜荣街10号首开广场4层</p></div></div>");
-
+        var info = 
+        '<div className="custom-infowindow input-card">' +
+            '<label style="color:grey">故宫博物院</label>' +
+            '<div class="input-item">' +
+                '<div class="input-item-prepend">' +
+                    '<span class="input-item-text" >经纬度</span>' +
+                '</div>' +
+                '<input id="lnglat" type="text" />' +
+            '</div>' +
+            // 为 infowindow 添加自定义事件
+            '<input id="lnglat2container" type="button" class="btn" value="获取该位置经纬度" onclick="this.getLngLat()"/>' +
+        '</div>';
         this.infoWindow = new AMap.InfoWindow({
-            content: info.join("")  //使用默认信息窗体框样式，显示信息内容
+            position:marker.getPosition(),
+            content: info  //使用默认信息窗体框样式，显示信息内容
         });
+        let getLngLat = function(){
+          var lnglatInput = document.getElementById('lnglat');
+          lnglatInput.setAttribute('value', lnglat.toString());
+        }
         
         // this.infoWindow.setAnchor('top-left')
         console.log(map.getCenter())
         //使用其它坐标会有bug
         setTimeout(function(){
-            that.infoWindow.open(map, marker.getPosition());
+            that.infoWindow.open(map);
         },200)
       })
       // marker.on('mousedown',function () {
