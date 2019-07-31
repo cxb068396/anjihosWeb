@@ -407,7 +407,7 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 .searchWord {
   padding: 5px 0 5px 5px;
   background-color: #fff;
