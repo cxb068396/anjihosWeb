@@ -3,19 +3,16 @@
     <div class="doctor">
       <div class="buttons">
         <div>服务状态：</div>
-          <template>
-            <el-radio-group v-model="type" @change="typeChange">
-              <el-radio :label=1>开始</el-radio>
-              <el-radio :label=2>完成</el-radio>
-            </el-radio-group>
-          </template>
+        <template>
+          <el-radio-group v-model="type" @change="typeChange">
+            <el-radio :label="1">开始</el-radio>
+            <el-radio :label="2">完成</el-radio>
+          </el-radio-group>
+        </template>
       </div>
       <div class="choose">
-        <el-checkbox-group
-          v-model="checkedCities1"
-          @change="handleCheckedRolesChange"
-        >
-          <el-checkbox v-for="city in cities" :label="city" :key="city" >{{ city }}</el-checkbox>
+        <el-checkbox-group v-model="checkedCities1" @change="handleCheckedRolesChange">
+          <el-checkbox v-for="city in cities" :label="city" :key="city">{{ city }}</el-checkbox>
         </el-checkbox-group>
         <div class="button">
           <el-button type="primary" icon="el-icon-search" size="mini" @click="display">查看列表人员定位信息</el-button>
@@ -27,40 +24,36 @@
           style="display: inline-block;width:50%;"
           size="small"
           v-on:input="onSubmitFilter"
-          placeholder="请输入医生姓名"/>
+          placeholder="请输入医生姓名"
+        />
       </div>
       <el-table
         :data="tables.slice((currentPage - 1) * pagesize, currentPage * pagesize)"
         style="width: 100%"
-        class='el-input--mini'>
+        class="el-input--mini"
+      >
+        <el-table-column prop="worker_name" label="医生姓名" max-width="80" />
         <el-table-column
-          prop="worker_name"
-          label="医生姓名"
-          max-width="80"
-        />
-        <el-table-column prop="createdate" header-align="center" align="center" label="选择日期" class='el-input__inner'>
+          prop="createdate"
+          header-align="center"
+          align="center"
+          label="选择日期"
+          class="el-input__inner"
+        >
           <template scope="scope">
-            <el-date-picker 
-            v-model="scope.row.createdate" 
-            type="datetimerange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            value-format='yyyy-MM-dd HH:mm:ss'
+            <el-date-picker
+              v-model="scope.row.createdate"
+              type="datetimerange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              value-format="yyyy-MM-dd HH:mm:ss"
             />
           </template>
         </el-table-column>
-        <el-table-column
-          fixed="right"
-          label="位置"
-          max-width="80"
-        >
+        <el-table-column fixed="right" label="位置" max-width="80">
           <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="danger"
-              @click="markerClick(scope.$index, scope.row)"
-            >查看</el-button>
+            <el-button size="mini" type="danger" @click="markerClick(scope.$index, scope.row)">查看</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -70,18 +63,19 @@
           :total="total"
           layout="total, prev, pager, next, jumper"
           @current-change="handleCurrentChange"
-			    @size-change="handleSizeChange"
+          @size-change="handleSizeChange"
         />
       </div>
     </div>
     <div class="amap-page-container">
-      <el-amap vid="amapDemo"  
-      :center="center" 
-      :amap-manager="AMapManager" 
-      :zoom="zoom" 
-      :events="events" 
-      class="amap-demo">
-      </el-amap>
+      <el-amap
+        vid="amapDemo"
+        :center="center"
+        :amap-manager="AMapManager"
+        :zoom="zoom"
+        :events="events"
+        class="amap-demo"
+      ></el-amap>
     </div>
   </div>
 </template>
@@ -127,6 +121,9 @@ export default {
       infoWindow:{},
     }
   },
+  created(){
+
+  },
   mounted() {
     this.people()
   },
@@ -167,6 +164,9 @@ export default {
         position: row.center,
         offset: new AMap.Pixel(-13, -30)
       });
+      this.marker.company_name = row.company_name
+      this.marker.createdat = row.createdat
+      this.marker.worker_name = row.worker_name
       this.displayLabel(this.marker,row.center)
       this.marker.setMap(map);
       //如果选择时间了，则绘制路径，否则绘制标记
@@ -209,10 +209,6 @@ export default {
           })
       }
     },
-    getLngLat(){
-          var lnglatInput = document.getElementById('lnglat');
-          lnglatInput.setAttribute('value', lnglat.toString());
-        },
     displayLabel(marker,position){
       let map = AMapManager.getMap()
       //鼠标悬浮事件
@@ -220,49 +216,34 @@ export default {
         let that = this
         var info = 
         '<div className="custom-infowindow input-card">' +
-            '<label style="color:grey">故宫博物院</label>' +
+            `<label style="color:grey">${marker.worker_name}</label>` +
             '<div class="input-item">' +
                 '<div class="input-item-prepend">' +
-                    '<span class="input-item-text" >经纬度</span>' +
+                    '<span class="input-item-text" >记录时间</span>' +
+                    `<span class="input-item-text" >${marker.createdat}</span>` +
                 '</div>' +
                 '<input id="lnglat" type="text" />' +
             '</div>' +
             // 为 infowindow 添加自定义事件
-            '<input id="lnglat2container" type="button" class="btn" value="获取该位置经纬度" onclick="this.getLngLat()"/>' +
+            '<input id="lnglat2container" type="button" class="btn" value="获取该位置经纬度" onclick="showMoreMessage()"/>' +
         '</div>';
         this.infoWindow = new AMap.InfoWindow({
             position:marker.getPosition(),
             content: info  //使用默认信息窗体框样式，显示信息内容
         });
-        let getLngLat = function(){
-          var lnglatInput = document.getElementById('lnglat');
-          lnglatInput.setAttribute('value', lnglat.toString());
-        }
-        
-        // this.infoWindow.setAnchor('top-left')
-        console.log(map.getCenter())
         //使用其它坐标会有bug
         setTimeout(function(){
-            that.infoWindow.open(map);
+          that.infoWindow.open(map);
+          var lnglatInput = document.getElementById('lnglat2container');
+          var lnglatInputValue = document.getElementById('lnglat');
+          //onclick事件
+          let showMoreMessage = function(){
+            lnglatInputValue.value = marker.Uh.position.lng + "," +marker.Uh.position.lat 
+            console.log(marker)
+          }
+          lnglatInput.onclick = showMoreMessage
         },200)
       })
-      // marker.on('mousedown',function () {
-      //   console.log('mousedown或moving执行')
-      //   var info = [];
-      //   info.push("<div class='input-card content-window-card'><div><img style=\"float:left;\" src=\" https://webapi.amap.com/images/autonavi.png \"/></div> ");
-      //   info.push("<div style=\"padding:7px 0px 0px 0px;\"><h4>高德软件</h4>");
-      //   info.push("<p class='input-item'>电话 : 010-84107000   邮编 : 100102</p>");
-      //   info.push("<p class='input-item'>地址 :北京市朝阳区望京阜荣街10号首开广场4层</p></div></div>");
-
-      //   this.infoWindow = new AMap.InfoWindow({
-      //       content: info.join("")  //使用默认信息窗体框样式，显示信息内容
-      //   });
-
-      //   this.infoWindow.open(map, map.getCenter());
-      // })
-      // marker.on('mouseout',function () {
-      //   this.infoWindow.close()
-      // })
     },
     //展示所有人的位置信息
     display(){
@@ -282,6 +263,9 @@ export default {
             }),
             position: new AMap.LngLat(item.lng, item.lat),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
           });
+          marker.company_name = item.company_name
+          marker.createdat = item.createdat
+          marker.worker_name = item.worker_name
           this.displayLabel(marker)
           this.markerList.push(marker)
         })
@@ -295,6 +279,9 @@ export default {
             }),
             position: new AMap.LngLat(item.lng, item.lat),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
           });
+          marker.company_name = item.company_name
+          marker.createdat = item.createdat
+          marker.worker_name = item.worker_name
           this.displayLabel(marker)
           this.markerList.push(marker)
         })
@@ -421,57 +408,55 @@ export default {
 }
 </script>
 <style>
-
-  .searchWord{
-    padding: 5px 0 5px 5px;
-    background-color: #fff;
-  }
-  .el-input--mini .el-input__inner {
-    height: 28px;
-    line-height: 28px;
-    width: 100px;
-    }
-  .el-checkbox+.el-checkbox {
-    margin-left: 0px;
-  }
-  .el-checkbox {
-    margin-right: 25px;
-  }
-  .amap{
-    display:flex;
-    flex-direction: row;
-  }
-  .doctor{
-    flex: 1;
-
-  }
-  .doctor .choose{
-    padding: 20px;
-    background-color: #fff;
-    border-bottom: 1px solid rgb(220, 223, 230);
-  }
-  .choose .button{
-    display: flex;
-    justify-content: flex-end;
-    flex-direction: row;
-  }
-  .buttons{
-    padding: 20px;
-    background-color: #fff;
-    border-bottom: 1px solid rgb(220, 223, 230);
-    display: flex;
-    justify-content:space-between;
-    flex-direction: row;
-    align-items: center;
-    font-size:14px;
-    color:#606266
-  }
-  .amap-page-container {
-    height: 100vh;
-    flex: 4
-  }
-  .amapDemo{
-    width:100%;
-    height: 100%;
-  }
-  </style>
+.searchWord {
+  padding: 5px 0 5px 5px;
+  background-color: #fff;
+}
+.el-input--mini .el-input__inner {
+  height: 28px;
+  line-height: 28px;
+  width: 100px;
+}
+.el-checkbox + .el-checkbox {
+  margin-left: 0px;
+}
+.el-checkbox {
+  margin-right: 25px;
+}
+.amap {
+  display: flex;
+  flex-direction: row;
+}
+.doctor {
+  flex: 1;
+}
+.doctor .choose {
+  padding: 20px;
+  background-color: #fff;
+  border-bottom: 1px solid rgb(220, 223, 230);
+}
+.choose .button {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+}
+.buttons {
+  padding: 20px;
+  background-color: #fff;
+  border-bottom: 1px solid rgb(220, 223, 230);
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  font-size: 14px;
+  color: #606266;
+}
+.amap-page-container {
+  height: 100vh;
+  flex: 4;
+}
+.amapDemo {
+  width: 100%;
+  height: 100%;
+}
+</style>
