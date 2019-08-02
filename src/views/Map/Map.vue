@@ -211,9 +211,9 @@ export default {
     },
     displayLabel(marker,position){
       let map = AMapManager.getMap()
+      let that = this
       //鼠标悬浮事件
       marker.on('mousedown',function () {
-        let that = this
         var info = 
         '<div className="custom-infowindow input-card">' +
             `<label style="color:grey">${marker.worker_name}</label>` +
@@ -227,7 +227,7 @@ export default {
             // 为 infowindow 添加自定义事件
             '<input id="lnglat2container" type="button" class="btn" value="获取该位置经纬度" onclick="showMoreMessage()"/>' +
         '</div>';
-        this.infoWindow = new AMap.InfoWindow({
+        that.infoWindow = new AMap.InfoWindow({
             position:marker.getPosition(),
             content: info  //使用默认信息窗体框样式，显示信息内容
         });

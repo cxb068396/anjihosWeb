@@ -252,18 +252,21 @@ export default {
           marker.createdat = item.createdat //记录时间
           marker.JBXX_XM = item.JBXX_XM //真实姓名
           marker.JBXX_CSRQ = item.JBXX_CSRQ //出生日期
-          marker.JBXX_LXRXM = item.JBXX_LXRXM //伴侣姓名
+          marker.JBXX_LXRXM = item.JBXX_LXRXM //联系人姓名
           marker.JBXX_HJXXDZ = item.JBXX_HJXXDZ //地址
+          marker.JBXX_XB = item.JBXX_XB //性别
+          marker.JBXX_LXRDH = item.JBXX_LXRDH //联系人电话
 
           marker.doctor_team_id = item.doctor_team_id //医疗团队编号
           marker.health_doc_id = item.health_doc_id //医疗团队医生编号
           marker.company_id = item.company_id //机构编号
           marker.order_status = item.order_status //订单状态
-          marker.worker_name = item.worker_name //签约医生
+          marker.worker_sex = item.worker_sex //医生性别
+          marker.worker_address = item.worker_address //机构位置
           marker.worker_mobile = item.worker_mobile //医生电话
           marker.worker_address = item.worker_address //机构位置
 
-
+          
           marker.setLabel({
               offset: new AMap.Pixel(20, 20),  //设置文本标注偏移量
               content: `<div class='info'>${marker.consignee}</div>`, //设置文本标注内容
@@ -277,74 +280,111 @@ export default {
     },
     displayLabel(marker,position){
       let map = AMapManager.getMap()
+      let that = this
       //鼠标点击事件
       marker.on('mousedown',function () {
-        let that = this
         var info 
         if(marker.order_status == 11){
-          info ='<div className="custom-infowindow input-card" style="width:200px;border-radius:20px;font-size:10px">' +
-          '<div>' +
-            `<img src=${oldman} style="width:100px;height:100px;border-radius:4em"/ >` +
-            '<div class="input-item">' +
-                '<div class="input-item-prepend">' +
-                    `<div class="input-item-text" >姓名：${marker.JBXX_XM}</div>` +
-                    `<div class="input-item-text" >出生日期：${marker.JBXX_CSRQ}</div>` +
-                    `<div class="input-item-text" >订单状态：${marker.order_status == 11? '未接单' :(marker.order_status == 12? '已接单，未服务' :'正在服务')}</div>` +
-                '</div>' +
+          info =
+          '<div className="custom-infowindow input-card" style="width:300px;border-radius:20px;font-size:10px;">' +
+            '<div style="text-align: center">服务对象信息</div>' +
+            '<div>' +
+              `<img src=${oldman} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left"/ >` +
+              '<div class="input-item">' +
+                  '<div class="input-item-prepend">' +
+                      `<div class="input-item-text" >真实姓名：${marker.JBXX_XM}</div>` +
+                      `<div class="input-item-text" >下单时间：${marker.createdat}</div>` +
+                      `<div class="input-item-text" >订单状态：${marker.order_status == 11? '未接单' :(marker.order_status == 12? '已接单，未服务' :'正在服务')}</div>` +
+                      `<div class="input-item-text" >联系人姓名：${marker.JBXX_LXRXM}</div>` +
+                      `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH}</div>` +
+                  '</div>' +
+              '</div>' +
+              '<input id="btn1" type="button" class="btn" value="去派单" onclick="showMoreMessage1()" style="margin-left:40px"/>' +
+              '<input id="btn3" type="button" class="btn" value="生命体征" onclick="showMoreMessage1()"/>' +
             '</div>' +
-            '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()" style="margin-right:40px"/>' +
-             '<input id="btn3" type="button" class="btn" value="生命体征" onclick="showMoreMessage1()"/>' +
-          '</div>' +
-        '</div>';
+          '</div>';
+          that.infoWindow = new AMap.InfoWindow({
+              position:marker.getPosition(),
+              content: info , //使用默认信息窗体框样式，显示信息内容
+              closeWhenClickMap:true,
+          });
         }else{
-          info = '<div className="custom-infowindow input-card" style="width:200px;border-radius:20px;font-size:10px">' +
-          '<div>' +
-            `<img src=${oldman} style="width:100px;height:100px;border-radius:4em"/ >` +
-            '<div class="input-item">' +
-                '<div class="input-item-prepend">' +
-                    `<div class="input-item-text" >姓名：${marker.JBXX_XM}</div>` +
-                    `<div class="input-item-text" >出生日期：${marker.JBXX_CSRQ}</div>` +
-                    `<div class="input-item-text" >订单状态：${marker.order_status == 11? '未接单' :(marker.order_status == 12? '已接单，未服务' :'正在服务')}</div>` +
+          that.axios
+          .get(
+            "/doctorteam?company_id=" + marker.company_id,
+          )
+          .then(res => {
+            let teamInfo = res.data.data.data.filter(item => item.id == marker.doctor_team_id)
+            console.log(teamInfo)
+            let doctorName,nurseName,healthManagerName,pharmacistName,serviceStafName
+            if(teamInfo.length > 0){
+              doctorName = teamInfo[0].doctorInfo.name
+              nurseName = teamInfo[0].nurseInfo.name
+              healthManagerName = teamInfo[0].healthManagerInfo.name
+              pharmacistName = teamInfo[0].pharmacistInfo.name
+              serviceStafName = teamInfo[0].serviceStaffInfo.name
+            }
+            info = 
+            '<div className="custom-infowindow input-card" style="width:300px;border-radius:20px;font-size:10px;">' +
+              '<div style="text-align: center">服务对象信息</div>' +
+              '<div>' +
+                `<img src=${oldman} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left"/ >` +
+                '<div class="input-item">' +
+                    '<div class="input-item-prepend">' +
+                      `<div class="input-item-text" >真实姓名：${marker.JBXX_XM}</div>` +
+                      `<div class="input-item-text" >下单时间：${marker.createdat}</div>` +
+                      `<div class="input-item-text" >订单状态：${marker.order_status == 11? '未接单' :(marker.order_status == 12? '已接单，未服务' :'正在服务')}</div>` +
+                      `<div class="input-item-text" >联系人姓名：${marker.JBXX_LXRXM}</div>` +
+                      `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH}</div>` +
+                    '</div>' +
                 '</div>' +
-            '</div>' +
-            '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()" style="margin-right:40px"/>' +
-             '<input id="btn3" type="button" class="btn" value="生命体征" onclick="showMoreMessage1()"/>' +
-          '</div>' +
-          '<div style="width:100%;height:3px;background-color:grey;margin:16px 0">' +
-          '</div>' +
-          '<div>' +
-            `<img src=${doctor} style="width:100px;height:100px;border-radius:4em"/>` +
-            '<div class="input-item">' +
-                '<div class="input-item-prepend">' +
-                    `<div class="input-item-text" >医生姓名：${marker.worker_name}</div>` +
-                    `<div class="input-item-text" >机构位置：${marker.worker_address}</div>` +
+                '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()" style="margin-right:40px"/>' +
+                '<input id="btn3" type="button" class="btn" value="生命体征" onclick="showMoreMessage1()"/>' +
+              '</div>' +
+              '<div style="width:100%;height:3px;background-color:grey;margin:16px 0">' +
+              '</div>' +
+
+
+              '<div style="text-align: center">医疗团队信息</div>' +
+              '<div>' +
+                `<img src=${doctor} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left"/>` +
+                '<div class="input-item">' +
+                    '<div class="input-item-prepend">' +
+                    //当没有teamInfo信息的时候，显示固定信息；有则显示成员信息
+                    (teamInfo.length == 0 ?('此单非医疗团队医生接单'):(
+                      `<div class="input-item-text" >医生：${doctorName}</div>` +
+                      `<div class="input-item-text" >护士：${nurseName}</div>` + 
+                      `<div class="input-item-text" >健康管家：${healthManagerName}</div>` +
+                      `<div class="input-item-text" >药师：${pharmacistName}</div>` +
+                      `<div class="input-item-text" >服务人员：${serviceStafName}</div>` )) +
+                    '</div>' +
                 '</div>' +
-            '</div>' +
-            '<input id="btn2" type="button" class="btn" value="服务记录" onclick="showMoreMessage2()"/>' +
-          '</div>' +
-        '</div>';
+                '<input id="btn2" type="button" class="btn" value="服务记录" onclick="showMoreMessage2()"/>' +
+              '</div>' +
+            '</div>';
+            that.infoWindow = new AMap.InfoWindow({
+                position:marker.getPosition(),
+                content: info , //使用默认信息窗体框样式，显示信息内容
+                closeWhenClickMap:true,
+            });
+          });
         }
-        this.infoWindow = new AMap.InfoWindow({
-            position:marker.getPosition(),
-            content: info , //使用默认信息窗体框样式，显示信息内容
-            closeWhenClickMap:true,
-        });
         //使用其它坐标会有bug
         setTimeout(function(){
           that.infoWindow.open(map);
-          var btn1 = document.getElementById('btn1');
-          var btn2 = document.getElementById('btn2');
-          //onclick事件
-          let showMoreMessage1 = function(){
-            // lnglatInputValue.value = marker.Uh.position.lng + "," +marker.Uh.position.lat 
-            console.log(marker)
-          }
-          lnglatInput.onclick = showMoreMessage1
-          let showMoreMessage2 = function(){
-            // lnglatInputValue.value = marker.Uh.position.lng + "," +marker.Uh.position.lat 
-            console.log(marker)
-          }
-          lnglatInput.onclick = showMoreMessage2
+          // var btn1 = document.getElementById('btn1');
+          // var btn2 = document.getElementById('btn2');
+          // //onclick事件
+          // let showMoreMessage1 = function(){
+          //   // lnglatInputValue.value = marker.Uh.position.lng + "," +marker.Uh.position.lat 
+          //   console.log(marker)
+          // }
+          // btn1.onclick = showMoreMessage1
+          // let showMoreMessage2 = function(){
+          //   // lnglatInputValue.value = marker.Uh.position.lng + "," +marker.Uh.position.lat 
+          //   console.log(marker)
+          // }
+          // btn1.onclick = showMoreMessage2
         },200)
       })
     },
