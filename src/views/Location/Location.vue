@@ -29,12 +29,18 @@
         </el-cascader>
       </template>
     </div>  
+    <div class='explain' style='font-size:10px'>
+      <div class='icon1'><img src='../../assets/yellow-drip.png' width="20" height="30"/><span>已接单</span></div>
+      <div class='icon1'><img src='../../assets/blue-drip.png' width="20" height="30"/><span>正在服务</span></div>
+      <div class='icon1'><img src='../../assets/red-drip.png' width="20" height="30"/><span>未接单</span></div>
+    </div>  
   </div>
 </template>
 
 <script>
 import Modal from '../Location/Model.vue'
 import VueAMap from 'vue-amap';
+import { lazyAMapApiLoaderInstance } from 'vue-amap';
 
 import oldman from '../../assets/oldman.jpg';
 import doctor from '../../assets/doctor.jpeg';
@@ -83,10 +89,17 @@ export default {
       type:'',
       lng:[],
       infoWindow:{},
+      timer:'',
     }
   },
   components:{
     'Modal':Modal,
+  },
+  created(){
+    const that = this
+    setTimeout(function () {
+      that.people();
+    },100)
   },
   mounted() {
     const that = this
@@ -96,8 +109,13 @@ export default {
         that.screenHeight = window.screenHeight
       })()
     }
-    this.people();
-    this.getStreet();
+    that.getStreet();
+    this.timer = setInterval(function () {
+      that.people();
+    },60000)
+  },
+  beforeDestroy(){
+    clearInterval(this.timer)
   },
   watch: {
     screenHeight (val) {
@@ -228,53 +246,51 @@ export default {
       console.log(this.circles)
       let map = AMapManager.getMap()
       //如果有，则清空数组，没有则添加
-      if(this.markerList.length == 0 ){
-        
-      }else{
+      if(this.markerList.length !== 0 ){
         map.remove(this.markerList)
         this.markerList = []
       }
       this.circles.map(item => {
-          let marker = new AMap.Marker({
-            icon: new AMap.Icon({
-              size: new AMap.Size(20, 30),
-              //根据不同状态展示不同icon
-              image:item.order_status == 11? red_drip :(item.order_status == 12? yellow_drip :blue_drip),
-              imageSize: new AMap.Size(20, 30),
-            }),
-            position: new AMap.LngLat(item.lng,item.lat),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-          });
-          marker.setAnimation(item.order_status == 11? 'AMAP_ANIMATION_BOUNCE':'AMAP_ANIMATION_NONE')
-          // marker.setTitle('我是marker的title');
-          marker.consignee = item.consignee //昵称
-          marker.address = item.address //详细住址
-          marker.JBXX_BRDH = item.JBXX_BRDH //联系方式
-          marker.createdat = item.createdat //记录时间
-          marker.JBXX_XM = item.JBXX_XM //真实姓名
-          marker.JBXX_CSRQ = item.JBXX_CSRQ //出生日期
-          marker.JBXX_LXRXM = item.JBXX_LXRXM //联系人姓名
-          marker.JBXX_HJXXDZ = item.JBXX_HJXXDZ //地址
-          marker.JBXX_XB = item.JBXX_XB //性别
-          marker.JBXX_LXRDH = item.JBXX_LXRDH //联系人电话
+        let marker = new AMap.Marker({
+          icon: new AMap.Icon({
+            size: new AMap.Size(20, 30),
+            //根据不同状态展示不同icon
+            image:item.order_status == 11? red_drip :(item.order_status == 12? yellow_drip :blue_drip),
+            imageSize: new AMap.Size(20, 30),
+          }),
+          position: new AMap.LngLat(item.lng,item.lat),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+        });
+        marker.setAnimation(item.order_status == 11? 'AMAP_ANIMATION_BOUNCE':'AMAP_ANIMATION_NONE')
+        // marker.setTitle('我是marker的title');
+        marker.consignee = item.consignee //昵称
+        marker.address = item.address //详细住址
+        marker.JBXX_BRDH = item.JBXX_BRDH //联系方式
+        marker.createdat = item.createdat //记录时间
+        marker.JBXX_XM = item.JBXX_XM //真实姓名
+        marker.JBXX_CSRQ = item.JBXX_CSRQ //出生日期
+        marker.JBXX_LXRXM = item.JBXX_LXRXM //联系人姓名
+        marker.JBXX_HJXXDZ = item.JBXX_HJXXDZ //地址
+        marker.JBXX_XB = item.JBXX_XB //性别
+        marker.JBXX_LXRDH = item.JBXX_LXRDH //联系人电话
 
-          marker.doctor_team_id = item.doctor_team_id //医疗团队编号
-          marker.health_doc_id = item.health_doc_id //医疗团队医生编号
-          marker.company_id = item.company_id //机构编号
-          marker.order_status = item.order_status //订单状态
-          marker.worker_sex = item.worker_sex //医生性别
-          marker.worker_address = item.worker_address //机构位置
-          marker.worker_mobile = item.worker_mobile //医生电话
-          marker.worker_address = item.worker_address //机构位置
+        marker.doctor_team_id = item.doctor_team_id //医疗团队编号
+        marker.health_doc_id = item.health_doc_id //医疗团队医生编号
+        marker.company_id = item.company_id //机构编号
+        marker.order_status = item.order_status //订单状态
+        marker.worker_sex = item.worker_sex //医生性别
+        marker.worker_address = item.worker_address //机构位置
+        marker.worker_mobile = item.worker_mobile //医生电话
+        marker.worker_address = item.worker_address //机构位置
 
-          
-          marker.setLabel({
-              offset: new AMap.Pixel(20, 20),  //设置文本标注偏移量
-              content: `<div class='info'>${marker.consignee}</div>`, //设置文本标注内容
-              direction: 'right' //设置文本标注方位
-          });
-          this.displayLabel(marker)
-          this.markerList.push(marker)
-        })
+        
+        marker.setLabel({
+            offset: new AMap.Pixel(20, 20),  //设置文本标注偏移量
+            content: `<div class='info'>${marker.consignee}</div>`, //设置文本标注内容
+            direction: 'right' //设置文本标注方位
+        });
+        this.displayLabel(marker)
+        this.markerList.push(marker)
+      })
       map.add(this.markerList)
       map.setFitView();
     },
@@ -400,6 +416,20 @@ export default {
     width:500px;
     right:50px;
     top:20px;
+    background-color: #fff;
+    z-index: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content:space-around ;
+    align-items: center;
+    padding: 10px 20px;
+  }
+  .explain{
+    position:absolute;
+    width:500px;
+    height:50px;
+    right:50px;
+    bottom:100px;
     background-color: #fff;
     z-index: 1;
     display: flex;

@@ -9,13 +9,13 @@
         <el-breadcrumb-item>签约管理</el-breadcrumb-item>
         <el-breadcrumb-item>签约列表</el-breadcrumb-item>
       </el-breadcrumb>
-      <div class="operation-nav">
+      <!-- <div class="operation-nav">
           <el-button
             type="primary"
             icon="plus"
             @click="handleRowPush"
           >查看签约申请</el-button>
-      </div>
+      </div> -->
     </div>
 
     <div class="content-main">
@@ -67,35 +67,34 @@
           <el-table-column
             prop="id"
             label="签约编号"
-            min-width="100"
+            min-width="50"
           >
           </el-table-column>
           <el-table-column
-            prop="real_name"
+            prop="healthdocInfo.JBXX_XM"
             label="姓名"
-            min-width="100"
+            min-width="40"
           >
-          <template slot-scope="scope">
-                {{scope.row.started_by_admin == 0 ? scope.row.addressInfo.name : scope.row.real_name }}
-          </template>
           </el-table-column>
           <el-table-column
+            prop="healthdocInfo.JBXX_BRDH"
+            label="本人电话"
+            min-width="60"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="healthdocInfo.JBXX_JZDZXX"
             label="详细地址"
             min-width="100"
           >
-          <template slot-scope="scope">
-                {{scope.row.started_by_admin == 0 ? scope.row.addressInfo.address : scope.row.second_address }}
-          </template>
           </el-table-column>
 
           <el-table-column
-            prop="mobile"
-            label="联系方式"
+            prop="healthdocInfo.JBXX_SFZH"
+            label="身份证号"
             min-width="100"
           >
-          <template slot-scope="scope">
-                {{scope.row.started_by_admin == 0 ? scope.row.addressInfo.mobile : scope.row.mobile }}
-          </template>
+
             <!-- <template scope="scope">
               <img
                 v-if="scope.row.list_pic_url"
@@ -107,20 +106,20 @@
           <el-table-column
             prop="create_time"
             label="签约时间"
-            min-width="120"
+            min-width="80"
           >
           </el-table-column>
   
           <el-table-column
             prop="teamInfo.id"
             label="签约团队编号"
-            min-width="80"
+            min-width="50"
           >
           </el-table-column>
           <el-table-column
             prop="teamInfo.doctorInfo.name"
             label="签约医生名称"
-            min-width="80"
+            min-width="60"
           >
           </el-table-column>
           <!--          <el-table-column prop="sort_order" label="排序" min-width="80">
