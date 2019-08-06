@@ -9,14 +9,22 @@
       class="amap-demo">
       </el-amap>
     </div>
+    <div class='selects'>
     <div class='select'>
-      <el-button type="primary" size="mini" @click="people">所有老人</el-button>
-      <el-button type="primary" icon="el-icon-search" size="mini" @click="allPeople">更多操作</el-button>
+        <el-button type="primary" size="mini" @click="people" icon="el-icon-refresh">刷新</el-button>
+      <el-button type="primary"  size="mini" @click="allPeople">签约人员</el-button>
+       <el-button type="primary"  size="mini" @click="allDoctor" >医疗团队</el-button>
+    </div>
       <Modal 
         v-show="showModal" 
-        width="800"
+        width="1000"
         @on-cancel="cancel">
       </Modal>
+       <Doctor 
+        v-show="showDoctor" 
+        width="1000"
+        @on-close="close">
+      </Doctor>
       <template>
         <el-cascader
         placeholder="选乡镇服务站点"
@@ -39,6 +47,7 @@
 
 <script>
 import Modal from '../Location/Model.vue'
+import Doctor from '../Location/Doctor.vue'
 import VueAMap from 'vue-amap';
 import { lazyAMapApiLoaderInstance } from 'vue-amap';
 
@@ -61,6 +70,7 @@ export default {
       // info:'',
       // visible: false,
       showModal:false,
+      showDoctor:false,
       type:'',
       options:[],
       selectedOptions: [],
@@ -94,6 +104,7 @@ export default {
   },
   components:{
     'Modal':Modal,
+    'Doctor':Doctor
   },
   created(){
     const that = this
@@ -143,9 +154,18 @@ export default {
       map.clearInfoWindow( )
       this.showModal = !this.showModal; 
     },
+      allDoctor() {
+      let map = AMapManager.getMap()
+      map.clearInfoWindow( )
+      this.showDoctor = !this.showDoctor; 
+    },
     //响应on-cancel事件，来把弹出框关闭
     cancel() {
       this.showModal = false;
+    },
+      //响应on-close事件，来把弹出框关闭
+    close() {
+      this.showDoctor = false;
     },
     handleChange(val){
       var that = this
@@ -188,6 +208,7 @@ export default {
       this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user')
       .then(res => {
         this.circles = res.data.data
+  
     //             var peopleList=res.data.data;
     //     //数据的简单
     //     var list=[];
@@ -199,7 +220,7 @@ export default {
     //     list1.push(list.slice(j,j+2));
     // } 
     //  this.lng=list1
-              this.display();
+        this.display();
         //  this.buildMarkers();
       })
     },
@@ -303,11 +324,11 @@ export default {
         if(marker.order_status == 11){
           info =
           '<div className="custom-infowindow input-card" style="width:300px;border-radius:20px;font-size:10px;">' +
-            '<div style="text-align: center">服务对象信息</div>' +
+            '<div style="text-align: center;font-weight: bold;margin:10px 0">服务对象信息</div>' +
             '<div>' +
-              `<img src=${oldman} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left"/ >` +
-              '<div class="input-item">' +
-                  '<div class="input-item-prepend">' +
+              `<img src=${oldman} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-right:20px"/ >` +
+              '<div class="input-item" style="margin-bottom:10px">' +
+                  '<div class="input-item-prepend" >' +
                       `<div class="input-item-text" >真实姓名：${marker.JBXX_XM}</div>` +
                       `<div class="input-item-text" >下单时间：${marker.createdat}</div>` +
                       `<div class="input-item-text" >订单状态：${marker.order_status == 11? '未接单' :(marker.order_status == 12? '已接单，未服务' :'正在服务')}</div>` +
@@ -315,7 +336,7 @@ export default {
                       `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH}</div>` +
                   '</div>' +
               '</div>' +
-              '<input id="btn1" type="button" class="btn" value="去派单" onclick="showMoreMessage1()" style="margin-left:40px"/>' +
+              '<input id="btn1" type="button" class="btn" value="去派单" onclick="showMoreMessage1()" style="margin-right:40px"/>' +
               '<input id="btn3" type="button" class="btn" value="生命体征" onclick="showMoreMessage1()"/>' +
             '</div>' +
           '</div>';
@@ -342,10 +363,10 @@ export default {
             }
             info = 
             '<div className="custom-infowindow input-card" style="width:300px;border-radius:20px;font-size:10px;">' +
-              '<div style="text-align: center">服务对象信息</div>' +
+              '<div style="text-align:center;font-weight: bold;margin:10px 0">服务对象信息</div>' +
               '<div>' +
-                `<img src=${oldman} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left"/ >` +
-                '<div class="input-item">' +
+                `<img src=${oldman} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-right:20px;margin-right:20px"/ >` +
+                '<div class="input-item" style="margin-bottom:10px">' +
                     '<div class="input-item-prepend">' +
                       `<div class="input-item-text" >真实姓名：${marker.JBXX_XM}</div>` +
                       `<div class="input-item-text" >下单时间：${marker.createdat}</div>` +
@@ -361,10 +382,10 @@ export default {
               '</div>' +
 
 
-              '<div style="text-align: center">医疗团队信息</div>' +
+              '<div style="text-align: center;font-weight: bold;margin:10px 0">医疗团队信息</div>' +
               '<div>' +
                 `<img src=${doctor} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left"/>` +
-                '<div class="input-item">' +
+                '<div class="input-item" style="margin-bottom:10px">' +
                     '<div class="input-item-prepend">' +
                     //当没有teamInfo信息的时候，显示固定信息；有则显示成员信息
                     (teamInfo.length == 0 ?('此单非医疗团队医生接单'):(
@@ -411,18 +432,19 @@ export default {
   .amap{
     position:relative;
   }
-  .select{
+  .selects{
     position:absolute;
-    width:500px;
+    width:800px;
     right:50px;
     top:20px;
     background-color: #fff;
     z-index: 1;
     display: flex;
     flex-direction: row;
-    justify-content:space-around ;
+    justify-content:space-between ;
     align-items: center;
     padding: 10px 20px;
+    
   }
   .explain{
     position:absolute;
