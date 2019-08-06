@@ -1,53 +1,55 @@
 <template>
   <div class="modal-backdrop">
-     <div class="modal" :style="mainStyles" v-if='show'>
+     <div class="modal" :style="mainStyles" v-show='show'>
         <div class="modal-header">
           <h3>签约人员列表</h3>
         </div>
         <div class="modal-body">
                 <div class="searchWord">
         <el-input
-          style="display: inline-block;width:35%;"
+          style="display: inline-block;width:45%;"
           size="small"
            v-model="search"
-          placeholder="请输入医生姓名"/>
+           suffix-icon="el-icon-search"
+          placeholder="请输入签约人姓名或电话或身份证号进行搜索"/>
       </div>
       <el-table
-        :data="tables.slice((currentPage - 1) * pagesize, currentPage * pagesize)"
-        style="width: 100%">
+        :data="circles"
+        style="width: 100%"
+         height="500"
+        >
         <el-table-column
-          prop="worker_name"
-          label="医生姓名"
-          width="100"
+         fixed
+          prop="JBXX_XM"
+          label="真实姓名"
+          
         />
-        <el-table-column prop="createdate" header-align="center" align="center" label="选择日期" width="450">
-          <template scope="scope">
-            <el-date-picker 
-            v-model="scope.row.createdate" 
-            type="datetimerange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            value-format='yyyy-MM-dd HH:mm:ss'
-            />
-          </template>
-        </el-table-column>
+         <el-table-column
+          prop="HEALTH_ID"
+          label="身份证号"
+         
+        />
+         <el-table-column
+          prop="JBXX_BRDH"
+          label="联系方式"
+         
+        />
+         <el-table-column
+          prop="JBXX_HJXXDZ"
+          label="家庭住址"
+       
+        />
         <el-table-column
           fixed="right"
           label="操作"
-          max-width="80"
+          min-width="80"
         >
           <template slot-scope="scope">
             <el-button
               size="mini"
               type="info"
               @click="serviceClick(scope.$index, scope.row)"
-            >服务记录</el-button>
-              <el-button
-              size="mini"
-              type="success"
-              @click="lifeClick(scope.$index, scope.row)"
-            >生命体征</el-button>
+            >健康档案</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -58,6 +60,7 @@
           layout="total, prev, pager, next, jumper"
           @current-change="handleCurrentChange"
 			    @size-change="handleSizeChange"
+           :current-page="currentPage"
         />
       </div>
         </div>
@@ -67,34 +70,70 @@
     </div>
 
   <!-- 这只是一个测试而已 -->
-      <div class="modal" :style="mainStyles" v-if='service'>
+      <div class="modal" :style="mainStyles" v-show='service'>
         <div class="modal-header">
-          <h3>服务记录</h3>
+          <h3>健康档案</h3>
         </div>
         <div class="modal-body">
-                <div class="searchWord">
-        <el-input
-          style="display: inline-block;width:35%;"
-          size="small"
-           v-model="search"
-          placeholder="请输入医生姓名"/>
-      </div>
       <el-table
-        :data="tables.slice((currentPage - 1) * pagesize, currentPage * pagesize)"
+        :data="helthdoc"
+        height="500"
         style="width: 100%">
         <el-table-column
-          prop="worker_name"
-          label="医生姓名"
-          max-width="80"
+          fixed
+          prop="create_time"
+          label="就诊时间" 
+        />
+          <el-table-column
+          prop="condition"
+          label="症状"
+        />
+          <el-table-column
+          prop="blood_pressure_high"
+          label="最高血压"
+        />
+          <el-table-column
+          prop="blood_pressure_low"
+          label="最低血压"
+      
+        />
+         <el-table-column
+          prop="blood_oxygen"
+          label="血氧（%）"
+        />
+          <el-table-column
+          prop="blood_sugar"
+          label="血糖（%）"
+        />
+          <el-table-column
+          prop="heart_rate"
+          label="心率"
+        />
+          <el-table-column
+          prop="body_temperature"
+          label="体温（摄氏度）"
+        />
+          <el-table-column
+          prop="height"
+          label="身高（cm）"
+        />
+         <el-table-column
+          prop="weight"
+          label="体重（kg）"
+        />
+          <el-table-column
+          prop="breathe"
+          label="呼吸频次"
         />
       </el-table>
        <div style="text-align: center;margin-top: 30px;">
         <el-pagination
-          :page-size="pagesize"
-          :total="total"
+          :page-size="pagesizes"
+          :total="totals"
           layout="total, prev, pager, next, jumper"
-          @current-change="handleCurrentChange"
-			    @size-change="handleSizeChange"
+          @current-change="handleCurrentChanges"
+			    @size-change="handleSizeChanges"
+          :current-page="currentPages"
         />
       </div>
         </div>
@@ -102,46 +141,6 @@
             <el-button  type="primary"  @click="serviceClose">返回</el-button>
         </div>
     </div>
-
-
-<!-- 这只是一个测试而已 -->
-      <div class="modal" :style="mainStyles" v-if='life'>
-        <div class="modal-header">
-          <h3>生命体征</h3>
-        </div>
-        <div class="modal-body">
-                <div class="searchWord">
-        <el-input
-          style="display: inline-block;width:35%;"
-          size="small"
-           v-model="search"
-          placeholder="请输入医生姓名"/>
-      </div>
-      <el-table
-        :data="tables.slice((currentPage - 1) * pagesize, currentPage * pagesize)"
-        style="width: 100%">
-        <el-table-column
-          prop="worker_name"
-          label="医生姓名"
-          max-width="80"
-        />
-      </el-table>
-       <div style="text-align: center;margin-top: 30px;">
-        <el-pagination
-          :page-size="pagesize"
-          :total="total"
-          layout="total, prev, pager, next, jumper"
-          @current-change="handleCurrentChange"
-			    @size-change="handleSizeChange"
-        />
-      </div>
-        </div>
-        <div class="modal-footer">
-            <el-button  type="primary"   @click="lifeClose">返回</el-button>
-        </div>
-    </div>
-
-   
   </div>
 </template>
 
@@ -159,12 +158,16 @@ export default {
     return { 
         show:true,
         service:false,
-        life:false,
         currentPage: 1,
-        count: 0,
-        pagesize: 10,  
+        total: 0,
+        pagesize: 10, 
         search:'',
-        circles:[]     
+        circles:[],
+        helthdoc:[] ,
+        totals:0 ,
+        currentPages:1,
+        pagesizes:10,
+        health_doc_id:''
     }
 
   },
@@ -175,57 +178,67 @@ export default {
           style.width = `${parseInt(this.width)}px`;
           return style;
       }  ,
-      tables(){
-          var  search=this.search
-      if (search) {
-        return this.circles.filter(dataNews => {
-          return Object.keys(dataNews).some(key => {
-            return String(dataNews[key]).toLowerCase().indexOf(search) > -1
-          })
-        })
-      }
-      console.log(this.circles)
-      return this.circles
-    },
-    total () {
-      return this.tables.length
-    }
+    //   tables(){
+    //       var  search=this.search
+    //   if (search) {
+    //     return this.circles.filter(dataNews => {
+    //       return Object.keys(dataNews).some(key => {
+    //         return String(dataNews[key]).toLowerCase().indexOf(search) > -1
+    //       })
+    //     })
+    //   }
+    //   console.log(this.circles)
+    //   return this.circles
+    // },
+    // total () {
+    //   return this.tables.length
+    // }
   },
   mounted(){
        this.people();
   },
   methods:{
-    //点击服务记录，关闭签约人员列表，展示服务记录的内容
-    serviceClick(){
+    //点击服务记录，关闭签约人员列表，展示健康档案的内容
+    serviceClick(index,row){
+      this. health_doc_id=row.id
       this.show=false;
       this.service=true
+   this.helthdangan()
+    },
+    helthdangan(){
+         this.axios.get('https://api.anjihos.newlioncity.com/admin/vitalsign?health_doc_id='+this.health_doc_id).then(res=>{
+         this.helthdoc = res.data.data.data;
+          this.totals = res.data.data.count;
+          this.currentPages = res.data.data.currentPage;
+      })
     },
     //点击返回按钮，将服务记录隐藏，然后将签约列表显示出来
       serviceClose(){
       this.service=false
       this.show=true;
     },
-    //点击生命体征按钮，关闭签约人员的列表，展示该人员的生命体征报告
-    lifeClick(){
-       this.show=false;
-      this.life=true
-    },
-  //点击返回按钮，将生命体征报告隐藏，然后将签约人员的列表显示出来
-    lifeClose(){
-      this.life=false
-      this.show=true;
-    },
       //获取所有人的列表
         people() {
         this.axios
-        .get('https://api.anjihos.newlioncity.com/admin/position')
+        .get('https://api.anjihos.newlioncity.com/admin/healthdoc',
+        {
+          params: {
+            page: this.currentPage
+          }
+        }
+        )
         .then(res => {
-          this.circles = res.data.data
-          this.count = this.circles.length
-          this.circles.map(function(item){
-            item.center = []
-            item.center.push(item.lng,item.lat)
-          })
+          console.log(res)
+          this.circles = res.data.data.data;
+          this.total = res.data.data.count;
+          this.currentPage = res.data.data.currentPage;
+          // this.circles = res.data.data
+          // console.log(res.data.data)
+          // this.count = this.circles.length
+          // this.circles.map(function(item){
+          //   item.center = []
+          //   item.center.push(item.lng,item.lat)
+          // })
         })
       
     },
@@ -236,9 +249,20 @@ export default {
         // 分页
     handleCurrentChange(val) {
       this.currentPage = val;
+      this.people();
     },
     handleSizeChange(val) {
       this.pagesize = val;
+      this.people();
+    },
+        handleCurrentChanges(val) {
+      this.currentPages = val;
+      this.helthdangan()
+    },
+    handleSizeChanges(val) {
+      this.pagesizes = val;
+      this.helthdangan()
+    
     },
   }
 }
