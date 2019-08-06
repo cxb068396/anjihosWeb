@@ -410,40 +410,40 @@ export const asyncRouterMap = [
         path: 'contractlist',
         component: () => import('@/views/contract/ContractList'),
         name: 'contractlist',
-        meta: { title: '用户签约列表', icon: 'form' }
+        meta: { title: '签约列表', icon: 'form' }
       },
-      {
-        path: 'contractaddlist',
-        component: () => import('@/views/contract/ContractAddList'),
-        name: 'contractaddlist',
-        meta: { title: '平台签约列表', icon: 'form' }
-      },
-      {
-        path: 'contractaddpage',
-        component: () => import('@/views/contract/ContractAddPage'),
-        name: 'contractaddpage',
-        meta: { title: '签约申请', icon: 'form', noCache: true }
-      },
-      {
-        path: 'contractsendcompany',
-        component: () => import('@/views/contract/ContractSendCompany'),
-        name: 'contractsendcompany',
-        meta: { title: '签约机构', icon: 'form' },
-        hidden: true
-      },
-      {
-        path: 'contractsendworker',
-        component: () => import('@/views/contract/ContractSendWorker'),
-        name: 'contractsendworker',
-        meta: { title: '签约医生', icon: 'form' },
-        hidden: true
-      },
-      {
-        path: 'contractadminaddpage',
-        component: () => import('@/views/contract/ContractAdminAddPage'),
-        name: 'contractadminaddpage',
-        meta: { title: '主动申请', icon: 'form' }
-      }
+      // {
+      //   path: 'contractaddlist',
+      //   component: () => import('@/views/contract/ContractAddList'),
+      //   name: 'contractaddlist',
+      //   meta: { title: '平台签约列表', icon: 'form' }
+      // },
+      // {
+      //   path: 'contractaddpage',
+      //   component: () => import('@/views/contract/ContractAddPage'),
+      //   name: 'contractaddpage',
+      //   meta: { title: '签约申请', icon: 'form', noCache: true }
+      // },
+      // {
+      //   path: 'contractsendcompany',
+      //   component: () => import('@/views/contract/ContractSendCompany'),
+      //   name: 'contractsendcompany',
+      //   meta: { title: '签约机构', icon: 'form' },
+      //   hidden: true
+      // },
+      // {
+      //   path: 'contractsendworker',
+      //   component: () => import('@/views/contract/ContractSendWorker'),
+      //   name: 'contractsendworker',
+      //   meta: { title: '签约医生', icon: 'form' },
+      //   hidden: true
+      // },
+      // {
+      //   path: 'contractadminaddpage',
+      //   component: () => import('@/views/contract/ContractAdminAddPage'),
+      //   name: 'contractadminaddpage',
+      //   meta: { title: '主动申请', icon: 'form' }
+      // }
     ]
   },
   {
