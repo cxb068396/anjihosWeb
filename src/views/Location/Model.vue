@@ -125,6 +125,7 @@
           prop="breathe"
           label="呼吸频次"
         />
+      
       </el-table>
        <div style="text-align: center;margin-top: 30px;">
         <el-pagination
@@ -160,7 +161,7 @@ export default {
         service:false,
         currentPage: 1,
         total: 0,
-        pagesize: 10, 
+        pagesize:20, 
         search:'',
         circles:[],
         helthdoc:[] ,
@@ -178,21 +179,7 @@ export default {
           style.width = `${parseInt(this.width)}px`;
           return style;
       }  ,
-    //   tables(){
-    //       var  search=this.search
-    //   if (search) {
-    //     return this.circles.filter(dataNews => {
-    //       return Object.keys(dataNews).some(key => {
-    //         return String(dataNews[key]).toLowerCase().indexOf(search) > -1
-    //       })
-    //     })
-    //   }
-    //   console.log(this.circles)
-    //   return this.circles
-    // },
-    // total () {
-    //   return this.tables.length
-    // }
+
   },
   mounted(){
        this.people();

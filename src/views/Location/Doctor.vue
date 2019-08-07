@@ -96,15 +96,20 @@
     </el-table-column>
         <el-table-column
           fixed="right"
-          label="操作"
-          min-width="80"
+          label="签约人员"
+          min-width="120"
         >
           <template slot-scope="scope">
             <el-button
               size="mini"
               type="info"
               @click="serviceClick(scope.$index, scope.row)"
-            >签约人员</el-button>
+            >人员列表</el-button>
+              <el-button
+              size="mini"
+              type="primary"
+              @click="peopleLocationClick(scope.$index, scope.row)"
+            >人员位置</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -230,7 +235,12 @@ export default {
           currentPages: 1,
         totals: 0,
         pagesizes: 10,
-        doctor_team_id:'' 
+        doctor_team_id:'' ,
+        address:'',
+        location:'',
+        contractPeople:'',
+        contractPeoplelist:'',
+        arr:[]
     }
 
   },
@@ -262,13 +272,74 @@ export default {
   },
   methods:{
       locationClick(index,row){
-          console.log(row.healthdocInfo.JBXX_JZDZXX)
-   
- 
+        console.log(row)
+       this.address=row.healthdocInfo.JBXX_JZDZXX
+       this.contractPeople=row
+       this.getLocation()
+       var str=this.location.split(',')
+       this.contractPeople.lng=str[0]
+       this.contractPeople.lat=str[1]
+       var arr=[]
+   arr.push(this.contractPeople)
+   console.log(arr)
+       //console.log(this.location)
+       //这里因为有请求延迟，所以做一个判断
+      if(this.location){
+        this.$emit('func',arr) //子组件获得的经纬度传递给父组件
+        }else{
+          return
+        }
       },
+    peopleLocationClick(index, row){
+    var that=this
+      this.doctor_team_id=row.doctorInfo.doctor_team_id
+      this.peoplelist()
+      //console.log(this.peoples)
+       this.axios
+        .get('https://api.anjihos.newlioncity.com/admin/contract?completed=1&doctor_team_id='+this.doctor_team_id).then(res=>{
+           this.contractPeoplelist=res.data.data.data  //得到所有签约对象
+         console.log(this.contractPeoplelist.length)
+        })
+        if( this.contractPeoplelist.length>0){
+         this.$emit('funcs',this.contractPeoplelist)
+        }else{
+          return
+        }
+    },
+
+    getLocation () {
+            let vthis = this
+            $.ajax({
+                url: 'https://restapi.amap.com/v3/place/text',
+                type: 'get',
+                dataType: 'jsonp',
+                data: {
+                    key: '8019e23202f5bdce37f98aeacf909cc6',
+                    keywords: this.address,
+                    extensions:'base'
+                },
+                success: function (data) {
+                  // console.log(data.pois[0].location)
+                  vthis.location=data.pois[0].location
+                }
+            })
+        },
+        initAMap (data) {
+            let map = new AMap.Map('container', {
+                resizeEnable: true,
+                zoom: 20,
+                center: data.split(',')
+            })
+            AMap.plugin('AMap.Geocoder', function () {
+                let marker = new AMap.Marker({
+                    map: map,
+                    bubble: true
+                })
+            })
+        },
       //判断男女
        formatter(row, column) {
-        return row.healthdocInfo.JBXX_XB== '1' ? "男" : row.healthdocInfo.JBXX_XB== '0' ? "女" : "未知";
+        return row.healthdocInfo.JBXX_XB== '1' ? "男" : "女";
       },
     //点击服务记录，关闭签约人员列表，展示服务记录的内容
     serviceClick(index, row){
@@ -289,7 +360,7 @@ export default {
         ).then(res=>{
          // console.log(res)
          this.peoples = res.data.data.data;
-         console.log( this.peoples)
+        // console.log( this.peoples)
           this.totals = res.data.data.count;
           this.currentPages = res.data.data.currentPage;
         })
@@ -310,7 +381,7 @@ export default {
         }
         )
         .then(res => {
-          console.log(res)
+         // console.log(res)
           this.circles = res.data.data.data;
           this.total = res.data.data.count;
           this.currentPage = res.data.data.currentPage;
