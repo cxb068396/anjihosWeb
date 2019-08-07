@@ -28,7 +28,7 @@
         @func="getLocation"
         @funcs='getAllpeople'>
       </Doctor>
-          <Healthdoc 
+        <Healthdoc 
         v-show="showHealth" 
         width="1000"
         @on-close="closehealth"
@@ -158,21 +158,21 @@ export default {
   methods: {
     //接受子组件传递过来的一个人经纬度
     getLocation(data){
-   this.circles=data;
-   //console.log(this.circles)
-   this.showDoctor=false
-  //获得经纬度之后将其渲染到地图上
-// this.peopleLocation();
+      this.circles=data;
+      //console.log(this.circles)
+      this.showDoctor=false
+      //获得经纬度之后将其渲染到地图上
+      // this.peopleLocation();
     },
-     //接受子组件传递过来的所有人经纬度
+    //接受子组件传递过来的所有人经纬度
     getAllpeople(data){
-   this.circles=data;
-   console.log(this.circles)
-   this.showDoctor=false
-  //获得经纬度之后将其渲染到地图上
-    this.peopleLocation();
+      this.circles=data;
+      console.log(this.circles)
+      this.showDoctor=false
+      //获得经纬度之后将其渲染到地图上
+      this.peopleLocation();
     },
-      peopleLocation(){
+    peopleLocation(){
       console.log(this.circles)
       let map = AMapManager.getMap()
       //如果有，则清空数组，没有则添加
@@ -400,8 +400,8 @@ export default {
                       `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH}</div>` +
                   '</div>' +
               '</div>' +
-              '<input id="btn4" type="button" class="btn" value="去派单" onclick="showMoreMessage14()" style="margin-right:40px"/>' +
-              '<input id="btn3" type="button" class="btn" value="健康档案" onclick="showMoreMessage14()"/>' +
+              '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()" />' +
+              '<input id="btn2" type="button" class="btn" value="健康档案" onclick="showMoreMessage2()"/>' +
             '</div>' +
           '</div>';
           that.infoWindow = new AMap.InfoWindow({
@@ -439,7 +439,8 @@ export default {
                       `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH}</div>` +
                     '</div>' +
                 '</div>' +
-                '<input id="btn1" type="button" class="btn" value="健康档案" onclick="showMoreMessage1()" style="margin-right:40px"/>' +
+                '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()" />' +
+                '<input id="btn2" type="button" class="btn" value="健康档案" onclick="showMoreMessage2()" />' +
               '</div>' +
               '<div style="width:100%;height:3px;background-color:grey;margin:16px 0">' +
               '</div>' +
@@ -459,7 +460,7 @@ export default {
                       `<div class="input-item-text" >服务人员：${serviceStafName}</div>` )) +
                     '</div>' +
                 '</div>' +
-                '<input id="btn2" type="button" class="btn" value="服务记录" onclick="showMoreMessage2()"/>' +
+                '<input id="btn3" type="button" class="btn" value="服务记录" onclick="showMoreMessage3()"/>' +
               '</div>' +
             '</div>';
             that.infoWindow = new AMap.InfoWindow({
@@ -473,17 +474,23 @@ export default {
         setTimeout(function(){
           that.infoWindow.open(map);
           var btn1 = document.getElementById('btn1');
-          //var btn2 = document.getElementById('btn2');
+          var btn2 = document.getElementById('btn2');
+          var btn3 = document.getElementById('btn3');
           //onclick事件
           let showMoreMessage1 = function(){
-          console.log('123')
+            console.log('1')
           }
           btn1.onclick = showMoreMessage1
-          // let showMoreMessage2 = function(){
-          //   // lnglatInputValue.value = marker.Uh.position.lng + "," +marker.Uh.position.lat 
-          //  console.log('123')
-          // }
-          // btn1.onclick = showMoreMessage2
+          let showMoreMessage2 = function(){
+            // lnglatInputValue.value = marker.Uh.position.lng + "," +marker.Uh.position.lat 
+           console.log('2')
+          }
+          btn2.onclick = showMoreMessage2
+          let showMoreMessage3 = function(){
+            // lnglatInputValue.value = marker.Uh.position.lng + "," +marker.Uh.position.lat 
+           console.log('3')
+          }
+          btn3.onclick = showMoreMessage3
         },200)
       })
     },
