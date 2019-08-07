@@ -11,9 +11,9 @@
     </div>
     <div class='selects'>
     <div class='select'>
-        <el-button type="primary" size="mini" @click="people" icon="el-icon-refresh">刷新</el-button>
-      <el-button type="primary"  size="mini" @click="allPeople">签约人员</el-button>
-       <el-button type="primary"  size="mini" @click="allDoctor" >医疗团队</el-button>
+      <el-button type="primary" size="mini" @click="people" icon="el-icon-refresh">刷新</el-button>
+      <el-button type="primary" size="mini" @click="allPeople">签约人员</el-button>
+      <el-button type="primary" size="mini" @click="allDoctor">医疗团队</el-button>
     </div>
       <Modal 
         v-show="showModal" 
