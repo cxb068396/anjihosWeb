@@ -166,11 +166,12 @@ export default {
     },
      //接受子组件传递过来的所有人经纬度
     getAllpeople(data){
-   this.circles=data;
-   console.log(this.circles)
-   this.showDoctor=false
+      console.log(data)
+  this.circles=data;
+  console.log(this.circles)
+  this.showDoctor=false
   //获得经纬度之后将其渲染到地图上
-    this.peopleLocation();
+ this.peopleLocation();
     },
       peopleLocation(){
       console.log(this.circles)
@@ -188,7 +189,7 @@ export default {
             image:blue_drip,
             imageSize: new AMap.Size(20, 30),
           }),
-          position: new AMap.LngLat(item.lng,item.lat),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+          position: new AMap.LngLat(item.lng_,item.lat_),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
         });
         marker.setAnimation('AMAP_ANIMATION_NONE')
         // marker.setTitle('我是marker的title');
@@ -200,7 +201,12 @@ export default {
         marker.JBXX_LXRXM = item.healthdocInfo.JBXX_LXRXM //联系人姓名
         marker.JBXX_HJXXDZ = item.healthdocInfo.JBXX_HJXXDZ //地址
         marker.JBXX_XB = item.healthdocInfo.JBXX_XB //性别
-        marker.JBXX_LXRDH = item.healthdocInfo.JBXX_LXRDH //联系人电话   
+        marker.JBXX_LXRDH = item.healthdocInfo.JBXX_LXRDH //联系人电话
+        marker.doctorname = item.teamInfo.doctorInfo.name//联系人电话 
+        marker.nursename = item.teamInfo.nurseInfo.name//联系人电话  
+        marker.pharmacistname = item.teamInfo.pharmacistInfo.name//联系人电话  
+        marker.serviceStaffname = item.teamInfo.serviceStaffInfo.name//联系人电话  
+        marker.healthManagername = item.teamInfo.healthManagerInfo.name//联系人电话      
         marker.setLabel({
             offset: new AMap.Pixel(20, 20),  //设置文本标注偏移量
             content: `<div class='info'>${ marker.JBXX_XM }</div>`, //设置文本标注内容
@@ -217,23 +223,41 @@ export default {
       let that = this
       //鼠标点击事件
       marker.on('mousedown',function () {
-        var info =
-          '<div className="custom-infowindow input-card" style="width:300px;border-radius:20px;font-size:10px;">' +
-            '<div style="text-align: center;font-weight: bold;margin:10px 0">服务对象信息</div>' +
-            '<div>' +
-              `<img src=${oldman} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-right:20px"/ >` +
-              '<div class="input-item" style="margin-bottom:10px">' +
-                  '<div class="input-item-prepend" >' +
+        var info = 
+            '<div className="custom-infowindow input-card" style="width:300px;border-radius:20px;font-size:10px;">' +
+              '<div style="text-align:center;font-weight: bold;margin:10px 0">服务对象信息</div>' +
+              '<div>' +
+                `<img src=${oldman} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-right:20px;margin-right:20px"/ >` +
+                '<div class="input-item" style="margin-bottom:10px">' +
+                    '<div class="input-item-prepend">' +
                       `<div class="input-item-text" >真实姓名：${marker.JBXX_XM}</div>` +
-                      `<div class="input-item-text" >订单状态：未服务</div>` +
+                      `<div class="input-item-text" >下单时间：${marker.createdat}</div>` +
+                      `<div class="input-item-text" >订单状态：${marker.order_status == 11? '未接单' :(marker.order_status == 12? '已接单，未服务' :'正在服务')}</div>` +
                       `<div class="input-item-text" >联系人姓名：${marker.JBXX_LXRXM}</div>` +
-                       `<div class="input-item-text" >家庭住址：${ marker.JBXX_HJXXDZ }</div>` +
                       `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH}</div>` +
-                  '</div>' +
+                    '</div>' +
+                '</div>' +
+                '<input id="btn1" type="button" class="btn" value="健康档案" onclick="showMoreMessage1()" style="margin-right:40px"/>' +
               '</div>' +
-              '<input id="btn3" type="button" class="btn" value="健康档案" onclick="openclick()" style="float:right"/>' +
-            '</div>' +
-          '</div>';
+              '<div style="width:100%;height:3px;background-color:grey;margin:16px 0">' +
+              '</div>' +
+
+
+              '<div style="text-align: center;font-weight: bold;margin:10px 0">医疗团队信息</div>' +
+              '<div>' +
+                `<img src=${doctor} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-right:20px"/>` +
+                '<div class="input-item" style="margin-bottom:10px">' +
+                    '<div class="input-item-prepend">' +                 
+                      `<div class="input-item-text" >医生：${marker.doctorname}</div>` +
+                      `<div class="input-item-text" >护士：${marker.nursename}</div>` + 
+                      `<div class="input-item-text" >健康管家：${marker.serviceStaffname }</div>` +
+                      `<div class="input-item-text" >药师：${marker.pharmacistname}</div>` +
+                      `<div class="input-item-text" >服务人员：${marker.serviceStaffname}</div>`+
+                    '</div>' +
+                '</div>' +
+                '<input id="btn2" type="button" class="btn" value="服务记录" onclick="showMoreMessage2()"/>' +
+              '</div>' +
+            '</div>';
           that.infoWindow = new AMap.InfoWindow({
               position:marker.getPosition(),
               content: info , //使用默认信息窗体框样式，显示信息内容
