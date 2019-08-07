@@ -159,23 +159,20 @@ export default {
   methods: {
     //接受子组件传递过来的一个人经纬度
     getLocation(data){
-   this.circles=data;
-   //console.log(this.circles)
-   this.showDoctor=false
-  //获得经纬度之后将其渲染到地图上
-// this.peopleLocation();
+      this.circles = data;
+      //console.log(this.circles)
+      this.showDoctor=false
+      //获得经纬度之后将其渲染到地图上
+      this.peopleLocation();
     },
      //接受子组件传递过来的所有人经纬度
     getAllpeople(data){
-      console.log(data)
-  this.circles=data;
-  console.log(this.circles)
-  this.showDoctor=false
-  //获得经纬度之后将其渲染到地图上
- this.peopleLocation();
+      this.circles = data;
+      this.showDoctor = false
+      //获得经纬度之后将其渲染到地图上
+      this.peopleLocation();
     },
-      peopleLocation(){
-      console.log(this.circles)
+    peopleLocation(){
       let map = AMapManager.getMap()
       //如果有，则清空数组，没有则添加
       if(this.markerList.length !== 0 ){
@@ -183,6 +180,7 @@ export default {
         this.markerList = []
       }
       this.circles.map(item => {
+        console.log(item)
         let marker = new AMap.Marker({
           icon: new AMap.Icon({
             size: new AMap.Size(20, 30),
@@ -204,11 +202,11 @@ export default {
         marker.JBXX_HJXXDZ = item.healthdocInfo.JBXX_HJXXDZ //地址
         marker.JBXX_XB = item.healthdocInfo.JBXX_XB //性别
         marker.JBXX_LXRDH = item.healthdocInfo.JBXX_LXRDH //联系人电话
-        marker.doctorname = item.teamInfo.doctorInfo.name//联系人电话 
-        marker.nursename = item.teamInfo.nurseInfo.name//联系人电话  
-        marker.pharmacistname = item.teamInfo.pharmacistInfo.name//联系人电话  
-        marker.serviceStaffname = item.teamInfo.serviceStaffInfo.name//联系人电话  
-        marker.healthManagername = item.teamInfo.healthManagerInfo.name//联系人电话      
+        marker.doctorname = item.teamInfo.doctorInfo? item.teamInfo.doctorInfo.name:'未签约'
+        marker.nursename = item.teamInfo.nurseInfo ?item.teamInfo.nurseInfo.name :'未签约'
+        marker.pharmacistname = item.teamInfo.pharmacistInfo ?item.teamInfo.pharmacistInfo.name:'未签约'
+        marker.serviceStaffname = (item.teamInfo.serviceStaffInfo? item.teamInfo.serviceStaffInfo.name :'未签约')
+        marker.healthManagername = (item.teamInfo.healthManagerInfo ?  item.teamInfo.healthManagerInfo.name:'未签约')
         marker.setLabel({
             offset: new AMap.Pixel(20, 20),  //设置文本标注偏移量
             content: `<div class='info'>${ marker.JBXX_XM }</div>`, //设置文本标注内容
@@ -239,6 +237,7 @@ export default {
                       `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH}</div>` +
                     '</div>' +
                 '</div>' +
+
                 '<input id="btn3" type="button" class="btn" value="健康档案" onclick="openclick()" style="margin-right:40px"/>' +
               '</div>' +
               '<div style="width:100%;height:3px;background-color:grey;margin:16px 0">' +
@@ -257,7 +256,7 @@ export default {
                       `<div class="input-item-text" >服务人员：${marker.serviceStaffname}</div>`+
                     '</div>' +
                 '</div>' +
-                '<input id="btn2" type="button" class="btn" value="服务记录" onclick="showMoreMessage2()"/>' +
+                '<input id="btn3" type="button" class="btn" value="服务记录" onclick="showMoreMessage3()"/>' +
               '</div>' +
             '</div>';
           that.infoWindow = new AMap.InfoWindow({
@@ -274,6 +273,7 @@ export default {
            that.getHealth(marker)
          }
          btn3.onclick=openclick
+
         },200)
       })
     },
@@ -433,8 +433,8 @@ export default {
                       `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH}</div>` +
                   '</div>' +
               '</div>' +
-              '<input id="btn4" type="button" class="btn" value="去派单" onclick="showMoreMessage14()" style="margin-right:40px"/>' +
-              '<input id="btn3" type="button" class="btn" value="健康档案" onclick="showMoreMessage14()"/>' +
+              '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()"/>' +
+              '<input id="btn2" type="button" class="btn" value="健康档案" onclick="showMoreMessage2()"/>' +
             '</div>' +
           '</div>';
           that.infoWindow = new AMap.InfoWindow({
@@ -472,7 +472,8 @@ export default {
                       `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH}</div>` +
                     '</div>' +
                 '</div>' +
-                '<input id="btn1" type="button" class="btn" value="健康档案" onclick="showMoreMessage1()" style="margin-right:40px"/>' +
+                '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()" />' +
+                '<input id="btn2" type="button" class="btn" value="健康档案" onclick="showMoreMessage2()" />' +
               '</div>' +
               '<div style="width:100%;height:3px;background-color:grey;margin:16px 0">' +
               '</div>' +
@@ -492,8 +493,7 @@ export default {
                       `<div class="input-item-text" >服务人员：${serviceStafName}</div>` )) +
                     '</div>' +
                 '</div>' +
-                '<input id="btn2" type="button" class="btn" value="服务记录" onclick="showMoreMessage2()"/>' +
-              '</div>' +
+                '<input id="btn3" type="button" class="btn" value="服务记录" onclick="showMoreMessage3()"/>' +              '</div>' +
             '</div>';
             that.infoWindow = new AMap.InfoWindow({
                 position:marker.getPosition(),
@@ -506,17 +506,23 @@ export default {
         setTimeout(function(){
           that.infoWindow.open(map);
           var btn1 = document.getElementById('btn1');
-          //var btn2 = document.getElementById('btn2');
+          var btn2 = document.getElementById('btn2');
+          var btn3 = document.getElementById('btn3');
           //onclick事件
           let showMoreMessage1 = function(){
-          console.log('123')
+            console.log('1')
           }
           btn1.onclick = showMoreMessage1
-          // let showMoreMessage2 = function(){
-          //   // lnglatInputValue.value = marker.Uh.position.lng + "," +marker.Uh.position.lat 
-          //  console.log('123')
-          // }
-          // btn1.onclick = showMoreMessage2
+          let showMoreMessage2 = function(){
+            // lnglatInputValue.value = marker.Uh.position.lng + "," +marker.Uh.position.lat 
+           console.log('2')
+          }
+          btn2.onclick = showMoreMessage2
+          let showMoreMessage3 = function(){
+            // lnglatInputValue.value = marker.Uh.position.lng + "," +marker.Uh.position.lat 
+           console.log('3')
+          }
+          btn3.onclick = showMoreMessage3
         },200)
       })
     },
