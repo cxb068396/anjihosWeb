@@ -18,13 +18,22 @@
       <Modal 
         v-show="showModal" 
         width="1000"
-        @on-cancel="cancel">
+        @on-cancel="cancel"
+        >
       </Modal>
        <Doctor 
         v-show="showDoctor" 
         width="1000"
-        @on-close="close">
+        @on-close="close"
+        @func="getLocation"
+        @funcs='getAllpeople'>
       </Doctor>
+          <Healthdoc 
+        v-show="showHealth" 
+        width="1000"
+        @on-close="closehealth"
+       v-bind:message="healthdocid">
+      </Healthdoc>
       <template>
         <el-cascader
         placeholder="选乡镇服务站点"
@@ -36,11 +45,9 @@
         @change="handleChange">
         </el-cascader>
       </template>
-    </div>  
-    <div class='explain' style='font-size:10px'>
-      <div class='icon1'><img src='../../assets/yellow-drip.png' width="20" height="30"/><span>已接单</span></div>
-      <div class='icon1'><img src='../../assets/blue-drip.png' width="20" height="30"/><span>正在服务</span></div>
-      <div class='icon1'><img src='../../assets/red-drip.png' width="20" height="30"/><span>未接单</span></div>
+      <div class='icon1'><img src='../../assets/yellow-drip.png' width="20" height="30"/><span style="font-size:10px">已接单</span></div>
+      <div class='icon1'><img src='../../assets/blue-drip.png' width="20" height="30"/><span style="font-size:10px">正在服务</span></div>
+      <div class='icon1'><img src='../../assets/red-drip.png' width="20" height="30"/><span style="font-size:10px">未接单</span></div>
     </div>  
   </div>
 </template>
@@ -48,6 +55,7 @@
 <script>
 import Modal from '../Location/Model.vue'
 import Doctor from '../Location/Doctor.vue'
+import Healthdoc from '../Location/Healthdoc.vue'
 import VueAMap from 'vue-amap';
 import { lazyAMapApiLoaderInstance } from 'vue-amap';
 
@@ -71,6 +79,7 @@ export default {
       // visible: false,
       showModal:false,
       showDoctor:false,
+      showHealth:false,
       type:'',
       options:[],
       selectedOptions: [],
@@ -100,11 +109,14 @@ export default {
       lng:[],
       infoWindow:{},
       timer:'',
+      location:'',
+      healthdocid:''
     }
   },
   components:{
     'Modal':Modal,
-    'Doctor':Doctor
+    'Doctor':Doctor,
+    'Healthdoc':Healthdoc
   },
   created(){
     const that = this
@@ -113,6 +125,7 @@ export default {
     },100)
   },
   mounted() {
+    
     const that = this
     window.onresize = () => {
       return (() => {
@@ -122,7 +135,7 @@ export default {
     }
     that.getStreet();
     this.timer = setInterval(function () {
-      that.people();
+     // that.people();
     },60000)
   },
   beforeDestroy(){
@@ -143,6 +156,104 @@ export default {
     }
   },
   methods: {
+    //接受子组件传递过来的一个人经纬度
+    getLocation(data){
+   this.circles=data;
+   //console.log(this.circles)
+   this.showDoctor=false
+  //获得经纬度之后将其渲染到地图上
+// this.peopleLocation();
+    },
+     //接受子组件传递过来的所有人经纬度
+    getAllpeople(data){
+   this.circles=data;
+   console.log(this.circles)
+   this.showDoctor=false
+  //获得经纬度之后将其渲染到地图上
+    this.peopleLocation();
+    },
+      peopleLocation(){
+      console.log(this.circles)
+      let map = AMapManager.getMap()
+      //如果有，则清空数组，没有则添加
+      if(this.markerList.length !== 0 ){
+        map.remove(this.markerList)
+        this.markerList = []
+      }
+      this.circles.map(item => {
+        let marker = new AMap.Marker({
+          icon: new AMap.Icon({
+            size: new AMap.Size(20, 30),
+            //根据不同状态展示不同icon
+            image:blue_drip,
+            imageSize: new AMap.Size(20, 30),
+          }),
+          position: new AMap.LngLat(item.lng,item.lat),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+        });
+        marker.setAnimation('AMAP_ANIMATION_NONE')
+        // marker.setTitle('我是marker的title');
+        this.healthdocid=item.health_doc_id
+        marker.JBXX_BRDH = item.JBXX_BRDH //联系方式
+        marker.createdat = item.healthdocInfo.createdat //记录时间
+        marker.JBXX_XM = item.healthdocInfo.JBXX_XM //真实姓名
+        marker.JBXX_CSRQ = item.healthdocInfo.JBXX_CSRQ //出生日期
+        marker.JBXX_LXRXM = item.healthdocInfo.JBXX_LXRXM //联系人姓名
+        marker.JBXX_HJXXDZ = item.healthdocInfo.JBXX_HJXXDZ //地址
+        marker.JBXX_XB = item.healthdocInfo.JBXX_XB //性别
+        marker.JBXX_LXRDH = item.healthdocInfo.JBXX_LXRDH //联系人电话   
+        marker.setLabel({
+            offset: new AMap.Pixel(20, 20),  //设置文本标注偏移量
+            content: `<div class='info'>${ marker.JBXX_XM }</div>`, //设置文本标注内容
+            direction: 'right' //设置文本标注方位
+        });
+        this.peopleLocationwindow(marker)
+        this.markerList.push(marker)
+      })
+      map.add(this.markerList)
+      map.setFitView();
+    },
+   peopleLocationwindow(marker,position){
+      let map = AMapManager.getMap()
+      let that = this
+      //鼠标点击事件
+      marker.on('mousedown',function () {
+        var info =
+          '<div className="custom-infowindow input-card" style="width:300px;border-radius:20px;font-size:10px;">' +
+            '<div style="text-align: center;font-weight: bold;margin:10px 0">服务对象信息</div>' +
+            '<div>' +
+              `<img src=${oldman} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-right:20px"/ >` +
+              '<div class="input-item" style="margin-bottom:10px">' +
+                  '<div class="input-item-prepend" >' +
+                      `<div class="input-item-text" >真实姓名：${marker.JBXX_XM}</div>` +
+                      `<div class="input-item-text" >订单状态：未服务</div>` +
+                      `<div class="input-item-text" >联系人姓名：${marker.JBXX_LXRXM}</div>` +
+                       `<div class="input-item-text" >家庭住址：${ marker.JBXX_HJXXDZ }</div>` +
+                      `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH}</div>` +
+                  '</div>' +
+              '</div>' +
+              '<input id="btn3" type="button" class="btn" value="健康档案" onclick="openclick()" style="float:right"/>' +
+            '</div>' +
+          '</div>';
+          that.infoWindow = new AMap.InfoWindow({
+              position:marker.getPosition(),
+              content: info , //使用默认信息窗体框样式，显示信息内容
+              closeWhenClickMap:true,
+          });
+        //使用其它坐标会有bug
+        setTimeout(function(){
+          that.infoWindow.open(map);
+         var btn3 = document.getElementById('btn3');
+         let openclick=function(){
+           that.showHealth=true;
+           //console.log(that.healthdocid)
+         }
+         btn3.onclick=openclick
+        },200)
+      })
+    },
+
+/***************************************************/
+
   //获得所有的街道
     getStreet(){
       this.axios.get('https://api.anjihos.newlioncity.com/admin/position/group').then(res=>{
@@ -166,6 +277,9 @@ export default {
       //响应on-close事件，来把弹出框关闭
     close() {
       this.showDoctor = false;
+    },
+     closehealth () {
+      this.showHealth = false;
     },
     handleChange(val){
       var that = this
@@ -208,60 +322,10 @@ export default {
       this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user')
       .then(res => {
         this.circles = res.data.data
-  
-    //             var peopleList=res.data.data;
-    //     //数据的简单
-    //     var list=[];
-    //     var list1 = [];  
-    //      for (var i = 0; i<peopleList.length; i++) {
-    //     list.push(parseInt(peopleList[i].lng), peopleList[i].lat);
-    // }
-    //  for(var j=0;j<list.length;j+=2){
-    //     list1.push(list.slice(j,j+2));
-    // } 
-    //  this.lng=list1
         this.display();
         //  this.buildMarkers();
       })
     },
-  //   buildMarkers(){
-  //     var that=this
-  //    this.map = new AMap.Map('map', {
-  //     zoom: 13,
-  //     center: [120, 30],
-  //       layers: [
-  //             // 卫星
-  //             new AMap.TileLayer.Satellite(),
-  //             // 路网
-  //             new AMap.TileLayer.RoadNet()
-  //         ],
-  //     resizeEnable: true
-  //   })
-    
-  //   var markers=[]
-  // for(var i=0;i<this.lng.length;i++){
-  //           that.pos=this.lng[i]
-  //          var marker = new AMap.Marker({
-  //              position: this.lng[i],
-  //              icon: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png',
-  //       });
-  //       /** 这里是获得每一个marker的下标**/
-  //      marker.index=i
-  //      marker.on('click',function(e){
-  //      that.visible=true
-  //      that.info=that.circles[e.target.index]
-  //     //  console.log(that.info)
-  //     //   console.log(e.target.index)
-  //     })
-  //     markers.push(marker)
-  //   //                   AMap.event.addListener(marker, 'click', function () {
-  //   //      console.log(i)
-  //   // });
-  // } 
-  // //console.log(this.markers)
-  //   this.map.add(markers)
-  //     this.map.setFitView();
-  //   }
       //展示所有人的位置信息
     display(){
       console.log(this.circles)
@@ -336,8 +400,8 @@ export default {
                       `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH}</div>` +
                   '</div>' +
               '</div>' +
-              '<input id="btn1" type="button" class="btn" value="去派单" onclick="showMoreMessage1()" style="margin-right:40px"/>' +
-              '<input id="btn3" type="button" class="btn" value="生命体征" onclick="showMoreMessage1()"/>' +
+              '<input id="btn4" type="button" class="btn" value="去派单" onclick="showMoreMessage14()" style="margin-right:40px"/>' +
+              '<input id="btn3" type="button" class="btn" value="健康档案" onclick="showMoreMessage14()"/>' +
             '</div>' +
           '</div>';
           that.infoWindow = new AMap.InfoWindow({
@@ -375,8 +439,7 @@ export default {
                       `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH}</div>` +
                     '</div>' +
                 '</div>' +
-                '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()" style="margin-right:40px"/>' +
-                '<input id="btn3" type="button" class="btn" value="生命体征" onclick="showMoreMessage1()"/>' +
+                '<input id="btn1" type="button" class="btn" value="健康档案" onclick="showMoreMessage1()" style="margin-right:40px"/>' +
               '</div>' +
               '<div style="width:100%;height:3px;background-color:grey;margin:16px 0">' +
               '</div>' +
@@ -409,17 +472,16 @@ export default {
         //使用其它坐标会有bug
         setTimeout(function(){
           that.infoWindow.open(map);
-          // var btn1 = document.getElementById('btn1');
-          // var btn2 = document.getElementById('btn2');
-          // //onclick事件
-          // let showMoreMessage1 = function(){
-          //   // lnglatInputValue.value = marker.Uh.position.lng + "," +marker.Uh.position.lat 
-          //   console.log(marker)
-          // }
-          // btn1.onclick = showMoreMessage1
+          var btn1 = document.getElementById('btn1');
+          //var btn2 = document.getElementById('btn2');
+          //onclick事件
+          let showMoreMessage1 = function(){
+          console.log('123')
+          }
+          btn1.onclick = showMoreMessage1
           // let showMoreMessage2 = function(){
           //   // lnglatInputValue.value = marker.Uh.position.lng + "," +marker.Uh.position.lat 
-          //   console.log(marker)
+          //  console.log('123')
           // }
           // btn1.onclick = showMoreMessage2
         },200)
