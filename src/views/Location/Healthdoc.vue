@@ -2,19 +2,60 @@
   <div class="modal-backdrop">
      <div class="modal" :style="mainStyles">
         <div class="modal-header">
-          <h3>健康档案{{message}}</h3>
+          <h3>健康档案</h3>
         </div>
         <div class="modal-body">
-       <div style="text-align: center;margin-top: 30px;">
-        <el-pagination
-          :page-size="pagesize"
-          :total="total"
-          layout="total, prev, pager, next, jumper"
-          @current-change="handleCurrentChange"
-			    @size-change="handleSizeChange"
-           :current-page="currentPage"
+           <el-table
+        :data="message"
+        height="500"
+        style="width: 100%">
+        <el-table-column
+          fixed
+          prop="create_time"
+          label="就诊时间" 
         />
-      </div>
+          <el-table-column
+          prop="condition"
+          label="症状"
+        />
+          <el-table-column
+          prop="blood_pressure_high"
+          label="最高血压"
+        />
+          <el-table-column
+          prop="blood_pressure_low"
+          label="最低血压"
+      
+        />
+         <el-table-column
+          prop="blood_oxygen"
+          label="血氧（%）"
+        />
+          <el-table-column
+          prop="blood_sugar"
+          label="血糖（%）"
+        />
+          <el-table-column
+          prop="heart_rate"
+          label="心率"
+        />
+          <el-table-column
+          prop="body_temperature"
+          label="体温（摄氏度）"
+        />
+          <el-table-column
+          prop="height"
+          label="身高（cm）"
+        />
+         <el-table-column
+          prop="weight"
+          label="体重（kg）"
+        />
+          <el-table-column
+          prop="breathe"
+          label="呼吸频次"
+        />
+      </el-table>
         </div>
         <div class="modal-footer">
             <el-button type="primary"  @click="closehealth">关闭</el-button>
@@ -29,9 +70,7 @@ export default {
   name: 'Helthdoc',
   //接收父组件传递的width属性
   props: {
-      message:{
-
-      },
+      message:{},
     width:{
         type:[Number,String],//类型检测
         default:300 //父组件没传width时的默认值
@@ -39,10 +78,7 @@ export default {
   },
   data() {
     return { 
-        currentPage: 1,
-        total: 0,
-        pagesize:20, 
- 
+     
     }
 
   },
@@ -56,24 +92,9 @@ export default {
 
   },
   mounted(){
-      // this.people();
-      console.log(this.message)
   },
   methods:{
-    //点击服务记录，关闭签约人员列表，展示健康档案的内容
-    serviceClick(index,row){
-      this. health_doc_id=row.id
-      this.show=false;
-      this.service=true
-   this.helthdangan()
-    },
-    helthdangan(){
-         this.axios.get('https://api.anjihos.newlioncity.com/admin/vitalsign?health_doc_id='+this.health_doc_id).then(res=>{
-         this.helthdoc = res.data.data.data;
-          this.totals = res.data.data.count;
-          this.currentPages = res.data.data.currentPage;
-      })
-    },
+
     //点击返回按钮，将服务记录隐藏，然后将签约列表显示出来
       serviceClose(){
       this.service=false
@@ -83,15 +104,6 @@ export default {
     //响应关闭按钮点击事件，通过$emit api通知父组件执行父组件的on-cancel方法
     closehealth() {
         this.$emit('on-close');
-    },
-        // 分页
-    handleCurrentChange(val) {
-      this.currentPage = val;
-
-    },
-    handleSizeChange(val) {
-      this.pagesize = val;
-
     },
   }
 }

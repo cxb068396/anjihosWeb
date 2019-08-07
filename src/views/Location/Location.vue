@@ -32,7 +32,7 @@
         v-show="showHealth" 
         width="1000"
         @on-close="closehealth"
-       v-bind:message="healthdocid">
+       v-bind:message="healthdoc">
       </Healthdoc>
       <template>
         <el-cascader
@@ -110,7 +110,8 @@ export default {
       infoWindow:{},
       timer:'',
       location:'',
-      healthdocid:''
+      healthdocid:'',
+      healthdoc:[]
     }
   },
   components:{
@@ -193,7 +194,8 @@ export default {
         });
         marker.setAnimation('AMAP_ANIMATION_NONE')
         // marker.setTitle('我是marker的title');
-        this.healthdocid=item.health_doc_id
+        marker.healthdocid=item.health_doc_id
+        this.healthdocid=marker.healthdocid
         marker.JBXX_BRDH = item.JBXX_BRDH //联系方式
         marker.createdat = item.healthdocInfo.createdat //记录时间
         marker.JBXX_XM = item.healthdocInfo.JBXX_XM //真实姓名
@@ -232,12 +234,12 @@ export default {
                     '<div class="input-item-prepend">' +
                       `<div class="input-item-text" >真实姓名：${marker.JBXX_XM}</div>` +
                       `<div class="input-item-text" >下单时间：${marker.createdat}</div>` +
-                      `<div class="input-item-text" >订单状态：${marker.order_status == 11? '未接单' :(marker.order_status == 12? '已接单，未服务' :'正在服务')}</div>` +
+                      `<div class="input-item-text" >订单状态：未下单</div>` +
                       `<div class="input-item-text" >联系人姓名：${marker.JBXX_LXRXM}</div>` +
                       `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH}</div>` +
                     '</div>' +
                 '</div>' +
-                '<input id="btn1" type="button" class="btn" value="健康档案" onclick="showMoreMessage1()" style="margin-right:40px"/>' +
+                '<input id="btn3" type="button" class="btn" value="健康档案" onclick="openclick()" style="margin-right:40px"/>' +
               '</div>' +
               '<div style="width:100%;height:3px;background-color:grey;margin:16px 0">' +
               '</div>' +
@@ -269,18 +271,25 @@ export default {
          var btn3 = document.getElementById('btn3');
          let openclick=function(){
            that.showHealth=true;
-           //console.log(that.healthdocid)
+           that.getHealth(marker)
          }
          btn3.onclick=openclick
         },200)
       })
     },
 
+  getHealth(marker){
+       var healthdocid=marker.healthdocid
+          this.axios.get('https://api.anjihos.newlioncity.com/admin/vitalsign?health_doc_id='+healthdocid).then(res=>{
+        console.log(res.data.data.data)
+      this.healthdoc=res.data.data.data
+      })
+  },
 /***************************************************/
 
   //获得所有的街道
     getStreet(){
-      this.axios.get('https://api.anjihos.newlioncity.com/admin/position/group').then(res=>{
+      this.axios.get('https://api.anjihos.newlioncity.com/admin/position/group',{param:{size:999}}).then(res=>{
         this.options = res.data.data
       })
     },
