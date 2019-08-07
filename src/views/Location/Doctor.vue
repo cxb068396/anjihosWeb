@@ -298,13 +298,15 @@ export default {
        this.axios
         .get('https://api.anjihos.newlioncity.com/admin/contract?completed=1&doctor_team_id='+this.doctor_team_id).then(res=>{
            this.contractPeoplelist=res.data.data.data  //得到所有签约对象
-         console.log(this.contractPeoplelist.length)
+            if( this.contractPeoplelist.length>0){
+            this.$emit('funcs',that.contractPeoplelist)
+          }else{
+            this.$message({
+              type: "error",
+              message: "人数不足。"
+            });
+          }
         })
-        if( this.contractPeoplelist.length>0){
-         this.$emit('funcs',that.contractPeoplelist)
-        }else{
-          return
-        }
     },
 
     getLocation () {
