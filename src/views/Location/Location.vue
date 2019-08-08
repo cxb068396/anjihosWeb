@@ -256,7 +256,7 @@ export default {
                       `<div class="input-item-text" >服务人员：${marker.serviceStaffname}</div>`+
                     '</div>' +
                 '</div>' +
-                '<input id="btn3" type="button" class="btn" value="服务记录" onclick="showMoreMessage3()"/>' +
+                // '<input id="btn3" type="button" class="btn" value="服务记录" onclick="showMoreMessage3()"/>' +
               '</div>' +
             '</div>';
           that.infoWindow = new AMap.InfoWindow({
@@ -280,6 +280,8 @@ export default {
 
   getHealth(marker){
        var healthdocid=marker.healthdocid
+       let health_doc_id = marker.health_doc_id
+       console.log(marker)
           this.axios.get('https://api.anjihos.newlioncity.com/admin/vitalsign?health_doc_id='+healthdocid).then(res=>{
         console.log(res.data.data.data)
       this.healthdoc=res.data.data.data
@@ -380,6 +382,7 @@ export default {
         });
         marker.setAnimation(item.order_status == 11? 'AMAP_ANIMATION_BOUNCE':'AMAP_ANIMATION_NONE')
         // marker.setTitle('我是marker的title');
+
         marker.consignee = item.consignee //昵称
         marker.address = item.address //详细住址
         marker.JBXX_BRDH = item.JBXX_BRDH //联系方式
@@ -433,8 +436,8 @@ export default {
                       `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH}</div>` +
                   '</div>' +
               '</div>' +
-              '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()"/>' +
-              '<input id="btn2" type="button" class="btn" value="健康档案" onclick="showMoreMessage2()"/>' +
+              // '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()"/>' +
+             '<input id="btn" type="button" class="btn" value="健康档案" onclick="btnclick()"/>' +
             '</div>' +
           '</div>';
           that.infoWindow = new AMap.InfoWindow({
@@ -472,8 +475,8 @@ export default {
                       `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH}</div>` +
                     '</div>' +
                 '</div>' +
-                '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()" />' +
-                '<input id="btn2" type="button" class="btn" value="健康档案" onclick="showMoreMessage2()" />' +
+                // '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()" />' +
+                '<input id="btn2" type="button" class="btn" value="健康档案" onclick="showMoreMessage()" />' +
               '</div>' +
               '<div style="width:100%;height:3px;background-color:grey;margin:16px 0">' +
               '</div>' +
@@ -493,7 +496,7 @@ export default {
                       `<div class="input-item-text" >服务人员：${serviceStafName}</div>` )) +
                     '</div>' +
                 '</div>' +
-                '<input id="btn3" type="button" class="btn" value="服务记录" onclick="showMoreMessage3()"/>' +              '</div>' +
+                // '<input id="btn3" type="button" class="btn" value="服务记录" onclick="showMoreMessage3()"/>' +              '</div>' +
             '</div>';
             that.infoWindow = new AMap.InfoWindow({
                 position:marker.getPosition(),
@@ -505,27 +508,34 @@ export default {
         //使用其它坐标会有bug
         setTimeout(function(){
           that.infoWindow.open(map);
-          var btn1 = document.getElementById('btn1');
-          var btn2 = document.getElementById('btn2');
-          var btn3 = document.getElementById('btn3');
+          var btn = document.getElementById('btn');
           //onclick事件
-          let showMoreMessage1 = function(){
-            console.log('1')
+          let btnclick = function(){
+            that.showHealth=true;
+           that.getallHealth(marker)
           }
-          btn1.onclick = showMoreMessage1
-          let showMoreMessage2 = function(){
-            // lnglatInputValue.value = marker.Uh.position.lng + "," +marker.Uh.position.lat 
-           console.log('2')
+          btn.onclick = btnclick
+
+    
+          var btn2 = document.getElementById('btn2');
+          let showMoreMessage = function(){
+            that.showHealth=true;
+           that.getallHealth(marker)
           }
-          btn2.onclick = showMoreMessage2
-          let showMoreMessage3 = function(){
-            // lnglatInputValue.value = marker.Uh.position.lng + "," +marker.Uh.position.lat 
-           console.log('3')
-          }
-          btn3.onclick = showMoreMessage3
+          btn2.onclick = showMoreMessage
+       
         },200)
       })
     },
+  getallHealth(marker){
+       let health_doc_id = marker.health_doc_id
+       console.log(marker)
+          this.axios.get('https://api.anjihos.newlioncity.com/admin/vitalsign?health_doc_id='+health_doc_id).then(res=>{
+        console.log(res.data.data.data)
+      this.healthdoc=res.data.data.data
+      })
+  },
+
   }
 }
 </script>
