@@ -88,8 +88,8 @@ export default {
         value: 'id',
         children: 'company'
       },
-      zoom: 18,
-      center: [120.130001,30.030001],
+      zoom: 10,
+      center: [119.6803085855,30.6383898649],
       AMapManager,
       lineArr :[],
       copyLineArr:[],
@@ -216,7 +216,7 @@ export default {
         this.markerList.push(marker)
       })
       map.add(this.markerList)
-      map.setFitView();
+      // map.setFitView(null);
     },
    peopleLocationwindow(marker,position){
       let map = AMapManager.getMap()
@@ -267,11 +267,11 @@ export default {
         //使用其它坐标会有bug
         setTimeout(function(){
           that.infoWindow.open(map);
-         var btn3 = document.getElementById('btn3');
-         let openclick=function(){
+          var btn3 = document.getElementById('btn3');
+          let openclick=function(){
            
            that.showHealth=true;
-           that.infoWindow.clear()
+           that.infoWindow.close()
            that.getHealth(marker)
          }
          btn3.onclick=openclick
@@ -415,7 +415,7 @@ export default {
         this.markerList.push(marker)
       })
       map.add(this.markerList)
-      map.setFitView();
+      // map.setFitView(null);
     },
     displayLabel(marker,position){
       let map = AMapManager.getMap()
@@ -439,7 +439,7 @@ export default {
                   '</div>' +
               '</div>' +
               // '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()"/>' +
-             '<input id="btn" type="button" class="btn" value="健康档案" onclick="btnclick()"/>' +
+             '<input id="healthfile2" type="button" class="btn" value="健康档案" onclick="showHealthFile2()"/>' +
             '</div>' +
           '</div>';
           that.infoWindow = new AMap.InfoWindow({
@@ -478,7 +478,7 @@ export default {
                     '</div>' +
                 '</div>' +
                 // '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()" />' +
-                '<input id="btn2" type="button" class="btn" value="健康档案" onclick="showMoreMessage()" />' +
+                '<input id="healthfile" type="button" class="btn" value="健康档案" onclick="showHealthFile()" />' +
               '</div>' +
               '<div style="width:100%;height:3px;background-color:grey;margin:16px 0">' +
               '</div>' +
@@ -510,23 +510,23 @@ export default {
         //使用其它坐标会有bug
         setTimeout(function(){
           that.infoWindow.open(map);
-          var btn = document.getElementById('btn');
+          var healthfile2 = document.getElementById('healthfile2');
           //onclick事件
-          let btnclick = function(){
+          let showHealthFile2 = function(){
             that.showHealth=true;
-            that.infoWindow.clear()
+            that.infoWindow.close()
            that.getallHealth(marker)
           }
-          btn.onclick = btnclick
+          healthfile2.onclick = btnclick
 
     
-          var btn2 = document.getElementById('btn2');
-          let showMoreMessage = function(){
-            that.infoWindow.clear()
+          var healthfile = document.getElementById('healthfile');
+          let showHealthFile = function(){
+            that.infoWindow.close()
             that.showHealth=true;
            that.getallHealth(marker)
           }
-          btn2.onclick = showMoreMessage
+          healthfile.onclick = showHealthFile
        
         },200)
       })
