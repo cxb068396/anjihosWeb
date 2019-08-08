@@ -136,8 +136,8 @@ export default {
     }
     that.getStreet();
     this.timer = setInterval(function () {
-     // that.people();
-    },60000)
+     that.people();
+    },10000)
   },
   beforeDestroy(){
     clearInterval(this.timer)
@@ -269,7 +269,9 @@ export default {
           that.infoWindow.open(map);
          var btn3 = document.getElementById('btn3');
          let openclick=function(){
+           
            that.showHealth=true;
+           that.infoWindow.clear()
            that.getHealth(marker)
          }
          btn3.onclick=openclick
@@ -512,6 +514,7 @@ export default {
           //onclick事件
           let btnclick = function(){
             that.showHealth=true;
+            that.infoWindow.clear()
            that.getallHealth(marker)
           }
           btn.onclick = btnclick
@@ -519,6 +522,7 @@ export default {
     
           var btn2 = document.getElementById('btn2');
           let showMoreMessage = function(){
+            that.infoWindow.clear()
             that.showHealth=true;
            that.getallHealth(marker)
           }
