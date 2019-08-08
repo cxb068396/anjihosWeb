@@ -216,7 +216,7 @@ export default {
         this.markerList.push(marker)
       })
       map.add(this.markerList)
-      // map.setFitView();
+     map.setFitView();
     },
    peopleLocationwindow(marker,position){
       let map = AMapManager.getMap()
