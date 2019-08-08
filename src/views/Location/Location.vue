@@ -88,8 +88,8 @@ export default {
         value: 'id',
         children: 'company'
       },
-      zoom: 18,
-      center: [120.130001,30.030001],
+      zoom: 11,
+      center: [119.6803085855,30.6383898649],
       AMapManager,
       lineArr :[],
       copyLineArr:[],
@@ -216,7 +216,7 @@ export default {
         this.markerList.push(marker)
       })
       map.add(this.markerList)
-      map.setFitView();
+      // map.setFitView();
     },
    peopleLocationwindow(marker,position){
       let map = AMapManager.getMap()
@@ -508,6 +508,25 @@ export default {
         //使用其它坐标会有bug
         setTimeout(function(){
           that.infoWindow.open(map);
+          // var btn = document.getElementById('btn');
+          // //onclick事件
+          // let btnclick = function(){
+          //   that.showHealth=true;
+          //  that.getallHealth(marker)
+          // }
+          // btn.onclick = btnclick
+
+    
+          var btn2 = document.getElementById('btn2');
+          let showMoreMessage = function(){
+            that.showHealth=true;
+           that.getallHealth(marker)
+          }
+          btn2.onclick = showMoreMessage
+       
+        },200)
+             setTimeout(function(){
+          that.infoWindow.open(map);
           var btn = document.getElementById('btn');
           //onclick事件
           let btnclick = function(){
@@ -517,12 +536,12 @@ export default {
           btn.onclick = btnclick
 
     
-          var btn2 = document.getElementById('btn2');
-          let showMoreMessage = function(){
-            that.showHealth=true;
-           that.getallHealth(marker)
-          }
-          btn2.onclick = showMoreMessage
+          // var btn2 = document.getElementById('btn2');
+          // let showMoreMessage = function(){
+          //   that.showHealth=true;
+          //  that.getallHealth(marker)
+          // }
+          // btn2.onclick = showMoreMessage
        
         },200)
       })
