@@ -137,7 +137,7 @@ export default {
     that.getStreet();
     this.timer = setInterval(function () {
      that.people();
-    },10000)
+    },15000)
   },
   beforeDestroy(){
     clearInterval(this.timer)
@@ -478,7 +478,7 @@ export default {
                     '</div>' +
                 '</div>' +
                 // '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()" />' +
-                '<input id="healthfile" type="button" class="btn" value="健康档案" onclick="showHealthFile()" />' +
+                '<input id="btn" type="button" class="btn" value="健康档案" onclick="btnclick()" />' +
               '</div>' +
               '<div style="width:100%;height:3px;background-color:grey;margin:16px 0">' +
               '</div>' +
@@ -508,26 +508,39 @@ export default {
           });
         }
         //使用其它坐标会有bug
-        setTimeout(function(){
-          that.infoWindow.open(map);
-          var healthfile2 = document.getElementById('healthfile2');
-          //onclick事件
-          let showHealthFile2 = function(){
-            that.showHealth=true;
-            that.infoWindow.close()
-           that.getallHealth(marker)
-          }
-          healthfile2.onclick = btnclick
+        // setTimeout(function(){
+        //   that.infoWindow.open(map);
+
+        //   // var btn = document.getElementById('btn');
+        //   // //onclick事件
+        //   // let btnclick = function(){
+        //   //   that.showHealth=true;
+        //   //  that.getallHealth(marker)
+        //   // }
+        //   // btn.onclick = btnclick
 
     
-          var healthfile = document.getElementById('healthfile');
-          let showHealthFile = function(){
-            that.infoWindow.close()
+        //   var btn2 = document.getElementById('btn2');
+        //   let showMoreMessage = function(){
+        //     that.showHealth=true;
+        //     that.infoWindow.close()
+        //    that.getallHealth(marker)
+        //   }
+        //   healthfile.onclick = showHealthFile
+       
+        // },200)
+             setTimeout(function(){
+          that.infoWindow.open(map);
+          var btn = document.getElementById('btn');
+          //onclick事件
+          let btnclick = function(){
             that.showHealth=true;
+            that.infoWindow.close()
            that.getallHealth(marker)
           }
-          healthfile.onclick = showHealthFile
-       
+          btn.onclick = btnclick
+
+     
         },200)
       })
     },
