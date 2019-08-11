@@ -109,6 +109,7 @@ export default {
       lng:[],
       infoWindow:{},
       timer:'',
+       timer1:'',
       location:'',
       healthdocid:'',
       healthdoc:[]
@@ -135,7 +136,7 @@ export default {
       })()
     }
     that.getStreet();
-    this.timer = setInterval(function () {
+    this.timer1 = setInterval(function () {
      that.people();
     },10000)
   },
@@ -159,6 +160,7 @@ export default {
   methods: {
     //接受子组件传递过来的一个人经纬度
     getLocation(data){
+ clearInterval(this.timer1);  //清空轮询，防止地图返回初始页面
       this.circles = data;
       //console.log(this.circles)
       this.showDoctor=false
@@ -168,6 +170,7 @@ export default {
      //接受子组件传递过来的所有人经纬度
     getAllpeople(data){
       this.circles = data;
+      clearInterval(this.timer1);//清空轮询，防止地图返回初始页面
       this.showDoctor = false
       //获得经纬度之后将其渲染到地图上
       this.peopleLocation();
@@ -243,7 +246,6 @@ export default {
               '<div style="width:100%;height:3px;background-color:grey;margin:16px 0">' +
               '</div>' +
 
-
               '<div style="text-align: center;font-weight: bold;margin:10px 0">医疗团队信息</div>' +
               '<div>' +
                 `<img src=${doctor} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-right:20px"/>` +
@@ -271,7 +273,7 @@ export default {
          let openclick=function(){
            
            that.showHealth=true;
-           that.infoWindow.clear()
+          // that.infoWindow.clear()
            that.getHealth(marker)
          }
          btn3.onclick=openclick
@@ -438,8 +440,8 @@ export default {
                       `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH}</div>` +
                   '</div>' +
               '</div>' +
-              // '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()"/>' +
-             '<input id="btn" type="button" class="btn" value="健康档案" onclick="btnclick()"/>' +
+             '<input id="btn" type="button" class="btn" value="健康档案" onclick="btnclick()" style="margin-right:40px"/>' +
+             '<input id="btn1" type="button" class="btn" value="派单"/>' +
             '</div>' +
           '</div>';
           that.infoWindow = new AMap.InfoWindow({
@@ -507,6 +509,31 @@ export default {
             });
           });
         }
+
+        /**这里只是一个测试 start**/
+  // setTimeout(function(){
+  //         that.infoWindow.open(map);
+  //         var btn = document.getElementById('btn');
+  //         //onclick事件
+  //         let btnclick = function(){
+  //           that.showHealth=true;
+  //          that.getallHealth(marker)
+  //         }
+  //         var btn2 = document.getElementById('btn2');
+  //         let showMoreMessage = function(){
+  //           that.showHealth=true;
+  //          that.getallHealth(marker)
+  //         }
+  //         if(btn.onclick){
+  //         btn.onclick = btnclick
+  //         }
+  //         else{
+  //         btn2.onclick = showMoreMessage
+  //         }
+  //       },200)
+        /** 这只是一个测试 end  **/
+
+
         //使用其它坐标会有bug
         setTimeout(function(){
           that.infoWindow.open(map);
@@ -533,13 +560,13 @@ export default {
           //onclick事件
           let btnclick = function(){
             that.showHealth=true;
-            that.infoWindow.clear()
+          //  that.infoWindow.clear()
            that.getallHealth(marker)
           }
           btn.onclick = btnclick
 
      
-        },200)
+        },3000)
       })
     },
   getallHealth(marker){
