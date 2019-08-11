@@ -180,7 +180,12 @@ export default {
         this.markerList = []
       }
       this.circles.map(item => {
-        console.log(item)
+        //数组中有null志，先做假值
+        if(!item.lat_){
+          item.lat_ = 30.567103
+          item.lng_ = 119.601189
+        }else{
+           console.log(item)
         let marker = new AMap.Marker({
           icon: new AMap.Icon({
             size: new AMap.Size(20, 30),
@@ -214,6 +219,7 @@ export default {
         });
         this.peopleLocationwindow(marker)
         this.markerList.push(marker)
+        }
       })
       map.add(this.markerList)
       // map.setFitView(null);
@@ -230,11 +236,11 @@ export default {
                 `<img src=${oldman} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-right:20px;margin-right:20px"/ >` +
                 '<div class="input-item" style="margin-bottom:10px">' +
                     '<div class="input-item-prepend">' +
-                      `<div class="input-item-text" >真实姓名：${marker.JBXX_XM}</div>` +
+                      `<div class="input-item-text" >真实姓名：${marker.JBXX_XM == null ? marker.consignee: marker.JBXX_XM }</div>` +
                       `<div class="input-item-text" >下单时间：${marker.createdat}</div>` +
                       `<div class="input-item-text" >订单状态：未下单</div>` +
-                      `<div class="input-item-text" >联系人姓名：${marker.JBXX_LXRXM}</div>` +
-                      `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH}</div>` +
+                      `<div class="input-item-text" >联系人姓名：${marker.JBXX_LXRXM == null?'未填写联系人':marker.JBXX_LXRXM}</div>` +
+                      `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH == null?'未填写联系人电话':marker.JBXX_LXRDH}</div>` +
                     '</div>' +
                 '</div>' +
 
@@ -431,15 +437,15 @@ export default {
               `<img src=${oldman} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-right:20px"/ >` +
               '<div class="input-item" style="margin-bottom:10px">' +
                   '<div class="input-item-prepend" >' +
-                      `<div class="input-item-text" >真实姓名：${marker.JBXX_XM}</div>` +
+                      `<div class="input-item-text" >真实姓名：${marker.JBXX_XM == null ? marker.consignee: marker.JBXX_XM }</div>` +
                       `<div class="input-item-text" >下单时间：${marker.createdat}</div>` +
                       `<div class="input-item-text" >订单状态：${marker.order_status == 11? '未接单' :(marker.order_status == 12? '已接单，未服务' :'正在服务')}</div>` +
-                      `<div class="input-item-text" >联系人姓名：${marker.JBXX_LXRXM}</div>` +
-                      `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH}</div>` +
+                      `<div class="input-item-text" >联系人姓名：${marker.JBXX_LXRXM == null?'未填写联系人':marker.JBXX_LXRXM}</div>` +
+                      `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH == null?'未填写联系人电话':marker.JBXX_LXRDH}</div>` +
                   '</div>' +
               '</div>' +
               // '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()"/>' +
-             '<input id="healthfile2" type="button" class="btn" value="健康档案" onclick="showHealthFile2()"/>' +
+             '<input id="btn5" type="button" class="btn" value="健康档案" onclick="btnclick()" />' +
             '</div>' +
           '</div>';
           that.infoWindow = new AMap.InfoWindow({
@@ -447,6 +453,18 @@ export default {
               content: info , //使用默认信息窗体框样式，显示信息内容
               closeWhenClickMap:true,
           });
+            setTimeout(function(){
+            that.infoWindow.open(map);
+            var btn5 = document.getElementById('btn5');
+            //onclick事件
+            let btnclick = function(){
+              that.showHealth=true;
+            that.getallHealth(marker)
+            }
+
+            btn5.onclick = btnclick
+        
+          },200)
         }else{
           that.axios
           .get(
@@ -470,11 +488,11 @@ export default {
                 `<img src=${oldman} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-right:20px;margin-right:20px"/ >` +
                 '<div class="input-item" style="margin-bottom:10px">' +
                     '<div class="input-item-prepend">' +
-                      `<div class="input-item-text" >真实姓名：${marker.JBXX_XM}</div>` +
+                      `<div class="input-item-text" >真实姓名：${marker.JBXX_XM == null ? marker.consignee: marker.JBXX_XM }</div>` +
                       `<div class="input-item-text" >下单时间：${marker.createdat}</div>` +
                       `<div class="input-item-text" >订单状态：${marker.order_status == 11? '未接单' :(marker.order_status == 12? '已接单，未服务' :'正在服务')}</div>` +
-                      `<div class="input-item-text" >联系人姓名：${marker.JBXX_LXRXM}</div>` +
-                      `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH}</div>` +
+                      `<div class="input-item-text" >联系人姓名：${marker.JBXX_LXRXM == null?'未填写联系人':marker.JBXX_LXRXM}</div>` +
+                      `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH == null?'未填写联系人电话':marker.JBXX_LXRDH}</div>` +
                     '</div>' +
                 '</div>' +
                 // '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()" />' +
@@ -506,42 +524,22 @@ export default {
                 closeWhenClickMap:true,
             });
           });
-        }
-        //使用其它坐标会有bug
-        // setTimeout(function(){
-        //   that.infoWindow.open(map);
 
-        //   // var btn = document.getElementById('btn');
-        //   // //onclick事件
-        //   // let btnclick = function(){
-        //   //   that.showHealth=true;
-        //   //  that.getallHealth(marker)
-        //   // }
-        //   // btn.onclick = btnclick
-
-    
-        //   var btn2 = document.getElementById('btn2');
-        //   let showMoreMessage = function(){
-        //     that.showHealth=true;
-        //     that.infoWindow.close()
-        //    that.getallHealth(marker)
-        //   }
-        //   healthfile.onclick = showHealthFile
-       
-        // },200)
-             setTimeout(function(){
+           setTimeout(function(){
           that.infoWindow.open(map);
           var btn = document.getElementById('btn');
           //onclick事件
           let btnclick = function(){
             that.showHealth=true;
-            that.infoWindow.close()
            that.getallHealth(marker)
           }
           btn.onclick = btnclick
 
-     
         },200)
+        }
+        //使用其它坐标会有bug
+       
+
       })
     },
   getallHealth(marker){
