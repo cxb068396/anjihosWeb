@@ -88,7 +88,7 @@ export default {
         value: 'id',
         children: 'company'
       },
-      zoom: 10,
+      zoom: 11,
       center: [119.6803085855,30.6383898649],
       AMapManager,
       lineArr :[],
@@ -109,6 +109,7 @@ export default {
       lng:[],
       infoWindow:{},
       timer:'',
+       timer1:'',
       location:'',
       healthdocid:'',
       healthdoc:[]
@@ -135,9 +136,9 @@ export default {
       })()
     }
     that.getStreet();
-    this.timer = setInterval(function () {
+    this.timer1 = setInterval(function () {
      that.people();
-    },15000)
+    },10000)
   },
   beforeDestroy(){
     clearInterval(this.timer)
@@ -159,6 +160,7 @@ export default {
   methods: {
     //接受子组件传递过来的一个人经纬度
     getLocation(data){
+ clearInterval(this.timer1);  //清空轮询，防止地图返回初始页面
       this.circles = data;
       //console.log(this.circles)
       this.showDoctor=false
@@ -168,6 +170,7 @@ export default {
      //接受子组件传递过来的所有人经纬度
     getAllpeople(data){
       this.circles = data;
+      clearInterval(this.timer1);//清空轮询，防止地图返回初始页面
       this.showDoctor = false
       //获得经纬度之后将其渲染到地图上
       this.peopleLocation();
@@ -180,12 +183,7 @@ export default {
         this.markerList = []
       }
       this.circles.map(item => {
-        //数组中有null志，先做假值
-        if(!item.lat_){
-          item.lat_ = 30.567103
-          item.lng_ = 119.601189
-        }else{
-           console.log(item)
+        console.log(item)
         let marker = new AMap.Marker({
           icon: new AMap.Icon({
             size: new AMap.Size(20, 30),
@@ -219,10 +217,9 @@ export default {
         });
         this.peopleLocationwindow(marker)
         this.markerList.push(marker)
-        }
       })
       map.add(this.markerList)
-      // map.setFitView(null);
+     map.setFitView();
     },
    peopleLocationwindow(marker,position){
       let map = AMapManager.getMap()
@@ -236,11 +233,11 @@ export default {
                 `<img src=${oldman} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-right:20px;margin-right:20px"/ >` +
                 '<div class="input-item" style="margin-bottom:10px">' +
                     '<div class="input-item-prepend">' +
-                      `<div class="input-item-text" >真实姓名：${marker.JBXX_XM == null ? marker.consignee: marker.JBXX_XM }</div>` +
+                      `<div class="input-item-text" >真实姓名：${marker.JBXX_XM}</div>` +
                       `<div class="input-item-text" >下单时间：${marker.createdat}</div>` +
                       `<div class="input-item-text" >订单状态：未下单</div>` +
-                      `<div class="input-item-text" >联系人姓名：${marker.JBXX_LXRXM == null?'未填写联系人':marker.JBXX_LXRXM}</div>` +
-                      `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH == null?'未填写联系人电话':marker.JBXX_LXRDH}</div>` +
+                      `<div class="input-item-text" >联系人姓名：${marker.JBXX_LXRXM}</div>` +
+                      `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH}</div>` +
                     '</div>' +
                 '</div>' +
 
@@ -248,7 +245,6 @@ export default {
               '</div>' +
               '<div style="width:100%;height:3px;background-color:grey;margin:16px 0">' +
               '</div>' +
-
 
               '<div style="text-align: center;font-weight: bold;margin:10px 0">医疗团队信息</div>' +
               '<div>' +
@@ -273,11 +269,11 @@ export default {
         //使用其它坐标会有bug
         setTimeout(function(){
           that.infoWindow.open(map);
-          var btn3 = document.getElementById('btn3');
-          let openclick=function(){
+         var btn3 = document.getElementById('btn3');
+         let openclick=function(){
            
            that.showHealth=true;
-           that.infoWindow.close()
+          // that.infoWindow.clear()
            that.getHealth(marker)
          }
          btn3.onclick=openclick
@@ -421,7 +417,7 @@ export default {
         this.markerList.push(marker)
       })
       map.add(this.markerList)
-      // map.setFitView(null);
+      map.setFitView();
     },
     displayLabel(marker,position){
       let map = AMapManager.getMap()
@@ -434,18 +430,20 @@ export default {
           '<div className="custom-infowindow input-card" style="width:300px;border-radius:20px;font-size:10px;">' +
             '<div style="text-align: center;font-weight: bold;margin:10px 0">服务对象信息</div>' +
             '<div>' +
-              `<img src=${oldman} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-right:20px"/ >` +
+              `<img src=${oldman} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-right:20px"/>` +
+
               '<div class="input-item" style="margin-bottom:10px">' +
                   '<div class="input-item-prepend" >' +
-                      `<div class="input-item-text" >真实姓名：${marker.JBXX_XM == null ? marker.consignee: marker.JBXX_XM }</div>` +
+                      `<div class="input-item-text" >真实姓名：${marker.JBXX_XM}</div>` +
                       `<div class="input-item-text" >下单时间：${marker.createdat}</div>` +
                       `<div class="input-item-text" >订单状态：${marker.order_status == 11? '未接单' :(marker.order_status == 12? '已接单，未服务' :'正在服务')}</div>` +
-                      `<div class="input-item-text" >联系人姓名：${marker.JBXX_LXRXM == null?'未填写联系人':marker.JBXX_LXRXM}</div>` +
-                      `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH == null?'未填写联系人电话':marker.JBXX_LXRDH}</div>` +
+                      `<div class="input-item-text" >联系人姓名：${marker.JBXX_LXRXM}</div>` +
+                      `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH}</div>` +
                   '</div>' +
               '</div>' +
               // '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()"/>' +
              '<input id="btn5" type="button" class="btn" value="健康档案" onclick="btnclick()" />' +
+                 '<input id="btn8" type="button" class="btn" value="派单" style="margin-left:40px" />' +
             '</div>' +
           '</div>';
           that.infoWindow = new AMap.InfoWindow({
@@ -453,18 +451,6 @@ export default {
               content: info , //使用默认信息窗体框样式，显示信息内容
               closeWhenClickMap:true,
           });
-            setTimeout(function(){
-            that.infoWindow.open(map);
-            var btn5 = document.getElementById('btn5');
-            //onclick事件
-            let btnclick = function(){
-              that.showHealth=true;
-            that.getallHealth(marker)
-            }
-
-            btn5.onclick = btnclick
-        
-          },200)
         }else{
           that.axios
           .get(
@@ -488,11 +474,11 @@ export default {
                 `<img src=${oldman} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-right:20px;margin-right:20px"/ >` +
                 '<div class="input-item" style="margin-bottom:10px">' +
                     '<div class="input-item-prepend">' +
-                      `<div class="input-item-text" >真实姓名：${marker.JBXX_XM == null ? marker.consignee: marker.JBXX_XM }</div>` +
+                      `<div class="input-item-text" >真实姓名：${marker.JBXX_XM}</div>` +
                       `<div class="input-item-text" >下单时间：${marker.createdat}</div>` +
                       `<div class="input-item-text" >订单状态：${marker.order_status == 11? '未接单' :(marker.order_status == 12? '已接单，未服务' :'正在服务')}</div>` +
-                      `<div class="input-item-text" >联系人姓名：${marker.JBXX_LXRXM == null?'未填写联系人':marker.JBXX_LXRXM}</div>` +
-                      `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH == null?'未填写联系人电话':marker.JBXX_LXRDH}</div>` +
+                      `<div class="input-item-text" >联系人姓名：${marker.JBXX_LXRXM}</div>` +
+                      `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH}</div>` +
                     '</div>' +
                 '</div>' +
                 // '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()" />' +
@@ -524,22 +510,42 @@ export default {
                 closeWhenClickMap:true,
             });
           });
+        }
+        //使用其它坐标会有bug
+        // setTimeout(function(){
+        //   that.infoWindow.open(map);
 
-           setTimeout(function(){
+        //   // var btn = document.getElementById('btn');
+        //   // //onclick事件
+        //   // let btnclick = function(){
+        //   //   that.showHealth=true;
+        //   //  that.getallHealth(marker)
+        //   // }
+        //   // btn.onclick = btnclick
+
+    
+        //   var btn2 = document.getElementById('btn2');
+        //   let showMoreMessage = function(){
+        //     that.showHealth=true;
+        //     that.infoWindow.close()
+        //    that.getallHealth(marker)
+        //   }
+        //   healthfile.onclick = showHealthFile
+       
+        // },200)
+             setTimeout(function(){
           that.infoWindow.open(map);
           var btn = document.getElementById('btn');
           //onclick事件
           let btnclick = function(){
             that.showHealth=true;
+            that.infoWindow.close()
            that.getallHealth(marker)
           }
           btn.onclick = btnclick
 
+     
         },200)
-        }
-        //使用其它坐标会有bug
-       
-
       })
     },
   getallHealth(marker){

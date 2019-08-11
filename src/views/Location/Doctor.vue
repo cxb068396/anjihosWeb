@@ -277,8 +277,8 @@ export default {
        this.contractPeople=row
        this.getLocation()
        var str=this.location.split(',')
-       this.contractPeople.lng_=str[0]
-       this.contractPeople.lat_=str[1]
+       this.contractPeople.lng_ = str[0]
+       this.contractPeople.lat_ = str[1]
        var arr=[]
    arr.push(this.contractPeople)
    console.log(arr)
@@ -293,7 +293,7 @@ export default {
     peopleLocationClick(index, row){
     var that=this
       this.doctor_team_id=row.doctorInfo.doctor_team_id
-      // this.peoplelist()
+      this.peoplelist()
       //console.log(this.peoples)
        this.axios
         .get('https://api.anjihos.newlioncity.com/admin/contract?completed=1&doctor_team_id='+this.doctor_team_id).then(res=>{
