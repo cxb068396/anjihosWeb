@@ -219,7 +219,8 @@ export default {
         this.markerList.push(marker)
       })
       map.add(this.markerList)
-    //  map.setFitView();
+   //  map.setFitView();
+
     },
    peopleLocationwindow(marker,position){
       let map = AMapManager.getMap()
@@ -427,7 +428,8 @@ export default {
         this.markerList.push(marker)
       })
       map.add(this.markerList)
-      // map.setFitView();
+     // map.setFitView();
+
     },
     displayLabel(marker,position){
       let map = AMapManager.getMap()
@@ -453,7 +455,7 @@ export default {
               '</div>' +
               // '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()"/>' +
              '<input id="btn5" type="button" class="btn" value="健康档案" onclick="btnclick()" />' +
-                 '<input id="btn8" type="button" class="btn" value="派单" style="margin-left:40px" />' +
+                 '<input id="btn8" type="button" class="btn" value="派单"  onclick="paidan()" style="margin-left:40px" />' +
             '</div>' +
           '</div>';
           that.infoWindow = new AMap.InfoWindow({
@@ -464,14 +466,21 @@ export default {
             setTimeout(function(){
             that.infoWindow.open(map);
             var btn5 = document.getElementById('btn5');
+            var btn8 = document.getElementById('btn8');
             //onclick事件
             let btnclick = function(){
               that.showHealth=true;
               that.infoWindow.close()
             that.getallHealth(marker)
             }
-
+    let paidan = function(){
+              //that.showHealth=true;
+               that.$router.push({
+        name: "order",
+      });
+            }
             btn5.onclick = btnclick
+                btn8.onclick = paidan
         
           },200)
         }else{
