@@ -33,7 +33,7 @@
         />
           <el-table-column
           prop="blood_sugar"
-          label="血糖（%）"
+          label="血糖（毫升/mol）"
         />
           <el-table-column
           prop="heart_rate"
