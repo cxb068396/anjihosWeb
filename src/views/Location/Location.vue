@@ -109,7 +109,6 @@ export default {
       lng:[],
       infoWindow:{},
       timer:'',
-       timer1:'',
       location:'',
       healthdocid:'',
       healthdoc:[]
@@ -138,10 +137,10 @@ export default {
     that.getStreet();
     this.timer1 = setInterval(function () {
      that.people();
-    },10000)
+    },15000)
   },
   beforeDestroy(){
-    clearInterval(this.timer)
+    clearInterval(this.timer1)
   },
   watch: {
     screenHeight (val) {
@@ -220,6 +219,7 @@ export default {
       })
       map.add(this.markerList)
    //  map.setFitView();
+
     },
    peopleLocationwindow(marker,position){
       let map = AMapManager.getMap()
@@ -233,11 +233,11 @@ export default {
                 `<img src=${oldman} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-right:20px;margin-right:20px"/ >` +
                 '<div class="input-item" style="margin-bottom:10px">' +
                     '<div class="input-item-prepend">' +
-                      `<div class="input-item-text" >真实姓名：${marker.JBXX_XM}</div>` +
+                      `<div class="input-item-text" >真实姓名：${marker.JBXX_XM == null ? marker.consignee: marker.JBXX_XM }</div>` +
                       `<div class="input-item-text" >下单时间：${marker.createdat}</div>` +
-                      `<div class="input-item-text" >订单状态：未下单</div>` +
-                      `<div class="input-item-text" >联系人姓名：${marker.JBXX_LXRXM}</div>` +
-                      `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH}</div>` +
+                      `<div class="input-item-text" >订单状态：${marker.order_status == 11? '未接单' :(marker.order_status == 12? '已接单，未服务' :'正在服务')}</div>` +
+                      `<div class="input-item-text" >联系人姓名：${marker.JBXX_LXRXM == null?'未填写联系人':marker.JBXX_LXRXM}</div>` +
+                      `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH == null?'未填写联系人电话':marker.JBXX_LXRDH}</div>` +
                     '</div>' +
                 '</div>' +
 
@@ -273,7 +273,7 @@ export default {
          let openclick=function(){
            
            that.showHealth=true;
-          // that.infoWindow.clear()
+          that.infoWindow.close()
            that.getHealth(marker)
          }
          btn3.onclick=openclick
@@ -418,6 +418,7 @@ export default {
       })
       map.add(this.markerList)
      // map.setFitView();
+
     },
     displayLabel(marker,position){
       let map = AMapManager.getMap()
@@ -458,6 +459,7 @@ export default {
             //onclick事件
             let btnclick = function(){
               that.showHealth=true;
+              that.infoWindow.close()
             that.getallHealth(marker)
             }
     let paidan = function(){
@@ -536,6 +538,7 @@ export default {
           //onclick事件
           let btnclick = function(){
             that.showHealth=true;
+            that.infoWindow.close()
            that.getallHealth(marker)
           }
           btn.onclick = btnclick
