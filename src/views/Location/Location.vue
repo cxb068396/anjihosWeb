@@ -11,7 +11,7 @@
     </div>
     <div class='selects'>
     <div class='select'>
-      <el-button type="primary" size="mini" @click="people" icon="el-icon-refresh">刷新</el-button>
+      <el-button type="primary" size="mini" @click="updatetimer2" icon="el-icon-refresh">自动刷新</el-button>
       <el-button type="primary" size="mini" @click="allPeople">签约人员</el-button>
       <el-button type="primary" size="mini" @click="allDoctor">医疗团队</el-button>
     </div>
@@ -111,7 +111,8 @@ export default {
       timer:'',
       location:'',
       healthdocid:'',
-      healthdoc:[]
+      healthdoc:[],
+      timer2:0,
     }
   },
   components:{
@@ -185,10 +186,10 @@ export default {
         console.log(item)
         let marker = new AMap.Marker({
           icon: new AMap.Icon({
-            size: new AMap.Size(20, 30),
+            size: new AMap.Size(30,40),
             //根据不同状态展示不同icon
             image:blue_drip,
-            imageSize: new AMap.Size(20, 30),
+            imageSize: new AMap.Size(30,40),
           }),
           position: new AMap.LngLat(item.lng_,item.lat_),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
         });
@@ -210,7 +211,7 @@ export default {
         marker.serviceStaffname = (item.teamInfo.serviceStaffInfo? item.teamInfo.serviceStaffInfo.name :'未签约')
         marker.healthManagername = (item.teamInfo.healthManagerInfo ?  item.teamInfo.healthManagerInfo.name:'未签约')
         marker.setLabel({
-            offset: new AMap.Pixel(20, 20),  //设置文本标注偏移量
+            offset: new AMap.Pixel(30, 15),  //设置文本标注偏移量
             content: `<div class='info'>${ marker.JBXX_XM }</div>`, //设置文本标注内容
             direction: 'right' //设置文本标注方位
         });
@@ -356,6 +357,16 @@ export default {
         });
       }
     },
+    updatetimer2(){
+      this.people()
+      if(this.timer2){
+        clearInterval(this.timer2)
+      }
+      let that = this 
+      this.timer2 = setInterval(function(){
+        that.people()
+      },15000)
+    },
     people() {
       this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user')
       .then(res => {
@@ -376,10 +387,10 @@ export default {
       this.circles.map(item => {
         let marker = new AMap.Marker({
           icon: new AMap.Icon({
-            size: new AMap.Size(20, 30),
+            size: new AMap.Size(30,40),
             //根据不同状态展示不同icon
             image:item.order_status == 11? red_drip :(item.order_status == 12? yellow_drip :blue_drip),
-            imageSize: new AMap.Size(20, 30),
+            imageSize: new AMap.Size(30,40),
           }),
           position: new AMap.LngLat(item.lng,item.lat),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
         });
@@ -408,7 +419,7 @@ export default {
 
         
         marker.setLabel({
-            offset: new AMap.Pixel(20, 20),  //设置文本标注偏移量
+            offset: new AMap.Pixel(30, 15),  //设置文本标注偏移量
             content: `<div class='info'>${marker.consignee}</div>`, //设置文本标注内容
             direction: 'right' //设置文本标注方位
         });
