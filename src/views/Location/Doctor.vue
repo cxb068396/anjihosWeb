@@ -295,10 +295,17 @@ export default {
       this.doctor_team_id=row.doctorInfo.doctor_team_id
       // this.peoplelist()
       //console.log(this.peoples)
+      const loading = this.$loading({
+          lock: true,
+          text: '数据量较多，请稍等。',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        });
        this.axios
-        .get('https://api.anjihos.newlioncity.com/admin/contract?completed=1&doctor_team_id='+this.doctor_team_id).then(res=>{
+        .get('https://api.anjihos.newlioncity.com/admin/contract?size=999&completed=1&doctor_team_id='+this.doctor_team_id).then(res=>{
            this.contractPeoplelist=res.data.data.data  //得到所有签约对象
             if( this.contractPeoplelist.length>0){
+              loading.close();
             this.$emit('funcs',that.contractPeoplelist)
           }else{
             this.$message({

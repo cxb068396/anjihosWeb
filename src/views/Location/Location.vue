@@ -46,9 +46,18 @@
         @change="handleChange">
         </el-cascader>
       </template>
-      <div class='icon1'><img src='../../assets/yellow-drip.png' width="20" height="30"/><span style="font-size:10px">已接单</span></div>
-      <div class='icon1'><img src='../../assets/blue-drip.png' width="20" height="30"/><span style="font-size:10px">正在服务</span></div>
-      <div class='icon1'><img src='../../assets/red-drip.png' width="20" height="30"/><span style="font-size:10px">未接单</span></div>
+      <div class='icon1'>
+        <img src='../../assets/red-drip.png' width="20" height="30"/>
+        <span style="font-size:10px">{{numbercode11}}个未接单</span>
+      </div>
+      <div class='icon1'>
+        <img src='../../assets/yellow-drip.png' width="20" height="30"/>
+        <span style="font-size:10px">{{numbercode12}}个已接单</span>
+      </div>
+      <div class='icon1'>
+        <img src='../../assets/blue-drip.png' width="20" height="30"/>
+        <span style="font-size:10px">{{numbercode13}}个正在服务</span>
+      </div>
     </div>  
   </div>
 </template>
@@ -143,7 +152,10 @@ export default {
       healthdocid:'',
       healthdoc:[],
       timer1:0,
-      timer2:0,
+      // timer2:0,
+      numbercode11:0,
+      numbercode12:0,
+      numbercode13:0,
     }
   },
   components:{
@@ -155,7 +167,7 @@ export default {
     const that = this
     setTimeout(function () {
       that.people();
-    },200)
+    },400)
   },
   mounted() {
     
@@ -167,9 +179,9 @@ export default {
       })()
     }
     that.getStreet();
-    this.timer1 = setInterval(function () {
-     that.people();
-    },15000)
+    this.timer1 = setInterval(function(){
+        setTimeout( that.people,0)
+      },15000)
   },
   beforeDestroy(){
     clearInterval(this.timer1)
@@ -191,7 +203,8 @@ export default {
   methods: {
     //接受子组件传递过来的一个人经纬度
     getLocation(data){
-      clearInterval(this.timer1);  //清空轮询，防止地图返回初始页面
+      //清空轮询，防止地图返回初始页面
+      clearInterval(this.timer1);
       this.circles = data;
       //console.log(this.circles)
       this.showDoctor=false
@@ -200,8 +213,11 @@ export default {
     },
      //接受子组件传递过来的所有人经纬度
     getAllpeople(data){
+      console.log(this.timer1)
+      //清空轮询，防止地图返回初始页面
       this.circles = data;
-      clearInterval(this.timer1);//清空轮询，防止地图返回初始页面
+      clearInterval(this.timer1);
+      console.log(this.timer1)
       this.showDoctor = false
       //获得经纬度之后将其渲染到地图上
       this.peopleLocation();
@@ -214,7 +230,6 @@ export default {
         this.markerList = []
       }
       this.circles.map(item => {
-        console.log(item)
         let marker = new AMap.Marker({
           icon: new AMap.Icon({
             size: new AMap.Size(30,40),
@@ -249,6 +264,7 @@ export default {
         this.peopleLocationwindow(marker)
         this.markerList.push(marker)
       })
+      console.log(this.markerList)
       map.add(this.markerList)
    //  map.setFitView();
 
@@ -389,12 +405,12 @@ export default {
     },
     updatetimer2(){
       this.people()
-      if(this.timer2){
-        clearInterval(this.timer2)
+      if(this.timer1){
+        clearInterval(this.timer1)
       }
       let that = this 
-      this.timer2 = setInterval(function(){
-        that.people()
+      this.timer1 = setInterval(function(){
+        setTimeout( that.people,0)
       },15000)
     },
     people() {
@@ -414,6 +430,9 @@ export default {
         map.remove(this.markerList)
         this.markerList = []
       }
+      this.numbercode11 = 0
+      this.numbercode12 = 0
+      this.numbercode13 = 0
       this.circles.map(item => {
         let marker = new AMap.Marker({
           icon: new AMap.Icon({
@@ -426,7 +445,14 @@ export default {
         });
         marker.setAnimation(item.order_status == 11? 'AMAP_ANIMATION_BOUNCE':'AMAP_ANIMATION_NONE')
         // marker.setTitle('我是marker的title');
-
+        if(item.order_status == 11){
+          this.numbercode11++
+        }else if(item.order_status == 12){
+          this.numbercode12++
+        }else if(item.order_status == 13){
+          this.numbercode13++
+        }
+        marker.goods_name = item.goods_name//服务内容
         marker.consignee = item.consignee //昵称
         marker.address = item.address //详细住址
         marker.JBXX_BRDH = item.JBXX_BRDH //联系方式
@@ -456,7 +482,6 @@ export default {
         this.displayLabel(marker)
         this.markerList.push(marker)
       })
-      console.log(map)
       map.add(this.markerList)
      // map.setFitView();
 
@@ -478,6 +503,7 @@ export default {
               '<div class="input-item" style="margin-bottom:10px">' +
                   '<div class="input-item-prepend" >' +
                       `<div class="input-item-text" >真实姓名：${marker.JBXX_XM == null ? marker.consignee: marker.JBXX_XM }</div>` +
+                      `<div class="input-item-text" >服务内容：${marker.goods_name}</div>` +
                       `<div class="input-item-text" >下单时间：${marker.createdat}</div>` +
                       `<div class="input-item-text" >订单状态：${marker.order_status == 11? '未接单' :(marker.order_status == 12? '已接单，未服务' :'正在服务')}</div>` +
                       `<div class="input-item-text" >联系人姓名：${marker.JBXX_LXRXM == null?'未填写联系人':marker.JBXX_LXRXM}</div>` +
