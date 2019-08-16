@@ -95,8 +95,8 @@ let AMapManager = new VueAMap.AMapManager();
 export default {
   data() {
     return {
-      zoom: 10,
-      center: [120.130001,30.030001],
+      zoom: 11,
+      center: [119.6803085855,30.6383898649],
       AMapManager,
       lineArr :[],
       copyLineArr:[],

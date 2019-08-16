@@ -6,6 +6,7 @@
       :amap-manager="AMapManager" 
       :zoom="zoom" 
       :events="events" 
+      :plugin="plugins"
       class="amap-demo">
       </el-amap>
     </div>
@@ -64,9 +65,11 @@ import doctor from '../../assets/doctor.jpeg';
 import yellow_drip from '../../assets/yellow-drip.png';
 import blue_drip from '../../assets/blue-drip.png';
 import red_drip from '../../assets/red-drip.png';
+import green_drip from '../../assets/green-drip.png';
+import fakevideo from '../../assets/aaa.mp4';
 VueAMap.initAMapApiLoader({
-  key: '8b8f50d6273a3793e7f2e353861bb427',
-  plugin: [],
+  key: '39da57de3a8b0eb2ac9595631193b611',
+  plugin: ['AMap.DistrictSearch'],
   v: '1.4.4'
 });
 let AMapManager = new VueAMap.AMapManager();
@@ -88,6 +91,7 @@ export default {
         value: 'id',
         children: 'company'
       },
+      plugins: ['AMap.DistrictSearch'],
       zoom: 11,
       center: [119.6803085855,30.6383898649],
       AMapManager,
@@ -99,6 +103,32 @@ export default {
       events: {
         init:(map)=> {
           console.log('init事件')
+          new AMap.DistrictSearch({
+            extensions:'all',
+            subdistrict:0
+          }).search('安吉县',function(status,result){
+            // 外多边形坐标数组和内多边形坐标数组
+            var outer = [
+                new AMap.LngLat(-360,90,true),
+                new AMap.LngLat(-360,-90,true),
+                new AMap.LngLat(360,-90,true),
+                new AMap.LngLat(360,90,true),
+            ];
+            var holes =result.districtList[0].boundaries
+            var pathArray = [
+                outer
+            ];
+            pathArray.push.apply(pathArray,holes)
+            var polygon = new AMap.Polygon( {
+                pathL:pathArray,
+                strokeColor: '#00eeff',
+                strokeWeight: 1,
+                fillColor: '#71B3ff',
+                fillOpacity: 0.5
+            });
+            polygon.setPath(pathArray);
+            map.add(polygon)
+          })
         }
       },
       map: {},
@@ -125,7 +155,7 @@ export default {
     const that = this
     setTimeout(function () {
       that.people();
-    },100)
+    },200)
   },
   mounted() {
     
@@ -161,7 +191,7 @@ export default {
   methods: {
     //接受子组件传递过来的一个人经纬度
     getLocation(data){
- clearInterval(this.timer1);  //清空轮询，防止地图返回初始页面
+      clearInterval(this.timer1);  //清空轮询，防止地图返回初始页面
       this.circles = data;
       //console.log(this.circles)
       this.showDoctor=false
@@ -192,12 +222,12 @@ export default {
             image:blue_drip,
             imageSize: new AMap.Size(30,40),
           }),
-          position: new AMap.LngLat(item.lng_,item.lat_),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+          position: new AMap.LngLat(item.lng_ + Math.random()/5000,item.lat_ + Math.random()/5000),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
         });
         marker.setAnimation('AMAP_ANIMATION_NONE')
         // marker.setTitle('我是marker的title');
-        marker.healthdocid=item.health_doc_id
-        this.healthdocid=marker.healthdocid
+        marker.healthdocid = item.health_doc_id
+        this.healthdocid = marker.healthdocid
         marker.JBXX_BRDH = item.JBXX_BRDH //联系方式
         marker.createdat = item.healthdocInfo.createdat //记录时间
         marker.JBXX_XM = item.healthdocInfo.JBXX_XM //真实姓名
@@ -223,7 +253,7 @@ export default {
    //  map.setFitView();
 
     },
-   peopleLocationwindow(marker,position){
+    peopleLocationwindow(marker,position){
       let map = AMapManager.getMap()
       let that = this
       //鼠标点击事件
@@ -243,15 +273,15 @@ export default {
                     '</div>' +
                 '</div>' +
 
-                '<input id="btn3" type="button" class="btn" value="健康档案" onclick="openclick()" style="margin-right:40px"/>' +
+                '<input id="contractpeople_healthfile" type="button" class="btn" value="健康档案" onclick="contractpeopleHealthfileClick()" style="margin-right:40px"/>' +
               '</div>' +
               '<div style="width:100%;height:3px;background-color:grey;margin:16px 0">' +
               '</div>' +
 
               '<div style="text-align: center;font-weight: bold;margin:10px 0">医疗团队信息</div>' +
               '<div>' +
-                `<img src=${doctor} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-right:20px"/>` +
-                '<div class="input-item" style="margin-bottom:10px">' +
+                `<img src=${doctor} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-top:-10px"/>` +
+                '<div class="input-item" style="margin:0 0 0 120px">' +
                     '<div class="input-item-prepend">' +                 
                       `<div class="input-item-text" >医生：${marker.doctorname}</div>` +
                       `<div class="input-item-text" >护士：${marker.nursename}</div>` + 
@@ -260,38 +290,36 @@ export default {
                       `<div class="input-item-text" >服务人员：${marker.serviceStaffname}</div>`+
                     '</div>' +
                 '</div>' +
-                // '<input id="btn3" type="button" class="btn" value="服务记录" onclick="showMoreMessage3()"/>' +
+                // '<input id="contractpeople_healthfile" type="button" class="btn" value="服务记录" onclick="showMoreMessage3()"/>' +
               '</div>' +
             '</div>';
-          that.infoWindow = new AMap.InfoWindow({
-              position:marker.getPosition(),
-              content: info , //使用默认信息窗体框样式，显示信息内容
-              closeWhenClickMap:true,
-          });
+        that.infoWindow = new AMap.InfoWindow({
+            position:marker.getPosition(),
+            content: info , //使用默认信息窗体框样式，显示信息内容
+            closeWhenClickMap:true,
+        });
         //使用其它坐标会有bug
         setTimeout(function(){
           that.infoWindow.open(map);
-         var btn3 = document.getElementById('btn3');
-         let openclick=function(){
-           
-           that.showHealth=true;
-          that.infoWindow.close()
-           that.getHealth(marker)
-         }
-         btn3.onclick=openclick
-
+          var contractpeople_healthfile = document.getElementById('contractpeople_healthfile');
+          let contractpeopleHealthfileClick = function(){
+            that.showHealth = true;
+            that.infoWindow.close()
+            that.getHealth(marker)
+          }
+          contractpeople_healthfile.onclick = contractpeopleHealthfileClick
         },200)
       })
     },
 
-  getHealth(marker){
-       var healthdocid=marker.healthdocid
-       let health_doc_id = marker.health_doc_id
-       console.log(marker)
-          this.axios.get('https://api.anjihos.newlioncity.com/admin/vitalsign?health_doc_id='+healthdocid).then(res=>{
-        console.log(res.data.data.data)
-      this.healthdoc=res.data.data.data
-      })
+    getHealth(marker){
+      var healthdocid = marker.healthdocid
+      let health_doc_id = marker.health_doc_id
+      console.log(marker)
+      this.axios.get('https://api.anjihos.newlioncity.com/admin/vitalsign?health_doc_id='+healthdocid).then(res=>{
+      console.log(res.data.data.data)
+      this.healthdoc = res.data.data.data
+    })
   },
 /***************************************************/
 
@@ -306,7 +334,7 @@ export default {
       map.clearInfoWindow( )
       this.showModal = !this.showModal; 
     },
-      allDoctor() {
+    allDoctor() {
       let map = AMapManager.getMap()
       map.clearInfoWindow( )
       this.showDoctor = !this.showDoctor; 
@@ -394,7 +422,7 @@ export default {
             image:item.order_status == 11? red_drip :(item.order_status == 12? yellow_drip :blue_drip),
             imageSize: new AMap.Size(30,40),
           }),
-          position: new AMap.LngLat(item.lng,item.lat),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+          position: new AMap.LngLat(item.lng + Math.random()/5000,item.lat + Math.random()/5000),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
         });
         marker.setAnimation(item.order_status == 11? 'AMAP_ANIMATION_BOUNCE':'AMAP_ANIMATION_NONE')
         // marker.setTitle('我是marker的title');
@@ -428,6 +456,7 @@ export default {
         this.displayLabel(marker)
         this.markerList.push(marker)
       })
+      console.log(map)
       map.add(this.markerList)
      // map.setFitView();
 
@@ -440,6 +469,7 @@ export default {
         var info 
         if(marker.order_status == 11){
           info =
+
           '<div className="custom-infowindow input-card" style="width:300px;border-radius:20px;font-size:10px;">' +
             '<div style="text-align: center;font-weight: bold;margin:10px 0">服务对象信息</div>' +
             '<div>' +
@@ -455,8 +485,8 @@ export default {
                   '</div>' +
               '</div>' +
               // '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()"/>' +
-             '<input id="btn5" type="button" class="btn" value="健康档案" onclick="btnclick()" />' +
-                 '<input id="btn8" type="button" class="btn" value="派单"  onclick="paidan()" style="margin-left:40px" />' +
+             '<input id="withoutdoctorinfo_healthfile" type="button" class="btn" value="健康档案" onclick="withoutdoctorinfoHealthfileClick()" />' +
+              '<input id="voice_requirement" type="button" class="btn" value="语音需求"  onclick="sendOrder()" style="margin-left:40px" />' +
             '</div>' +
           '</div>';
           that.infoWindow = new AMap.InfoWindow({
@@ -464,24 +494,24 @@ export default {
               content: info , //使用默认信息窗体框样式，显示信息内容
               closeWhenClickMap:true,
           });
-            setTimeout(function(){
+          setTimeout(function(){
             that.infoWindow.open(map);
-            var btn5 = document.getElementById('btn5');
-            var btn8 = document.getElementById('btn8');
+            var withoutdoctorinfo_healthfile = document.getElementById('withoutdoctorinfo_healthfile');
+            var voice_requirement = document.getElementById('voice_requirement');
             //onclick事件
-            let btnclick = function(){
+            let withoutdoctorinfoHealthfileClick = function(){
               that.showHealth=true;
               that.infoWindow.close()
-            that.getallHealth(marker)
+              that.getallHealth(marker)
             }
-    let paidan = function(){
+            let sendOrder = function(){
               //that.showHealth=true;
-               that.$router.push({
-        name: "order",
-      });
+              that.$router.push({
+                name: "order",
+              });
             }
-            btn5.onclick = btnclick
-                btn8.onclick = paidan
+            withoutdoctorinfo_healthfile.onclick = withoutdoctorinfoHealthfileClick
+            voice_requirement.onclick = sendOrder
         
           },200)
         }else{
@@ -515,7 +545,7 @@ export default {
                     '</div>' +
                 '</div>' +
                 // '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()" />' +
-                '<input id="btn" type="button" class="btn" value="健康档案" onclick="btnclick()" />' +
+                '<input id="withdoctorinfo_healthfile" type="button" class="btn" value="健康档案" onclick="withdoctorinfoHealthfileClick()" />' +
               '</div>' +
               '<div style="width:100%;height:3px;background-color:grey;margin:16px 0">' +
               '</div>' +
@@ -523,8 +553,8 @@ export default {
 
               '<div style="text-align: center;font-weight: bold;margin:10px 0">医疗团队信息</div>' +
               '<div>' +
-                `<img src=${doctor} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left"/>` +
-                '<div class="input-item" style="margin-bottom:10px">' +
+                `<img src=${doctor} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-top:-10px"/>` +
+                '<div class="input-item" style="margin:0 0 0 120px">' +
                     '<div class="input-item-prepend">' +
                     //当没有teamInfo信息的时候，显示固定信息；有则显示成员信息
                     (teamInfo.length == 0 ?('此单非医疗团队医生接单'):(
@@ -535,41 +565,55 @@ export default {
                       `<div class="input-item-text" >服务人员：${serviceStafName}</div>` )) +
                     '</div>' +
                 '</div>' +
-                // '<input id="btn3" type="button" class="btn" value="服务记录" onclick="showMoreMessage3()"/>' +              '</div>' +
+                '<input id="online_live" type="button" class="btn" value="实时记录" onclick="showMoreMessage13()"/>' + 
+              '</div>' +
             '</div>';
             that.infoWindow = new AMap.InfoWindow({
                 position:marker.getPosition(),
                 content: info , //使用默认信息窗体框样式，显示信息内容
                 closeWhenClickMap:true,
-            });
+            })
+
+            setTimeout(function(){
+              that.infoWindow.open(map);
+              var online_live = document.getElementById('online_live');
+              var withdoctorinfo_healthfile = document.getElementById('withdoctorinfo_healthfile')
+              //onclick事件
+              let withdoctorinfoHealthfileClick = function(){
+                that.showHealth=true;
+                that.infoWindow.close()
+                that.getallHealth(marker)
+              }
+              withdoctorinfo_healthfile.onclick = withdoctorinfoHealthfileClick
+              let showMoreMessage13 = function(){
+                that.infoWindow.close()
+                let info13 =  
+                '<div>' +
+                  `<video src=${fakevideo} autoplay >`+
+                  '</video>'
+                '</div>'
+                that.infoWindow = new AMap.InfoWindow({
+                    position:marker.getPosition(),
+                    content:info13,
+                    closeWhenClickMap:true,
+                });
+                that.infoWindow.open(map)
+              }
+              online_live.onclick = showMoreMessage13
+            },200)
           });
-
-           setTimeout(function(){
-          that.infoWindow.open(map);
-          var btn = document.getElementById('btn');
-          //onclick事件
-          let btnclick = function(){
-            that.showHealth=true;
-            that.infoWindow.close()
-           that.getallHealth(marker)
-          }
-          btn.onclick = btnclick
-
-        },200)
         }
         //使用其它坐标会有bug
-       
-
       })
     },
-  getallHealth(marker){
-       let health_doc_id = marker.health_doc_id
-       console.log(marker)
-          this.axios.get('https://api.anjihos.newlioncity.com/admin/vitalsign?health_doc_id='+health_doc_id).then(res=>{
+    getallHealth(marker){
+      let health_doc_id = marker.health_doc_id
+      console.log(marker)
+      this.axios.get('https://api.anjihos.newlioncity.com/admin/vitalsign?health_doc_id='+health_doc_id).then(res=>{
         console.log(res.data.data.data)
-      this.healthdoc=res.data.data.data
+        this.healthdoc = res.data.data.data
       })
-  },
+    },
 
   }
 }
