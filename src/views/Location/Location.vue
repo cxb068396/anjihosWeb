@@ -206,7 +206,7 @@ export default {
       //清空轮询，防止地图返回初始页面
       clearInterval(this.timer1);
       this.circles = data;
-      //console.log(this.circles)
+      console.log(this.circles )
       this.showDoctor=false
       //获得经纬度之后将其渲染到地图上
       this.peopleLocation();
@@ -243,22 +243,10 @@ export default {
         // marker.setTitle('我是marker的title');
         marker.healthdocid = item.health_doc_id
         this.healthdocid = marker.healthdocid
-        marker.JBXX_BRDH = item.JBXX_BRDH //联系方式
-        marker.createdat = item.healthdocInfo.createdat //记录时间
-        marker.JBXX_XM = item.healthdocInfo.JBXX_XM //真实姓名
-        marker.JBXX_CSRQ = item.healthdocInfo.JBXX_CSRQ //出生日期
-        marker.JBXX_LXRXM = item.healthdocInfo.JBXX_LXRXM //联系人姓名
-        marker.JBXX_HJXXDZ = item.healthdocInfo.JBXX_HJXXDZ //地址
-        marker.JBXX_XB = item.healthdocInfo.JBXX_XB //性别
-        marker.JBXX_LXRDH = item.healthdocInfo.JBXX_LXRDH //联系人电话
-        marker.doctorname = item.teamInfo.doctorInfo? item.teamInfo.doctorInfo.name:'未签约'
-        marker.nursename = item.teamInfo.nurseInfo ?item.teamInfo.nurseInfo.name :'未签约'
-        marker.pharmacistname = item.teamInfo.pharmacistInfo ?item.teamInfo.pharmacistInfo.name:'未签约'
-        marker.serviceStaffname = (item.teamInfo.serviceStaffInfo? item.teamInfo.serviceStaffInfo.name :'未签约')
-        marker.healthManagername = (item.teamInfo.healthManagerInfo ?  item.teamInfo.healthManagerInfo.name:'未签约')
+        marker.real_name = item.real_name
         marker.setLabel({
             offset: new AMap.Pixel(30, 15),  //设置文本标注偏移量
-            content: `<div class='info'>${ marker.JBXX_XM }</div>`, //设置文本标注内容
+            content: `<div class='info'>${ marker.real_name }</div>`, //设置文本标注内容
             direction: 'right' //设置文本标注方位
         });
         this.peopleLocationwindow(marker)
@@ -272,60 +260,77 @@ export default {
     peopleLocationwindow(marker,position){
       let map = AMapManager.getMap()
       let that = this
-      //鼠标点击事件
       marker.on('mousedown',function () {
-        var info = 
-            '<div className="custom-infowindow input-card" style="width:300px;border-radius:20px;font-size:10px;">' +
-              '<div style="text-align:center;font-weight: bold;margin:10px 0">服务对象信息</div>' +
-              '<div>' +
-                `<img src=${oldman} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-right:20px;margin-right:20px"/ >` +
-                '<div class="input-item" style="margin-bottom:10px">' +
-                    '<div class="input-item-prepend">' +
-                      `<div class="input-item-text" >真实姓名：${marker.JBXX_XM == null ? marker.consignee: marker.JBXX_XM }</div>` +
-                      `<div class="input-item-text" >下单时间：${marker.createdat}</div>` +
-                      `<div class="input-item-text" >订单状态：${marker.order_status == 11? '未接单' :(marker.order_status == 12? '已接单，未服务' :'正在服务')}</div>` +
-                      `<div class="input-item-text" >联系人姓名：${marker.JBXX_LXRXM == null?'未填写联系人':marker.JBXX_LXRXM}</div>` +
-                      `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH == null?'未填写联系人电话':marker.JBXX_LXRDH}</div>` +
-                    '</div>' +
-                '</div>' +
+        that.axios
+        .get('https://api.anjihos.newlioncity.com/admin/contract/?health_doc_id='+marker.healthdocid).then(res=>{
+            let data = res.data.data.data[0]
+            marker.JBXX_BRDH = data.healthdocInfo.JBXX_BRDH //联系方式
+            marker.JBXX_XM = data.healthdocInfo.JBXX_XM //真实姓名
+            marker.JBXX_CSRQ = data.healthdocInfo.JBXX_CSRQ //出生日期
+            marker.JBXX_LXRXM = data.healthdocInfo.JBXX_LXRXM //联系人姓名
+            marker.JBXX_HJXXDZ = data.healthdocInfo.JBXX_HJXXDZ //地址
+            marker.JBXX_XB = data.healthdocInfo.JBXX_XB //性别
+            marker.JBXX_LXRDH = data.healthdocInfo.JBXX_LXRDH //联系人电话
+            marker.doctorname = data.teamInfo.doctorInfo? data.teamInfo.doctorInfo.name:'未签约'
+            marker.nursename = data.teamInfo.nurseInfo ?data.teamInfo.nurseInfo.name :'未签约'
+            marker.pharmacistname = data.teamInfo.pharmacistInfo ?data.teamInfo.pharmacistInfo.name:'未签约'
+            marker.serviceStaffname = (data.teamInfo.serviceStaffInfo? data.teamInfo.serviceStaffInfo.name :'未签约')
+            marker.healthManagername = (data.teamInfo.healthManagerInfo ?  data.teamInfo.healthManagerInfo.name:'未签约')
+            var info = 
+                  '<div className="custom-infowindow input-card" style="width:300px;border-radius:20px;font-size:10px;">' +
+                    '<div style="text-align:center;font-weight: bold;margin:10px 0">服务对象信息</div>' +
+                    '<div>' +
+                      `<img src=${oldman} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-right:20px;margin-right:20px"/ >` +
+                      '<div class="input-item" style="margin-bottom:10px">' +
+                          '<div class="input-item-prepend">' +
+                            `<div class="input-item-text" >真实姓名：${marker.JBXX_XM == null ? marker.consignee: marker.JBXX_XM }</div>` +
+                            `<div class="input-item-text" >下单时间：${marker.createdat}</div>` +
+                            `<div class="input-item-text" >订单状态：${marker.order_status == 11? '未接单' :(marker.order_status == 12? '已接单，未服务' :'正在服务')}</div>` +
+                            `<div class="input-item-text" >联系人姓名：${marker.JBXX_LXRXM == null?'未填写联系人':marker.JBXX_LXRXM}</div>` +
+                            `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH == null?'未填写联系人电话':marker.JBXX_LXRDH}</div>` +
+                          '</div>' +
+                      '</div>' +
 
-                '<input id="contractpeople_healthfile" type="button" class="btn" value="健康档案" onclick="contractpeopleHealthfileClick()" style="margin-right:40px"/>' +
-              '</div>' +
-              '<div style="width:100%;height:3px;background-color:grey;margin:16px 0">' +
-              '</div>' +
-
-              '<div style="text-align: center;font-weight: bold;margin:10px 0">医疗团队信息</div>' +
-              '<div>' +
-                `<img src=${doctor} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-top:-10px"/>` +
-                '<div class="input-item" style="margin:0 0 0 120px">' +
-                    '<div class="input-item-prepend">' +                 
-                      `<div class="input-item-text" >医生：${marker.doctorname}</div>` +
-                      `<div class="input-item-text" >护士：${marker.nursename}</div>` + 
-                      `<div class="input-item-text" >健康管家：${marker.serviceStaffname }</div>` +
-                      `<div class="input-item-text" >药师：${marker.pharmacistname}</div>` +
-                      `<div class="input-item-text" >服务人员：${marker.serviceStaffname}</div>`+
+                      '<input id="contractpeople_healthfile" type="button" class="btn" value="健康档案" onclick="contractpeopleHealthfileClick()" style="margin-right:40px"/>' +
                     '</div>' +
-                '</div>' +
-                // '<input id="contractpeople_healthfile" type="button" class="btn" value="服务记录" onclick="showMoreMessage3()"/>' +
-              '</div>' +
-            '</div>';
-        that.infoWindow = new AMap.InfoWindow({
-            position:marker.getPosition(),
-            content: info , //使用默认信息窗体框样式，显示信息内容
-            closeWhenClickMap:true,
-        });
-        //使用其它坐标会有bug
-        setTimeout(function(){
-          that.infoWindow.open(map);
-          var contractpeople_healthfile = document.getElementById('contractpeople_healthfile');
-          let contractpeopleHealthfileClick = function(){
-            that.showHealth = true;
-            that.infoWindow.close()
-            that.getHealth(marker)
-          }
-          contractpeople_healthfile.onclick = contractpeopleHealthfileClick
-        },200)
-      })
+                    '<div style="width:100%;height:3px;background-color:grey;margin:16px 0">' +
+                    '</div>' +
+
+                    '<div style="text-align: center;font-weight: bold;margin:10px 0">医疗团队信息</div>' +
+                    '<div>' +
+                      `<img src=${doctor} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-top:-10px"/>` +
+                      '<div class="input-item" style="margin:0 0 0 120px">' +
+                          '<div class="input-item-prepend">' +                 
+                            `<div class="input-item-text" >医生：${marker.doctorname}</div>` +
+                            `<div class="input-item-text" >护士：${marker.nursename}</div>` + 
+                            `<div class="input-item-text" >健康管家：${marker.serviceStaffname }</div>` +
+                            `<div class="input-item-text" >药师：${marker.pharmacistname}</div>` +
+                            `<div class="input-item-text" >服务人员：${marker.serviceStaffname}</div>`+
+                          '</div>' +
+                      '</div>' +
+                      // '<input id="contractpeople_healthfile" type="button" class="btn" value="服务记录" onclick="showMoreMessage3()"/>' +
+                    '</div>' +
+                  '</div>';
+              that.infoWindow = new AMap.InfoWindow({
+                  position:marker.getPosition(),
+                  content: info , //使用默认信息窗体框样式，显示信息内容
+                  closeWhenClickMap:true,
+              });
+              //使用其它坐标会有bug
+              setTimeout(function(){
+                that.infoWindow.open(map);
+                var contractpeople_healthfile = document.getElementById('contractpeople_healthfile');
+                let contractpeopleHealthfileClick = function(){
+                  that.showHealth = true;
+                  that.infoWindow.close()
+                  that.getHealth(marker)
+                }
+                contractpeople_healthfile.onclick = contractpeopleHealthfileClick
+              },200)
+        })
+            })
+      //鼠标点击事件
+      
     },
 
     getHealth(marker){
@@ -454,24 +459,27 @@ export default {
         }
         marker.goods_name = item.goods_name//服务内容
         marker.consignee = item.consignee //昵称
-        marker.address = item.address //详细住址
-        marker.JBXX_BRDH = item.JBXX_BRDH //联系方式
+        // marker.address = item.address //详细住址
+        // marker.JBXX_BRDH = item.JBXX_BRDH //联系方式
         marker.createdat = item.createdat //记录时间
         marker.JBXX_XM = item.JBXX_XM //真实姓名
-        marker.JBXX_CSRQ = item.JBXX_CSRQ //出生日期
+        // marker.JBXX_CSRQ = item.JBXX_CSRQ //出生日期
         marker.JBXX_LXRXM = item.JBXX_LXRXM //联系人姓名
-        marker.JBXX_HJXXDZ = item.JBXX_HJXXDZ //地址
-        marker.JBXX_XB = item.JBXX_XB //性别
+        // marker.JBXX_HJXXDZ = item.JBXX_HJXXDZ //地址
+        // marker.JBXX_XB = item.JBXX_XB //性别
         marker.JBXX_LXRDH = item.JBXX_LXRDH //联系人电话
 
-        marker.doctor_team_id = item.doctor_team_id //医疗团队编号
-        marker.health_doc_id = item.health_doc_id //医疗团队医生编号
-        marker.company_id = item.company_id //机构编号
+        // marker.doctor_team_id = item.doctor_team_id //医疗团队编号
+        // marker.health_doc_id = item.health_doc_id //医疗团队医生编号
+        // marker.company_id = item.company_id //机构编号
         marker.order_status = item.order_status //订单状态
-        marker.worker_sex = item.worker_sex //医生性别
-        marker.worker_address = item.worker_address //机构位置
-        marker.worker_mobile = item.worker_mobile //医生电话
-        marker.worker_address = item.worker_address //机构位置
+        // marker.worker_sex = item.worker_sex //医生性别
+        // marker.worker_address = item.worker_address //机构位置
+        // marker.worker_mobile = item.worker_mobile //医生电话
+        // marker.worker_address = item.worker_address //机构位置
+
+        marker.contract_id = item.contract_id //机构位置
+        marker.user_id = item.user_id //机构位置
 
         
         marker.setLabel({
@@ -491,7 +499,7 @@ export default {
       let that = this
       //鼠标点击事件
       marker.on('mousedown',function () {
-        var info 
+        let info 
         if(marker.order_status == 11){
           info =
 
@@ -541,96 +549,104 @@ export default {
         
           },200)
         }else{
-          that.axios
-          .get(
-            "/doctorteam?company_id=" + marker.company_id,
-          )
-          .then(res => {
-            let teamInfo = res.data.data.data.filter(item => item.id == marker.doctor_team_id)
-            console.log(teamInfo)
-            let doctorName,nurseName,healthManagerName,pharmacistName,serviceStafName
-            if(teamInfo.length > 0){
-              doctorName = teamInfo[0].doctorInfo.name
-              nurseName = teamInfo[0].nurseInfo.name
-              healthManagerName = teamInfo[0].healthManagerInfo.name
-              pharmacistName = teamInfo[0].pharmacistInfo.name
-              serviceStafName = teamInfo[0].serviceStaffInfo.name
-            }
-            info = 
-            '<div className="custom-infowindow input-card" style="width:300px;border-radius:20px;font-size:10px;">' +
-              '<div style="text-align:center;font-weight: bold;margin:10px 0">服务对象信息</div>' +
-              '<div>' +
-                `<img src=${oldman} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-right:20px;margin-right:20px"/ >` +
-                '<div class="input-item" style="margin-bottom:10px">' +
-                    '<div class="input-item-prepend">' +
-                      `<div class="input-item-text" >真实姓名：${marker.JBXX_XM == null ? marker.consignee: marker.JBXX_XM }</div>` +
-                      `<div class="input-item-text" >下单时间：${marker.createdat}</div>` +
-                      `<div class="input-item-text" >订单状态：${marker.order_status == 11? '未接单' :(marker.order_status == 12? '已接单，未服务' :'正在服务')}</div>` +
-                      `<div class="input-item-text" >联系人姓名：${marker.JBXX_LXRXM == null?'未填写联系人':marker.JBXX_LXRXM}</div>` +
-                      `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH == null?'未填写联系人电话':marker.JBXX_LXRDH}</div>` +
-                    '</div>' +
-                '</div>' +
-                // '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()" />' +
-                '<input id="withdoctorinfo_healthfile" type="button" class="btn" value="健康档案" onclick="withdoctorinfoHealthfileClick()" />' +
-              '</div>' +
-              '<div style="width:100%;height:3px;background-color:grey;margin:16px 0">' +
-              '</div>' +
-
-
-              '<div style="text-align: center;font-weight: bold;margin:10px 0">医疗团队信息</div>' +
-              '<div>' +
-                `<img src=${doctor} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-top:-10px"/>` +
-                '<div class="input-item" style="margin:0 0 0 120px">' +
-                    '<div class="input-item-prepend">' +
-                    //当没有teamInfo信息的时候，显示固定信息；有则显示成员信息
-                    (teamInfo.length == 0 ?('此单非医疗团队医生接单'):(
-                      `<div class="input-item-text" >医生：${doctorName}</div>` +
-                      `<div class="input-item-text" >护士：${nurseName}</div>` + 
-                      `<div class="input-item-text" >健康管家：${healthManagerName}</div>` +
-                      `<div class="input-item-text" >药师：${pharmacistName}</div>` +
-                      `<div class="input-item-text" >服务人员：${serviceStafName}</div>` )) +
-                    '</div>' +
-                '</div>' +
-                '<input id="online_live" type="button" class="btn" value="实时记录" onclick="showMoreMessage13()"/>' + 
-              '</div>' +
-            '</div>';
-            that.infoWindow = new AMap.InfoWindow({
-                position:marker.getPosition(),
-                content: info , //使用默认信息窗体框样式，显示信息内容
-                closeWhenClickMap:true,
-            })
-
-            setTimeout(function(){
-              that.infoWindow.open(map);
-              var online_live = document.getElementById('online_live');
-              var withdoctorinfo_healthfile = document.getElementById('withdoctorinfo_healthfile')
-              //onclick事件
-              let withdoctorinfoHealthfileClick = function(){
-                that.showHealth=true;
-                that.infoWindow.close()
-                that.getallHealth(marker)
-              }
-              withdoctorinfo_healthfile.onclick = withdoctorinfoHealthfileClick
-              let showMoreMessage13 = function(){
-                that.infoWindow.close()
-                let info13 =  
-                '<div>' +
-                  `<video src=${fakevideo} autoplay >`+
-                  '</video>'
-                '</div>'
-                that.infoWindow = new AMap.InfoWindow({
-                    position:marker.getPosition(),
-                    content:info13,
-                    closeWhenClickMap:true,
-                });
-                that.infoWindow.open(map)
-              }
-              online_live.onclick = showMoreMessage13
-            },200)
-          });
+          const getRes = async function(){
+            const res = await that.axios.get(
+              `/doctorteam?${marker.contract_id?`contract_id=${marker.contract_id}`:`user_id=${marker.user_id}`}`
+            )
+            // console.log(res)
+            that.handleRes(marker, res)
+          }
+          getRes()
+          // that.axios.get(
+          //   `/doctorteam?${marker.contract_id?`contract_id=${marker.contract_id}`:`user_id=${marker.user_id}`}`
+          // ).then(res =>{that.handleRes(marker,res)})
         }
-        //使用其它坐标会有bug
       })
+    },
+    handleRes(marker,res){
+      let map = AMapManager.getMap()
+      let that = this
+      let teamInfo = res.data.data.data
+      console.log(teamInfo)
+      let doctorName,nurseName,healthManagerName,pharmacistName,serviceStafName
+      if(teamInfo.length > 0){
+        doctorName = teamInfo[0].doctorInfo.name
+        nurseName = teamInfo[0].nurseInfo.name
+        healthManagerName = teamInfo[0].healthManagerInfo.name
+        pharmacistName = teamInfo[0].pharmacistInfo.name
+        serviceStafName = teamInfo[0].serviceStaffInfo.name
+      }
+      let info = 
+      '<div className="custom-infowindow input-card" style="width:300px;border-radius:20px;font-size:10px;">' +
+        '<div style="text-align:center;font-weight: bold;margin:10px 0">服务对象信息</div>' +
+        '<div>' +
+          `<img src=${oldman} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-right:20px;margin-right:20px"/ >` +
+          '<div class="input-item" style="margin-bottom:10px">' +
+              '<div class="input-item-prepend">' +
+                `<div class="input-item-text" >真实姓名：${marker.JBXX_XM == null ? marker.consignee: marker.JBXX_XM }</div>` +
+                `<div class="input-item-text" >下单时间：${marker.createdat}</div>` +
+                `<div class="input-item-text" >订单状态：${marker.order_status == 11? '未接单' :(marker.order_status == 12? '已接单，未服务' :'正在服务')}</div>` +
+                `<div class="input-item-text" >联系人姓名：${marker.JBXX_LXRXM == null?'未填写联系人':marker.JBXX_LXRXM}</div>` +
+                `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH == null?'未填写联系人电话':marker.JBXX_LXRDH}</div>` +
+              '</div>' +
+          '</div>' +
+          // '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()" />' +
+          '<input id="withdoctorinfo_healthfile" type="button" class="btn" value="健康档案" onclick="withdoctorinfoHealthfileClick()" />' +
+        '</div>' +
+        '<div style="width:100%;height:3px;background-color:grey;margin:16px 0">' +
+        '</div>' +
+
+
+        '<div style="text-align: center;font-weight: bold;margin:10px 0">医疗团队信息</div>' +
+        '<div>' +
+          `<img src=${doctor} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-top:-10px"/>` +
+          '<div class="input-item" style="margin:0 0 0 120px">' +
+              '<div class="input-item-prepend">' +
+              //当没有teamInfo信息的时候，显示固定信息；有则显示成员信息
+              (teamInfo.length == 0 ?('此单非医疗团队医生接单'):(
+                `<div class="input-item-text" >医生：${doctorName}</div>` +
+                `<div class="input-item-text" >护士：${nurseName}</div>` + 
+                `<div class="input-item-text" >健康管家：${healthManagerName}</div>` +
+                `<div class="input-item-text" >药师：${pharmacistName}</div>` +
+                `<div class="input-item-text" >服务人员：${serviceStafName}</div>` )) +
+              '</div>' +
+          '</div>' +
+          '<input id="online_live" type="button" class="btn" value="实时记录" onclick="showMoreMessage13()"/>' + 
+        '</div>' +
+      '</div>';
+      that.infoWindow = new AMap.InfoWindow({
+          position:marker.getPosition(),
+          content: info , //使用默认信息窗体框样式，显示信息内容
+          closeWhenClickMap:true,
+      })
+
+      setTimeout(function(){
+        that.infoWindow.open(map);
+        var online_live = document.getElementById('online_live');
+        var withdoctorinfo_healthfile = document.getElementById('withdoctorinfo_healthfile')
+        //onclick事件
+        let withdoctorinfoHealthfileClick = function(){
+          that.showHealth=true;
+          that.infoWindow.close()
+          that.getallHealth(marker)
+        }
+        withdoctorinfo_healthfile.onclick = withdoctorinfoHealthfileClick
+        let showMoreMessage13 = function(){
+          that.infoWindow.close()
+          let info13 =  
+          '<div>' +
+            `<video src=${fakevideo} autoplay >`+
+            '</video>'
+          '</div>'
+          that.infoWindow = new AMap.InfoWindow({
+              position:marker.getPosition(),
+              content:info13,
+              closeWhenClickMap:true,
+          });
+          that.infoWindow.open(map)
+        }
+        online_live.onclick = showMoreMessage13
+      },200)
     },
     getallHealth(marker){
       let health_doc_id = marker.health_doc_id
