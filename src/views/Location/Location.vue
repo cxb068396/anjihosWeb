@@ -179,9 +179,9 @@ export default {
       })()
     }
     that.getStreet();
-    // this.timer1 = setInterval(function(){
-    //     setTimeout( that.people,0)
-    //   },60000)
+    this.timer1 = setInterval(function(){
+        setTimeout( that.people,0)
+      },20000)
   },
   beforeDestroy(){
     clearInterval(this.timer1)
@@ -418,7 +418,7 @@ export default {
       let that = this 
       this.timer1 = setInterval(function(){
         setTimeout( that.people,0)
-      },60000)
+      },20000)
     },
     people() {
       this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user')
