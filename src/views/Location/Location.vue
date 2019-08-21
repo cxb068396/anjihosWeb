@@ -342,7 +342,7 @@ export default {
             image:blue_drip,
             imageSize: new AMap.Size(30,40),
           }),
-          position: new AMap.LngLat(item.lng_ + Math.random()/5000,item.lat_ + Math.random()/5000),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+          position: new AMap.LngLat(item.lng_ + Math.random()/3000,item.lat_ + Math.random()/3000),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
         });
         marker.setAnimation('AMAP_ANIMATION_NONE')
         // marker.setTitle('我是marker的title');
@@ -601,7 +601,7 @@ export default {
             image:item.order_status == 11? red_drip :(item.order_status == 12? yellow_drip :blue_drip),
             imageSize: new AMap.Size(30,40),
           }),
-          position: new AMap.LngLat(item.lng + Math.random()/5000,item.lat + Math.random()/5000),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+          position: new AMap.LngLat(item.lng + Math.random()/3000,item.lat + Math.random()/3000),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
         });
         marker.setAnimation(item.order_status == 11? 'AMAP_ANIMATION_BOUNCE':'AMAP_ANIMATION_NONE')
         // marker.setTitle('我是marker的title');
