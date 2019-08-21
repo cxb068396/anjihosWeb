@@ -105,7 +105,7 @@
 </template>
       </div> -->
     <div style='display:flex;flex-direction:row;justify-content:space-between;align-items: center;padding: 10px 20px;width:450px;'>
-      <span style='margin:0 20px 0 0; font-size:18px;color:#606266'>选择标记点数量</span>
+      <span style='margin:0 20px 0 0; font-size:18px;color:#606266'>已接单显示数量</span>
     <template>
   <el-select v-model="num" placeholder="请选择" @change="numberChange" >
     <el-option
@@ -113,16 +113,16 @@
       :value="100">
     </el-option>
       <el-option
-      :label="200"
-      :value="200">
+      :label="300"
+      :value="300">
     </el-option>
      <el-option
-      :label="700"
-      :value="700">
+      :label="500"
+      :value="500">
     </el-option>
-      <el-option
-      :label="999"
-      :value="999">
+       <el-option
+      :label='numbercode12'
+      :value="numbercode12">
     </el-option>
   </el-select>
 </template>
@@ -535,6 +535,18 @@ export default {
       this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user')
       .then(res => {
         this.circles = res.data.data
+        this.numbercode11 = 0
+      this.numbercode12 = 0
+      this.numbercode13 = 0
+        this.circles.map(item=>{
+          if(item.order_status ==11){
+            this.numbercode11++
+          }else if(item.order_status ==12){
+            this.numbercode12++
+          }else if(item.order_status ==13){
+            this.numbercode13++
+          }
+        })
        let arr1=[];
        let arr2=[];
        arr1 =  this.circles.filter(item => item.order_status ==12) 
@@ -554,6 +566,7 @@ export default {
       this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user')
       .then(res => {
         this.circles = res.data.data
+
        let arr1=[];
        let arr2=[];
        arr1 =  this.circles.filter(item => item.order_status ==12) 
@@ -576,9 +589,9 @@ export default {
         map.remove(this.markerList)
         this.markerList = []
       }
-      this.numbercode11 = 0
-      this.numbercode12 = 0
-      this.numbercode13 = 0
+      // this.numbercode11 = 0
+      // this.numbercode12 = 0
+      // this.numbercode13 = 0
 
       this.circles.map(item => {
         let marker = new AMap.Marker({
@@ -592,13 +605,13 @@ export default {
         });
         marker.setAnimation(item.order_status == 11? 'AMAP_ANIMATION_BOUNCE':'AMAP_ANIMATION_NONE')
         // marker.setTitle('我是marker的title');
-        if(item.order_status == 11){
-          this.numbercode11++
-        }else if(item.order_status == 12){
-          this.numbercode12++
-        }else if(item.order_status == 13){
-          this.numbercode13++
-        }
+        // if(item.order_status == 11){
+        //   this.numbercode11++
+        // }else if(item.order_status == 12){
+        //   this.numbercode12++
+        // }else if(item.order_status == 13){
+        //   this.numbercode13++
+        // }
         marker.goods_name = item.goods_name//服务内容
         marker.consignee = item.consignee //昵称
         // marker.address = item.address //详细住址
@@ -657,7 +670,7 @@ export default {
           '<div className="custom-infowindow input-card" style="width:300px;border-radius:20px;font-size:10px;">' +
             '<div style="text-align: center;font-weight: bold;margin:10px 0">服务对象信息</div>' +
             '<div>' +
-              `<img src="${marker.photo || oldman}" style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-right:20px"/>` +
+              `<img src="${marker.photo || oldman}" style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-right:20px;"/>` +
 
               '<div class="input-item" style="margin-bottom:10px">' +
                   '<div class="input-item-prepend" >' +
@@ -723,11 +736,11 @@ export default {
       console.log(teamInfo)
       let doctorName,nurseName,healthManagerName,pharmacistName,serviceStafName
       if(teamInfo.length > 0){
-        doctorName = teamInfo[0].doctorInfo.name
-        nurseName = teamInfo[0].nurseInfo.name
-        healthManagerName = teamInfo[0].healthManagerInfo.name
-        pharmacistName = teamInfo[0].pharmacistInfo.name
-        serviceStafName = teamInfo[0].serviceStaffInfo.name
+        doctorName = teamInfo[0].doctorInfo.name?teamInfo[0].doctorInfo.name:'未签约'
+        nurseName = teamInfo[0].nurseInfo.name?teamInfo[0].nurseInfo.name:'未签约'
+        healthManagerName = teamInfo[0].healthManagerInfo.name?teamInfo[0].healthManagerInfo.name:'未签约'
+        pharmacistName = teamInfo[0].pharmacistInfo.name?teamInfo[0].pharmacistInfo.name:'未签约'
+        serviceStafName = teamInfo[0].serviceStaffInfo.name?teamInfo[0].serviceStaffInfo.name:'未签约'
       }
       that.axios.get(
           `/position/user?order_id=${marker.id}`
@@ -738,7 +751,7 @@ export default {
           '<div className="custom-infowindow input-card" style="width:300px;border-radius:20px;font-size:10px;">' +
             '<div style="text-align:center;font-weight: bold;margin:10px 0">服务对象信息</div>' +
             '<div>' +
-              `<img src="${marker.photo || oldman}" style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-right:20px;margin-right:20px"/ >` +
+              `<img src="${marker.photo || oldman}" style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-right:20px;margin-right:20px;"/ >` +
               '<div class="input-item" style="margin-bottom:10px">' +
                   '<div class="input-item-prepend">' +
                     `<div class="input-item-text" >真实姓名：${marker.JBXX_XM == null ? marker.consignee: marker.JBXX_XM }</div>` +
