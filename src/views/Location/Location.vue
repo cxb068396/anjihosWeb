@@ -11,11 +11,21 @@
       </el-amap>
     </div>
     <div class='selects'>
-    <div class='select'>
-      <el-button type="primary" size="mini" @click="updatetimer2" icon="el-icon-refresh">自动刷新</el-button>
-      <el-button type="primary" size="mini" @click="allPeople">签约人员</el-button>
-      <el-button type="primary" size="mini" @click="allDoctor">医疗团队</el-button>
-    </div>
+          <div style='display: flex;flex-direction: row;justify-content:space-between ; align-items: center;width:450px; padding: 10px 20px;'>
+     <div class='icon1'>
+        <img src='../../assets/red-drip.png' width="20" height="30"/>
+        <span style="font-size:10px">{{numbercode11}}个未接单</span>
+      </div>
+      <div class='icon1'>
+        <img src='../../assets/yellow-drip.png' width="20" height="30"/>
+        <span style="font-size:10px">{{numbercode12}}个已接单</span>
+      </div>
+      <div class='icon1'>
+        <img src='../../assets/blue-drip.png' width="20" height="30"/>
+        <span style="font-size:10px">{{numbercode13}}个正在服务</span>
+      </div>
+      <el-button  @click="show3 = !show3" round size='mini'>更多</el-button>
+        </div>
       <Modal 
         v-show="showModal" 
         width="1000"
@@ -35,29 +45,91 @@
         @on-close="closehealth"
        v-bind:message="healthdoc">
       </Healthdoc>
-      <template>
+     <el-collapse-transition>
+        <div v-show="show3">
+     <!-- <div style='display: flex;flex-direction: row;justify-content:space-between ; align-items: center;width:450px; padding: 10px 20px;border-top: 1px solid rgb(220, 223, 230)'>
+       <span style='margin:0 20px 0 0; font-size:18px;color:#606266'>请选择乡镇服务站点</span>
+       <template>
         <el-cascader
-        placeholder="选乡镇服务站点"
+        placeholder="乡镇服务站点"
         :change-on-select="true"
         :props="defaultParams"
         :options="options"
         v-model="selectedOptions"
         :clearable="true"
+        size='medium'
         @change="handleChange">
         </el-cascader>
       </template>
-      <div class='icon1'>
-        <img src='../../assets/red-drip.png' width="20" height="30"/>
-        <span style="font-size:10px">{{numbercode11}}个未接单</span>
-      </div>
-      <div class='icon1'>
-        <img src='../../assets/yellow-drip.png' width="20" height="30"/>
+     </div> -->
+   <div style='display: flex;flex-direction: row;justify-content:space-between ; align-items: center;width:450px; padding: 10px 20px;border-top: 1px solid rgb(220, 223, 230)'>
+      <el-button type="primary" size="mini" @click="updatetimer2" icon="el-icon-refresh">自动刷新</el-button>
+      <el-button type="primary" size="mini" @click="allPeople">签约人员</el-button>
+      <el-button type="primary" size="mini" @click="allDoctor">医疗团队</el-button>
+    
+    </div >
+     <!--<div style='display: flex;flex-direction: row;justify-content:space-between ; align-items: center;width:450px; padding: 10px 20px;border-top: 1px solid rgb(220, 223, 230);'>
+        <template>
+      <el-radio-group v-model="radio" @change="typeChange">
+    <el-radio :label="1">
+      <img src='../../assets/red-drip.png' width="20" height="30"/>
+       <span style="font-size:10px">{{numbercode11}}个未接单</span>
+    </el-radio>
+    <el-radio :label="2">
+      <img src='../../assets/yellow-drip.png' width="20" height="30"/>
         <span style="font-size:10px">{{numbercode12}}个已接单</span>
+    </el-radio>
+    <el-radio :label="3">
+      <img src='../../assets/blue-drip.png' width="20" height="30"/>
+      <span style="font-size:10px">{{numbercode13}}个正在服务</span>
+    </el-radio>
+  </el-radio-group>
+</template>
+     </div> -->
+      <!-- <div style='display: flex;flex-direction: row;justify-content:space-between ; align-items: center;width:450px; padding: 10px 20px;'>
+         <template>
+  <el-radio-group v-model="radio" @change="typeChange">
+    <el-radio :label="4">
+      <img src='../../assets/red-drip.png' width="20" height="30"/>
+      <span style="font-size:10px">糖尿病</span>
+    </el-radio>
+    <el-radio :label="5">
+      <img src='../../assets/yellow-drip.png' width="20" height="30"/>
+        <span style="font-size:10px">高血压</span>
+    </el-radio>
+    <el-radio :label="6">
+      <img src='../../assets/blue-drip.png' width="20" height="30"/>
+      <span style="font-size:10px">糖尿病 & 高血压</span>
+    </el-radio>
+  </el-radio-group>
+</template>
+      </div> -->
+    <div style='display:flex;flex-direction:row;justify-content:space-between;align-items: center;padding: 10px 20px;width:450px;'>
+      <span style='margin:0 20px 0 0; font-size:18px;color:#606266'>选择标记点数量</span>
+    <template>
+  <el-select v-model="num" placeholder="请选择" @change="numberChange" >
+    <el-option
+      :label="100"
+      :value="100">
+    </el-option>
+      <el-option
+      :label="200"
+      :value="200">
+    </el-option>
+     <el-option
+      :label="700"
+      :value="700">
+    </el-option>
+      <el-option
+      :label="999"
+      :value="999">
+    </el-option>
+  </el-select>
+</template>
+ <el-button type="primary" size="mini" @click="numberClick">确定</el-button>
       </div>
-      <div class='icon1'>
-        <img src='../../assets/blue-drip.png' width="20" height="30"/>
-        <span style="font-size:10px">{{numbercode13}}个正在服务</span>
       </div>
+       </el-collapse-transition>
     </div>  
   </div>
 </template>
@@ -89,6 +161,9 @@ export default {
       //   pos: [116.397428, 39.90923],
       // info:'',
       // visible: false,
+      show3: false,
+      num:100,
+      radio:'',
       showModal:false,
       showDoctor:false,
       showHealth:false,
@@ -180,7 +255,7 @@ export default {
     }
     that.getStreet();
     this.timer1 = setInterval(function(){
-        setTimeout( that.people,0)
+        setTimeout( that.peopleWithoutLoading,0)
       },20000)
   },
   beforeDestroy(){
@@ -201,12 +276,42 @@ export default {
     }
   },
   methods: {
+    //从一个数组中随机取出amount个数目组成新数组
+    getAmount(arr, amount){
+      let newArray = []
+      let newIndexArray = []
+      for (let x = 0; x < amount; x++) {
+        let randomIndex = Math.floor(Math.random() * arr.length);
+        if(newIndexArray.some(item => item == randomIndex)){
+          x--
+        }else{
+          newIndexArray.push(randomIndex)
+          newArray.push(arr[randomIndex])
+        }
+        
+      }
+      return newArray
+    },
+    numberClick(){
+    this.people();
+    },
+    //选择marker的显示数量
+    numberChange(val){
+     
+     this.num=val
+     console.log(val)
+    },
+    //选择订单状态
+    typeChange(val){
+      this.radio=val;
+      console.log(val)
+    },
     //接受子组件传递过来的一个人经纬度
     getLocation(data){
       //清空轮询，防止地图返回初始页面
       clearInterval(this.timer1);
       this.circles = data;
-      console.log(this.circles )
+      console.log(this.circles)
       this.showDoctor=false
       //获得经纬度之后将其渲染到地图上
       this.peopleLocation();
@@ -417,20 +522,54 @@ export default {
       }
       let that = this 
       this.timer1 = setInterval(function(){
-        setTimeout( that.people,0)
+        setTimeout( that.peopleWithoutLoading,0)
       },20000)
     },
     people() {
+      const loading = this.$loading({
+          lock: true,
+          text: '数据量较多，请稍等。',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        });
       this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user')
       .then(res => {
         this.circles = res.data.data
+       let arr1=[];
+       let arr2=[];
+       arr1 =  this.circles.filter(item => item.order_status ==12) 
+       arr2 =  this.circles.filter(item => item.order_status !=12) 
+     // console.log(arr1)
+     console.log(arr2)
+    arr1= this.getAmount( arr1,this.num)
+    this.circles=arr1.concat(arr2)
+   console.log('this.circles',this.circles)
+   loading.close();
+        this.display();
+        //  this.buildMarkers();
+      })
+    },
+    peopleWithoutLoading() {
+     
+      this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user')
+      .then(res => {
+        this.circles = res.data.data
+       let arr1=[];
+       let arr2=[];
+       arr1 =  this.circles.filter(item => item.order_status ==12) 
+       arr2 =  this.circles.filter(item => item.order_status !=12) 
+     // console.log(arr1)
+     console.log(arr2)
+    arr1= this.getAmount( arr1,this.num)
+    this.circles=arr1.concat(arr2)
+   console.log('this.circles',this.circles)
         this.display();
         //  this.buildMarkers();
       })
     },
       //展示所有人的位置信息
     display(){
-      console.log('this.circles',this.circles)
+      //console.log('this.circles',this.circles)
       let map = AMapManager.getMap()
       //如果有，则清空数组，没有则添加
       if(this.markerList.length !== 0 ){
@@ -440,6 +579,7 @@ export default {
       this.numbercode11 = 0
       this.numbercode12 = 0
       this.numbercode13 = 0
+
       this.circles.map(item => {
         let marker = new AMap.Marker({
           icon: new AMap.Icon({
@@ -530,8 +670,8 @@ export default {
                   '</div>' +
               '</div>' +
               // '<input id="btn1" type="button" class="btn" value="服务记录" onclick="showMoreMessage1()"/>' +
-             '<input id="withoutdoctorinfo_healthfile" type="button" class="btn" value="健康档案" onclick="withoutdoctorinfoHealthfileClick()" />' +
-              '<input id="voice_requirement" type="button" class="btn" value="语音需求"  onclick="sendOrder()" style="margin-left:40px" />' +
+             '<input id="withoutdoctorinfo_healthfile" type="button" class="btn" value="健康档案" onclick="withoutdoctorinfoHealthfileClick()" style="margin-left:120px"/>' +
+              '<input id="voice_requirement" type="button" class="btn" value="派单"  onclick="sendOrder()" style="margin-left:40px" />' +
             '</div>' +
           '</div>';
           that.infoWindow = new AMap.InfoWindow({
@@ -593,6 +733,7 @@ export default {
           `/position/user?order_id=${marker.id}`
         ).then(res=>{
           marker.photo = res.data.data[0].photo
+          marker.goods_name = res.data.data[0].goods_name
           let info = 
           '<div className="custom-infowindow input-card" style="width:300px;border-radius:20px;font-size:10px;">' +
             '<div style="text-align:center;font-weight: bold;margin:10px 0">服务对象信息</div>' +
@@ -602,7 +743,8 @@ export default {
                   '<div class="input-item-prepend">' +
                     `<div class="input-item-text" >真实姓名：${marker.JBXX_XM == null ? marker.consignee: marker.JBXX_XM }</div>` +
                     `<div class="input-item-text" >下单时间：${marker.createdat}</div>` +
-                    `<div class="input-item-text" >订单状态：${marker.order_status == 11? '未接单' :(marker.order_status == 12? '已接单，未服务' :'正在服务')}</div>` +
+                    `<div class="input-item-text" >服务内容：${marker.goods_name}</div>` +
+                    // `<div class="input-item-text" >订单状态：${marker.order_status == 11? '未接单' :(marker.order_status == 12? '已接单，未服务' :'正在服务')}</div>` +
                     `<div class="input-item-text" >联系人姓名：${marker.JBXX_LXRXM == null?'未填写联系人':marker.JBXX_LXRXM}</div>` +
                     `<div class="input-item-text" >联系人电话：${marker.JBXX_LXRDH == null?'未填写联系人电话':marker.JBXX_LXRDH}</div>` +
                   '</div>' +
@@ -628,7 +770,7 @@ export default {
                     `<div class="input-item-text" >服务人员：${serviceStafName}</div>` )) +
                   '</div>' +
               '</div>' +
-              '<input id="online_live" type="button" class="btn" value="实时记录" onclick="showMoreMessage13()"/>' + 
+              '<input id="online_live" type="button" class="btn" value="实时记录" onclick="showMoreMessage13()" style="margin: 5px 20px"/>' + 
             '</div>' +
           '</div>';
           that.infoWindow = new AMap.InfoWindow({
@@ -684,18 +826,21 @@ export default {
   }
   .selects{
     position:absolute;
-    width:800px;
+    width:450px;
     right:50px;
     top:20px;
     background-color: #fff;
     z-index: 1;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content:space-between ;
     align-items: center;
     padding: 10px 20px;
+    border-radius: 15px;
+   
     
   }
+
   .explain{
     position:absolute;
     width:500px;
@@ -719,4 +864,16 @@ export default {
     font-size:14px;
     color:#606266
   } */
+  .transition-box {
+    margin-bottom: 10px;
+    width: 200px;
+    height: 100px;
+    border-radius: 4px;
+    background-color: #409EFF;
+    text-align: center;
+    color: #fff;
+    padding: 40px 20px;
+    box-sizing: border-box;
+    margin-right: 20px;
+  }
 </style>

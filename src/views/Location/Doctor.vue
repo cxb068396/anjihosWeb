@@ -270,26 +270,25 @@ export default {
   mounted(){
        this.people();
   },
-  methods:{
+methods:{
       locationClick(index,row){
-        console.log(row)
-       this.address=row.healthdocInfo.JBXX_JZDZXX
-       this.contractPeople=row
-       this.getLocation()
-       var str=this.location.split(',')
-       this.contractPeople.lng_ = str[0]
-       this.contractPeople.lat_ = str[1]
-       var arr=[]
-   arr.push(this.contractPeople)
-   console.log(arr)
-       //console.log(this.location)
-       //这里因为有请求延迟，所以做一个判断
-      if(this.location){
-        this.$emit('func',arr) //子组件获得的经纬度传递给父组件
-        }else{
-          return
-        }
-      },
+      // console.log('row',row)
+      this.address=row.healthdocInfo.JBXX_JZDZXX
+      this.contractPeople=row
+      let that = this
+      this.getLocation().then(function(position) {
+        that.location = position
+        let str = that.location.split(',').map(Number)
+        console.log('str',str)
+        that.contractPeople.lng_ = str[0]
+        that.contractPeople.lat_ = str[1]
+        let arr=[]
+        arr.push(that.contractPeople)
+        console.log(arr)
+        //console.log(that.location)
+        that.$emit('func',arr) //子组件获得的经纬度传递给父组件
+      })
+    },
     peopleLocationClick(index, row){
     var that=this
       this.doctor_team_id=row.doctorInfo.doctor_team_id
@@ -316,41 +315,38 @@ export default {
           }
         })
     },
-
-    getLocation () {
-            let vthis = this
-            $.ajax({
-                url: 'https://restapi.amap.com/v3/place/text',
-                type: 'get',
-                dataType: 'jsonp',
-                data: {
-                    key: '8019e23202f5bdce37f98aeacf909cc6',
-                    keywords: this.address,
-                    extensions:'base'
-                },
-                success: function (data) {
-                  // console.log(data.pois[0].location)
-                  vthis.location=data.pois[0].location
-                }
+    async getLocation () {
+      let res = await $.ajax({
+          url: 'https://restapi.amap.com/v3/place/text',
+          type: 'get',
+          dataType: 'jsonp',
+          data: {
+              key: '8019e23202f5bdce37f98aeacf909cc6',
+              keywords: this.address,
+              extensions:'base'
+          },
+      })
+      // console.log('res',res)
+      this.location=res.pois[0].location
+      return this.location
+    },
+    initAMap (data) {
+        let map = new AMap.Map('container', {
+            resizeEnable: true,
+            zoom: 20,
+            center: data.split(',')
+        })
+        AMap.plugin('AMap.Geocoder', function () {
+            let marker = new AMap.Marker({
+                map: map,
+                bubble: true
             })
-        },
-        initAMap (data) {
-            let map = new AMap.Map('container', {
-                resizeEnable: true,
-                zoom: 20,
-                center: data.split(',')
-            })
-            AMap.plugin('AMap.Geocoder', function () {
-                let marker = new AMap.Marker({
-                    map: map,
-                    bubble: true
-                })
-            })
-        },
+        })
+    },
       //判断男女
-       formatter(row, column) {
-        return row.healthdocInfo.JBXX_XB== '1' ? "男" : "女";
-      },
+    formatter(row, column) {
+      return row.healthdocInfo.JBXX_XB== '1' ? "男" : "女";
+    },
     //点击服务记录，关闭签约人员列表，展示服务记录的内容
     serviceClick(index, row){
       this.show=false;
