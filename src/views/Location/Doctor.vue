@@ -238,7 +238,7 @@ export default {
         doctor_team_id:'' ,
         address:'',
         location:'',
-        contractPeople:'',
+        contractPeople:{},
         contractPeoplelist:'',
         arr:[]
     }
