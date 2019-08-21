@@ -252,7 +252,7 @@ export default {
         this.peopleLocationwindow(marker)
         this.markerList.push(marker)
       })
-      console.log(this.markerList)
+      // console.log(this.markerList)
       map.add(this.markerList)
    //  map.setFitView();
 
