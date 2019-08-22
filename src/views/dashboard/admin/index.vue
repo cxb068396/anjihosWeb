@@ -30,7 +30,7 @@
     <el-row :gutter="32">
       <el-col :xs="24" :sm="24" :lg="8">
         <div class="chart-wrapper">
-          <BarChart2/>
+          <BarChart/>
         </div>
       </el-col>
       <el-col :xs="24" :sm="24" :lg="8">
