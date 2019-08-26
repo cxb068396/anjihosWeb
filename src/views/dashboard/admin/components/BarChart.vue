@@ -30,25 +30,18 @@ export default {
       chart: null,
       data: [],
       series: [{
-        name: 'pageA',
+        name: '刘家塘服务数',
         type: 'bar',
         stack: 'vistors',
         barWidth: '60%',
-        data: [100, 52, 200, 334, 390, 330, 220],
+        data: [13, 52, 33, 25, 12, 32, 11],
         animationDuration
       }, {
-        name: 'pageB',
+        name: '大竹园服务数',
         type: 'bar',
         stack: 'vistors',
         barWidth: '60%',
-        data: [80, 52, 200, 334, 390, 330, 220],
-        animationDuration
-      }, {
-        name: 'pageC',
-        type: 'bar',
-        stack: 'vistors',
-        barWidth: '60%',
-        data: [30, 52, 200, 334, 390, 330, 220],
+        data: [32, 20, 11, 32, 12, 22, 12],
         animationDuration
       }]
     }
@@ -84,8 +77,9 @@ export default {
           params: { type: 'barchart' }
         })
         .then(response => {
-          // console.log(response.data.data)
-          this.series = response.data.data
+          console.log(response.data.data)
+          // this.series = response.data.data
+          this.series = this.series
           this.initChart()
         })
     },

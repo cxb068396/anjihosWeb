@@ -56,22 +56,23 @@ export default {
         legend: {
           left: 'center',
           bottom: '10',
-          data: ['Industries', 'Technology', 'Forex', 'Gold', 'Forecasts']
+          data: ['大竹园高血压', '大竹园糖尿病', '大竹园高血压糖尿病', '刘家塘高血压', '刘家塘糖尿病', '刘家塘高血压糖尿病']
         },
         calculable: true,
         series: [
           {
-            name: 'WEEKLY WRITE ARTICLES',
+            name: '病种分析',
             type: 'pie',
             roseType: 'radius',
             radius: [15, 95],
             center: ['50%', '38%'],
             data: [
-              { value: 320, name: 'Industries' },
-              { value: 240, name: 'Technology' },
-              { value: 149, name: 'Forex' },
-              { value: 100, name: 'Gold' },
-              { value: 59, name: 'Forecasts' }
+              { value: 206, name: '大竹园高血压' },
+              { value: 46, name: '大竹园糖尿病' },
+              { value: 32, name: '大竹园高血压糖尿病' },
+              { value: 224, name: '刘家塘高血压' },
+              { value: 58, name: '刘家塘糖尿病' },
+              { value: 39, name: '刘家塘高血压糖尿病' }
             ],
             animationEasing: 'cubicInOut',
             animationDuration: 2600
