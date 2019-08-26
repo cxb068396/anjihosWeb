@@ -566,7 +566,18 @@ export default {
       this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user')
       .then(res => {
         this.circles = res.data.data
-
+         this.numbercode11 = 0
+      this.numbercode12 = 0
+      this.numbercode13 = 0
+        this.circles.map(item=>{
+          if(item.order_status ==11){
+            this.numbercode11++
+          }else if(item.order_status ==12){
+            this.numbercode12++
+          }else if(item.order_status ==13){
+            this.numbercode13++
+          }
+        })
        let arr1=[];
        let arr2=[];
        arr1 =  this.circles.filter(item => item.order_status ==12) 
@@ -625,7 +636,7 @@ export default {
         marker.JBXX_LXRDH = item.JBXX_LXRDH //联系人电话
 
         // marker.doctor_team_id = item.doctor_team_id //医疗团队编号
-        // marker.health_doc_id = item.health_doc_id //医疗团队医生编号
+        marker.health_doc_id = item.health_doc_id //医疗团队医生编号
         // marker.company_id = item.company_id //机构编号
         marker.order_status = item.order_status //订单状态
         // marker.worker_sex = item.worker_sex //医生性别
