@@ -524,6 +524,23 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/version',
+    component: Layout,
+    meta: {
+      title: '系统设置',
+      icon: 'international',
+      roles: ['admin']
+    },
+    children: [
+      {
+        path: 'version',
+        component: () => import('@/views/version/UpdateVersion'),
+        name: 'version',
+        meta: { title: '版本更新', icon: 'international' }
+      }
+    ]
+  },
+  {
     path: '/Personnel',
     component: Layout,
     meta: {
