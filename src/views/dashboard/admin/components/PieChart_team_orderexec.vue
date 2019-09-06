@@ -24,27 +24,17 @@ export default {
   },
   data() {
     return {
-      chart: null,
-      data: null
+      chart: null
     }
   },
   mounted() {
+    this.initChart()
     this.__resizeHandler = debounce(() => {
       if (this.chart) {
         this.chart.resize()
       }
     }, 100)
     window.addEventListener('resize', this.__resizeHandler)
-  },
-  created() {
-    this.axios
-      .get('/dashboard', {
-        params: { type: 'sexchart' }
-      })
-      .then(response => {
-        this.data = response.data.data
-        this.initChart()
-      })
   },
   beforeDestroy() {
     if (!this.chart) {
@@ -53,6 +43,16 @@ export default {
     window.removeEventListener('resize', this.__resizeHandler)
     this.chart.dispose()
     this.chart = null
+  },
+  created() {
+    this.axios
+      .get('/dashboard', {
+        params: { type: 'teamorderexec' }
+      })
+      .then(response => {
+        this.data = response.data.data
+        this.initChart()
+      })
   },
   methods: {
     initChart() {
@@ -66,12 +66,12 @@ export default {
         legend: {
           left: 'center',
           bottom: '10',
-          data: ['男', '女', '未知']
+          data: this.data.team
         },
         calculable: true,
         series: [
           {
-            name: '签约用户性别分布',
+            name: '团队随访次数',
             type: 'pie',
             roseType: 'radius',
             radius: [15, 95],
