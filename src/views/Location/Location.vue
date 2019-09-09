@@ -46,8 +46,8 @@
        v-bind:message="healthdoc">
       </Healthdoc>
      <el-collapse-transition>
-        <div v-show="show3">
-     <!-- <div style='display: flex;flex-direction: row;justify-content:space-between ; align-items: center;width:450px; padding: 10px 20px;border-top: 1px solid rgb(220, 223, 230)'>
+     <div v-show="show3">
+     <div style='display: flex;flex-direction: row;justify-content:space-between ; align-items: center;width:450px; padding: 10px 20px;border-top: 1px solid rgb(220, 223, 230)'>
        <span style='margin:0 20px 0 0; font-size:18px;color:#606266'>请选择乡镇服务站点</span>
        <template>
         <el-cascader
@@ -57,53 +57,56 @@
         :options="options"
         v-model="selectedOptions"
         :clearable="true"
-        size='medium'
         @change="handleChange">
         </el-cascader>
       </template>
-     </div> -->
+     </div>
    <div style='display: flex;flex-direction: row;justify-content:space-between ; align-items: center;width:450px; padding: 10px 20px;border-top: 1px solid rgb(220, 223, 230)'>
       <el-button type="primary" size="mini" @click="updatetimer2" icon="el-icon-refresh">自动刷新</el-button>
       <el-button type="primary" size="mini" @click="allPeople">签约人员</el-button>
       <el-button type="primary" size="mini" @click="allDoctor">医疗团队</el-button>
     
     </div >
-     <!--<div style='display: flex;flex-direction: row;justify-content:space-between ; align-items: center;width:450px; padding: 10px 20px;border-top: 1px solid rgb(220, 223, 230);'>
+     <div style='display: flex;flex-direction: row;justify-content:space-between ; align-items: center;width:450px; padding: 10px 20px;border-top: 1px solid rgb(220, 223, 230);'>
         <template>
       <el-radio-group v-model="radio" @change="typeChange">
-    <el-radio :label="1">
+    <el-radio :label="11">
       <img src='../../assets/red-drip.png' width="20" height="30"/>
        <span style="font-size:10px">{{numbercode11}}个未接单</span>
     </el-radio>
-    <el-radio :label="2">
+    <el-radio :label="12">
       <img src='../../assets/yellow-drip.png' width="20" height="30"/>
         <span style="font-size:10px">{{numbercode12}}个已接单</span>
     </el-radio>
-    <el-radio :label="3">
+    <el-radio :label="13">
       <img src='../../assets/blue-drip.png' width="20" height="30"/>
       <span style="font-size:10px">{{numbercode13}}个正在服务</span>
     </el-radio>
   </el-radio-group>
 </template>
-     </div> -->
-      <!-- <div style='display: flex;flex-direction: row;justify-content:space-between ; align-items: center;width:450px; padding: 10px 20px;'>
+     </div>
+      <div style='display: flex;flex-direction: row;justify-content:space-between ; align-items: center;width:450px; padding: 10px 20px;'>
          <template>
-  <el-radio-group v-model="radio" @change="typeChange">
-    <el-radio :label="4">
-      <img src='../../assets/red-drip.png' width="20" height="30"/>
-      <span style="font-size:10px">糖尿病</span>
+  <el-radio-group v-model="radio" @change="diseaseSelect">
+      <el-radio :label="0">
+      <!-- <img src='../../assets/red-drip.png' width="20" height="30"/> -->
+      <span style="font-size:10px">健康{{count}}</span>
     </el-radio>
-    <el-radio :label="5">
-      <img src='../../assets/yellow-drip.png' width="20" height="30"/>
-        <span style="font-size:10px">高血压</span>
+    <el-radio :label="1">
+      <!-- <img src='../../assets/red-drip.png' width="20" height="30"/> -->
+      <span style="font-size:10px">糖尿病{{count1}}</span>
     </el-radio>
-    <el-radio :label="6">
-      <img src='../../assets/blue-drip.png' width="20" height="30"/>
-      <span style="font-size:10px">糖尿病 & 高血压</span>
+    <el-radio :label="2">
+      <!-- <img src='../../assets/yellow-drip.png' width="20" height="30"/> -->
+        <span style="font-size:10px">高血压{{count2}}</span>
+    </el-radio>
+    <el-radio :label="3">
+      <!-- <img src='../../assets/blue-drip.png' width="20" height="30"/> -->
+      <span style="font-size:10px">糖尿病 & 高血压{{count3}}</span>
     </el-radio>
   </el-radio-group>
 </template>
-      </div> -->
+      </div>
     <div style='display:flex;flex-direction:row;justify-content:space-between;align-items: center;padding: 10px 20px;width:450px;'>
       <span style='margin:0 20px 0 0; font-size:18px;color:#606266'>已接单显示数量</span>
     <template>
@@ -128,8 +131,12 @@
 </template>
  <el-button type="primary" size="mini" @click="numberClick">确定</el-button>
       </div>
+        <div style='display: flex;flex-direction: row;justify-content:space-between ; align-items: center;width:450px; padding: 10px 20px;border-top: 1px solid rgb(220, 223, 230)'>
+       <span style='margin:0 20px 0 0; font-size:18px;color:#606266'>查询人姓名</span>
+       <el-input style='width:250px' v-model="input" placeholder="请填写真实姓名" @change='userNameChange'></el-input>
       </div>
-       </el-collapse-transition>
+      </div>
+     </el-collapse-transition>
     </div>  
   </div>
 </template>
@@ -161,6 +168,12 @@ export default {
       //   pos: [116.397428, 39.90923],
       // info:'',
       // visible: false,
+      input:'',
+      count:'',
+      count1:'',
+      count2:'',
+      count3:'',
+      disease:'',
       show3: false,
       num:100,
       radio:'',
@@ -173,8 +186,9 @@ export default {
       defaultParams: {
         label: 'name',
         value: 'id',
-        children: 'company'
+        children: 'company',
       },
+      adcode:'',
       plugins: ['AMap.DistrictSearch'],
       zoom: 11,
       center: [119.6803085855,30.6383898649],
@@ -231,6 +245,7 @@ export default {
       numbercode11:0,
       numbercode12:0,
       numbercode13:0,
+      healthId:''//用于type=index页面，需请求之后才会type=detail才能得到健康档案的id
     }
   },
   components:{
@@ -303,8 +318,93 @@ export default {
     },
     //选择订单状态
     typeChange(val){
+      clearInterval(this.timer1);
+      var that=this
       this.radio=val;
-      console.log(val)
+      this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user?type=search&order_status='+this.radio).then(res=>{
+       
+        // this.circles=res.data.data.data.concat(res.data.data.others)
+        // console.log(this.circles)
+       if(res.data.data.data.length>0){
+         this.circles = JSON.parse(JSON.stringify(res.data.data.data.concat(res.data.data.others)).replace(/order_lng/g, 'lng'))
+         this.circles = JSON.parse(JSON.stringify(this.circles).replace(/order_lat/g, 'lat'))   
+         console.log(this.circles)
+        that.display()
+       }else{
+          this.$message({
+              type: "error",
+              message: "暂无需服务人员"
+            });
+       }
+      })
+    },
+
+    //病种的筛选
+    diseaseSelect(val){
+     clearInterval(this.timer1);
+      var that=this
+      this.disease=val;
+    if(this.disease==0){
+        this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user?type=search&disease='+this.disease).then(res=>{ 
+          that.count1=''
+          that.count2=''
+          that.count3=''
+         that.count=res.data.data.count
+         this.circles = JSON.parse(JSON.stringify(res.data.data.data).replace(/order_lng/g, 'lng'))
+         this.circles = JSON.parse(JSON.stringify(this.circles).replace(/order_lat/g, 'lat'))   
+        that.display()
+      })
+   }else if(this.disease==1){
+        this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user?type=search&disease='+this.disease).then(res=>{ 
+           that.count=''
+          that.count2=''
+          that.count3=''
+         that.count1=res.data.data.count
+         this.circles = JSON.parse(JSON.stringify(res.data.data.data).replace(/order_lng/g, 'lng'))
+         this.circles = JSON.parse(JSON.stringify(this.circles).replace(/order_lat/g, 'lat'))   
+        that.display()
+      })
+   }else if(this.disease==2){
+        this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user?type=search&disease='+this.disease).then(res=>{ 
+           that.count1=''
+          that.count=''
+          that.count3=''
+         that.count2=res.data.data.count
+         this.circles = JSON.parse(JSON.stringify(res.data.data.data).replace(/order_lng/g, 'lng'))
+         this.circles = JSON.parse(JSON.stringify(this.circles).replace(/order_lat/g, 'lat'))   
+        that.display()
+      })
+   }else{
+        this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user?type=search&disease='+this.disease).then(res=>{ 
+          that.count1=''
+          that.count2=''
+          that.count=''
+         that.count3=res.data.data.count
+         this.circles = JSON.parse(JSON.stringify(res.data.data.data).replace(/order_lng/g, 'lng'))
+         this.circles = JSON.parse(JSON.stringify(this.circles).replace(/order_lat/g, 'lat'))   
+        that.display()
+      })
+   }
+    },
+
+    //按需搜索签约人员信息
+    userNameChange(){
+       clearInterval(this.timer1);
+      if(this.input){
+        this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user?type=search&real_name='+this.input).then(res=>{ 
+          this.input=''
+        if(res.data.data.data.length<=0&&res.data.data.others<=0){
+       this.$message({
+              type: "error",
+              message: "无该人员信息!"
+            });
+        }else{
+            this.circles = JSON.parse(JSON.stringify(res.data.data.data.concat(res.data.data.others)).replace(/order_lng/g, 'lng'))
+          this.circles = JSON.parse(JSON.stringify(this.circles).replace(/order_lat/g, 'lat'))   
+         this.display()
+        }
+      })
+     }
     },
     //接受子组件传递过来的一个人经纬度
     getLocation(data){
@@ -381,8 +481,6 @@ export default {
             marker.pharmacistname = data.teamInfo.pharmacistInfo ?data.teamInfo.pharmacistInfo.name:'未签约'
             marker.serviceStaffname = (data.teamInfo.serviceStaffInfo? data.teamInfo.serviceStaffInfo.name :'未签约')
             marker.healthManagername = (data.teamInfo.healthManagerInfo ?  data.teamInfo.healthManagerInfo.name:'未签约')
-
-
             var info = 
                   '<div className="custom-infowindow input-card" style="width:300px;border-radius:20px;font-size:10px;">' +
                     '<div style="text-align:center;font-weight: bold;margin:10px 0">服务对象信息</div>' +
@@ -453,8 +551,14 @@ export default {
 
   //获得所有的街道
     getStreet(){
-      this.axios.get('https://api.anjihos.newlioncity.com/admin/position/group',{param:{size:999}}).then(res=>{
+      this.axios.get('https://api.anjihos.newlioncity.com/admin/position/group').then(res=>{
+        res.data.data.map(item=>item.company.map(function(item2){
+          let company
+          item2.company = item2.unit
+        }))
+        console.log('更改后的res',res.data.data)
         this.options = res.data.data
+        this.adcode=res.data.data[0].adcode  //获得每个乡镇的adcode
       })
     },
     allPeople() {
@@ -478,28 +582,37 @@ export default {
      closehealth () {
       this.showHealth = false;
     },
+    //根据街道进行筛选
     handleChange(val){
       var that = this
+      clearInterval(this.timer1);
+      console.log(val)
       var street_id = val[0]
       var company_id = val[1]
+      var village_id=val[2]
       this.circles = []
-      console.log(street_id,company_id  )
-      if(street_id && company_id == undefined){
-        this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user?street_id='+street_id).then(res=>{
-          if(res.data.data.length>0){
-            this.circles = res.data.data
+      console.log(street_id,company_id ,village_id )
+      if(street_id && company_id == undefined && village_id ==undefined){
+        this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user?type=search&adcode='+that.adcode).then(res=>{
+          if(res.data.data.data.length>0){
+            this.circles = JSON.parse(JSON.stringify(res.data.data.data).replace(/order_lng/g, 'lng'))
+             this.circles = JSON.parse(JSON.stringify(this.circles).replace(/order_lat/g, 'lat'))
+            
+            that.display();
           }else{
             this.$message({
               type: "error",
               message: "该乡镇附近还没有签约人员!"
             });
           }
-          that.display();
         })
-      }else if(street_id && company_id){
-        this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user?company_id='+company_id).then(res=>{
-          if(res.data.data.length>0){
-            this.circles = res.data.data
+      }else if(street_id && company_id&& village_id ==undefined){
+        this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user?type=search&adcode='+that.adcode+'&company_id='+company_id).then(res=>{
+          if(res.data.data.data.length>0){
+            this.circles=[];
+            this.circles = res.data.data.data
+              this.circles = JSON.parse(JSON.stringify(res.data.data.data).replace(/order_lng/g, 'lng'))
+             this.circles = JSON.parse(JSON.stringify(this.circles).replace(/order_lat/g, 'lat'))
           }else{
             this.$message({
               type: "error",
@@ -508,11 +621,21 @@ export default {
           }
           that.display();
         })
-      }else if(street_id == undefined && company_id == undefined){
-        this.$message({
-          type: "error",
-          message: "您还未选择机构站点!"
-        });
+      }else if(street_id && company_id&& village_id){
+      this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user?type=search&adcode='+village_id).then(res=>{
+          if(res.data.data.data.length>0){
+            this.circles = res.data.data.data
+              this.circles = JSON.parse(JSON.stringify(res.data.data.data).replace(/order_lng/g, 'lng'))
+             this.circles = JSON.parse(JSON.stringify(this.circles).replace(/order_lat/g, 'lat'))
+             console.log(this.circles)
+          }else{
+            this.$message({
+              type: "error",
+              message: "该服务站点还没有签约人员!"
+            });
+          }
+          that.display();
+        })
       }
     },
     updatetimer2(){
@@ -532,7 +655,7 @@ export default {
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.7)'
         });
-      this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user')
+      this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user?type=index')
       .then(res => {
         this.circles = res.data.data
         this.numbercode11 = 0
@@ -563,7 +686,7 @@ export default {
     },
     peopleWithoutLoading() {
      
-      this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user')
+      this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user?type=index')
       .then(res => {
         this.circles = res.data.data
 
@@ -601,43 +724,21 @@ export default {
             image:item.order_status == 11? red_drip :(item.order_status == 12? yellow_drip :blue_drip),
             imageSize: new AMap.Size(30,40),
           }),
-          position: new AMap.LngLat(item.lng + Math.random()/3000,item.lat + Math.random()/3000),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+           position: new AMap.LngLat(item.lng + Math.random()/3000,item.lat + Math.random()/3000),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
         });
         marker.setAnimation(item.order_status == 11? 'AMAP_ANIMATION_BOUNCE':'AMAP_ANIMATION_NONE')
-        // marker.setTitle('我是marker的title');
-        // if(item.order_status == 11){
-        //   this.numbercode11++
-        // }else if(item.order_status == 12){
-        //   this.numbercode12++
-        // }else if(item.order_status == 13){
-        //   this.numbercode13++
-        // }
-        marker.goods_name = item.goods_name//服务内容
+       marker.goods_name = item.goods_name//服务内容
         marker.consignee = item.consignee //昵称
-        // marker.address = item.address //详细住址
-        // marker.JBXX_BRDH = item.JBXX_BRDH //联系方式
-        marker.createdat = item.createdat //记录时间
-        marker.JBXX_XM = item.JBXX_XM //真实姓名
-        // marker.JBXX_CSRQ = item.JBXX_CSRQ //出生日期
-        marker.JBXX_LXRXM = item.JBXX_LXRXM //联系人姓名
-        // marker.JBXX_HJXXDZ = item.JBXX_HJXXDZ //地址
-        // marker.JBXX_XB = item.JBXX_XB //性别
-        marker.JBXX_LXRDH = item.JBXX_LXRDH //联系人电话
-
-        // marker.doctor_team_id = item.doctor_team_id //医疗团队编号
-        // marker.health_doc_id = item.health_doc_id //医疗团队医生编号
-        // marker.company_id = item.company_id //机构编号
+       // marker.createdat = item.createdat //记录时间
+       // marker.JBXX_XM = item.JBXX_XM //真实姓名
+       // marker.JBXX_LXRXM = item.JBXX_LXRXM //联系人姓名
+       // marker.JBXX_LXRDH = item.JBXX_LXRDH //联系人电话
+        marker.health_doc_id = item.health_doc_id 
         marker.order_status = item.order_status //订单状态
-        // marker.worker_sex = item.worker_sex //医生性别
-        // marker.worker_address = item.worker_address //机构位置
-        // marker.worker_mobile = item.worker_mobile //医生电话
-        // marker.worker_address = item.worker_address //机构位置
-
         marker.contract_id = item.contract_id 
         marker.user_id = item.user_id 
-        marker.id = item.id 
-
-        
+        marker.id = item.id
+        marker.order_id=item.order_id ||item.id  
         marker.setLabel({
             offset: new AMap.Pixel(30, 15),  //设置文本标注偏移量
             content: `<div class='info'>${marker.consignee}</div>`, //设置文本标注内容
@@ -656,21 +757,62 @@ export default {
       //鼠标点击事件
       marker.on('mousedown',function () {
         let info 
-        if(marker.order_status == 11){
-
-
-          
-        that.axios.get(
-          `/position/user?order_id=${marker.id}`
-        ).then(res=>{
-          marker.photo = res.data.data[0].photo
-          marker.goods_name = res.data.data[0].goods_name
-           info =
-
+        if(marker.order_status == 11){  
+          if(marker.contract_id==null){
+            that.axios.get( `/position/user?type=detail&order_id=${marker.order_id}&user_id=${marker.user_id}`).then(res=>{
+               marker.consignee = res.data.data.consignee
+              marker.photo = res.data.data.avatar
+              marker.createdat=res.data.data.createdat
+              marker.goods_name=res.data.data.goods_name 
+               marker.goods_price=res.data.data.goods_price
+                      info =
           '<div className="custom-infowindow input-card" style="width:300px;border-radius:20px;font-size:10px;">' +
             '<div style="text-align: center;font-weight: bold;margin:10px 0">服务对象信息</div>' +
             '<div>' +
-              `<img src="${marker.photo || oldman}" style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-right:20px;"/>` +
+              `<img src="${marker.photo|| oldman}" style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-right:20px;"/>` +
+
+              '<div class="input-item" style="margin-bottom:10px">' +
+                  '<div class="input-item-prepend" >' +
+                      `<div class="input-item-text" >服务内容：${marker.goods_name}</div>` +
+                      `<div class="input-item-text" >服务人姓名：${marker.consignee}</div>` +
+                      `<div class="input-item-text" >服务价格：${marker.goods_price}</div>` +
+                      `<div class="input-item-text" >下单时间：${marker.createdat}</div>` +
+                  '</div>' +
+              '</div>' +
+              '<input id="postOrder" type="button" class="btn" value="派单"  onclick="sendOrder()" style="margin-left:40px" />' +
+            '</div>' +
+          '</div>';
+          that.infoWindow = new AMap.InfoWindow({
+              position:marker.getPosition(),
+              content: info , //使用默认信息窗体框样式，显示信息内容
+              closeWhenClickMap:true,
+          });
+          setTimeout(function(){
+            that.infoWindow.open(map); 
+            var postOrder = document.getElementById('postOrder');   
+             let sendOrder = function(){
+              //that.showHealth=true;
+              that.$router.push({
+                name: "order",
+              });
+            }
+            postOrder.onclick = sendOrder
+          },100)
+            })
+          }else{
+      that.axios.get(
+         `/position/user?type=detail&contract_id=${marker.contract_id}&order_id=${marker.order_id}`
+        ).then(res=>{
+          console.log(res)
+          marker.photo = res.data.data.photo
+          marker.createdat=res.data.data.create_time
+          that.healthId=res.data.data.health_doc_id
+          // marker.goods_name = res.data.data[0].goods_name 
+           info =
+          '<div className="custom-infowindow input-card" style="width:300px;border-radius:20px;font-size:10px;">' +
+            '<div style="text-align: center;font-weight: bold;margin:10px 0">服务对象信息</div>' +
+            '<div>' +
+              `<img src="${marker.photo|| oldman}" style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-right:20px;"/>` +
 
               '<div class="input-item" style="margin-bottom:10px">' +
                   '<div class="input-item-prepend" >' +
@@ -713,6 +855,8 @@ export default {
         
           },100)
         })
+          }
+       
          
         }else{
           async function getRes(){
@@ -743,10 +887,12 @@ export default {
         serviceStafName = teamInfo[0].serviceStaffInfo.name?teamInfo[0].serviceStaffInfo.name:'未签约'
       }
       that.axios.get(
-          `/position/user?order_id=${marker.id}`
+           `/position/user?type=detail&${marker.contract_id?`contract_id=${marker.contract_id}`:`user_id=${marker.user_id}`}`
         ).then(res=>{
-          marker.photo = res.data.data[0].photo
-          marker.goods_name = res.data.data[0].goods_name
+          marker.photo = res.data.data.photo
+           marker.createdat=res.data.data.create_time
+            that.healthId=res.data.data.health_doc_id
+          // marker.goods_name = res.data.data[0].goods_name
           let info = 
           '<div className="custom-infowindow input-card" style="width:300px;border-radius:20px;font-size:10px;">' +
             '<div style="text-align:center;font-weight: bold;margin:10px 0">服务对象信息</div>' +
@@ -822,9 +968,8 @@ export default {
         })
     },
     getallHealth(marker){
-      let health_doc_id = marker.health_doc_id
-      console.log(marker)
-      this.axios.get('https://api.anjihos.newlioncity.com/admin/vitalsign?health_doc_id='+health_doc_id).then(res=>{
+   console.log( this.healthId)
+      this.axios.get('https://api.anjihos.newlioncity.com/admin/vitalsign?health_doc_id='+ this.healthId).then(res=>{
         console.log(res.data.data.data)
         this.healthdoc = res.data.data.data
       })
@@ -839,7 +984,6 @@ export default {
   }
   .selects{
     position:absolute;
-    width:450px;
     right:50px;
     top:20px;
     background-color: #fff;
