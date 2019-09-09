@@ -66,7 +66,7 @@ export default {
         legend: {
           left: 'center',
           bottom: '10',
-          data: ['男', '女', '未收集']
+          data: ['男', '女', '未知']
         },
         calculable: true,
         series: [

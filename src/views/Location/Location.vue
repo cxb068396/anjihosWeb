@@ -689,7 +689,18 @@ export default {
       this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user?type=index')
       .then(res => {
         this.circles = res.data.data
-
+         this.numbercode11 = 0
+      this.numbercode12 = 0
+      this.numbercode13 = 0
+        this.circles.map(item=>{
+          if(item.order_status ==11){
+            this.numbercode11++
+          }else if(item.order_status ==12){
+            this.numbercode12++
+          }else if(item.order_status ==13){
+            this.numbercode13++
+          }
+        })
        let arr1=[];
        let arr2=[];
        arr1 =  this.circles.filter(item => item.order_status ==12) 
@@ -729,11 +740,20 @@ export default {
         marker.setAnimation(item.order_status == 11? 'AMAP_ANIMATION_BOUNCE':'AMAP_ANIMATION_NONE')
        marker.goods_name = item.goods_name//服务内容
         marker.consignee = item.consignee //昵称
-       // marker.createdat = item.createdat //记录时间
-       // marker.JBXX_XM = item.JBXX_XM //真实姓名
-       // marker.JBXX_LXRXM = item.JBXX_LXRXM //联系人姓名
-       // marker.JBXX_LXRDH = item.JBXX_LXRDH //联系人电话
-        marker.health_doc_id = item.health_doc_id 
+
+        // marker.address = item.address //详细住址
+        // marker.JBXX_BRDH = item.JBXX_BRDH //联系方式
+        marker.createdat = item.createdat //记录时间
+        marker.JBXX_XM = item.JBXX_XM //真实姓名
+        // marker.JBXX_CSRQ = item.JBXX_CSRQ //出生日期
+        marker.JBXX_LXRXM = item.JBXX_LXRXM //联系人姓名
+        // marker.JBXX_HJXXDZ = item.JBXX_HJXXDZ //地址
+        // marker.JBXX_XB = item.JBXX_XB //性别
+        marker.JBXX_LXRDH = item.JBXX_LXRDH //联系人电话
+
+        // marker.doctor_team_id = item.doctor_team_id //医疗团队编号
+        marker.health_doc_id = item.health_doc_id //医疗团队医生编号
+        // marker.company_id = item.company_id //机构编号
         marker.order_status = item.order_status //订单状态
         marker.contract_id = item.contract_id 
         marker.user_id = item.user_id 

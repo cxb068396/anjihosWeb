@@ -12,7 +12,7 @@
     <el-row :gutter="32">
       <el-col :xs="24" :sm="24" :lg="8">
         <div class="chart-wrapper">
-          <PieChartC/>
+          <PieChart_team_orderexec/>
         </div>
       </el-col>
       <el-col :xs="24" :sm="24" :lg="8">
@@ -81,6 +81,7 @@ import TransactionTable from './components/TransactionTable'
 import TodoList from './components/TodoList'
 import BoxCard from './components/BoxCard'
 import api from "@/config/api";
+import PieChart_team_orderexec from './components/PieChart_team_orderexec'
 
 let lineChartData = {
   // newVisitis: {
@@ -104,6 +105,7 @@ let lineChartData = {
 export default {
   name: 'DashboardAdmin',
   components: {
+    PieChart_team_orderexec,
     GithubCorner,
     PanelGroup,
     LineChart,

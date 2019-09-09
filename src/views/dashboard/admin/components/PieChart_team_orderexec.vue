@@ -44,6 +44,16 @@ export default {
     this.chart.dispose()
     this.chart = null
   },
+  created() {
+    this.axios
+      .get('/dashboard', {
+        params: { type: 'teamorderexec' }
+      })
+      .then(response => {
+        this.data = response.data.data
+        this.initChart()
+      })
+  },
   methods: {
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons')
@@ -56,24 +66,17 @@ export default {
         legend: {
           left: 'center',
           bottom: '10',
-          data: ['大竹园高血压', '大竹园糖尿病', '大竹园高血压糖尿病', '刘家塘高血压', '刘家塘糖尿病', '刘家塘高血压糖尿病']
+          data: this.data.team
         },
         calculable: true,
         series: [
           {
-            name: '病种分析',
+            name: '团队随访次数',
             type: 'pie',
             roseType: 'radius',
             radius: [15, 95],
             center: ['50%', '38%'],
-            data: [
-              { value: 206, name: '大竹园高血压' },
-              { value: 46, name: '大竹园糖尿病' },
-              { value: 32, name: '大竹园高血压糖尿病' },
-              { value: 224, name: '刘家塘高血压' },
-              { value: 58, name: '刘家塘糖尿病' },
-              { value: 39, name: '刘家塘高血压糖尿病' }
-            ],
+            data: this.data,
             animationEasing: 'cubicInOut',
             animationDuration: 2600
           }
