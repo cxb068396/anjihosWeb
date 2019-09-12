@@ -492,6 +492,45 @@ export const asyncRouterMap = [
       }
     ]
   },
+  //新增服务包管理项目
+  {
+    path:'/ServicePack',
+    component: Layout,
+    meta: {
+      title: '服务包管理',
+      icon: 'peoples',
+      roles: ['admin']
+    },
+    children: [
+      {
+        path: 'servicepacklist',
+        component: () => import('@/views/ServicePack/servicepacklist'),
+        name: 'servicepacklist',
+        meta: { title: '服务包列表', icon: 'user' }
+      },
+      {
+        path: 'servicepackinfo',
+        component: () => import('@/views/ServicePack/servicepackinfo'),
+        name: 'servicepackinfo',
+        meta: { title: '服务包详情', icon: 'user' },
+        hidden: true
+      },
+      {
+        path: 'servicepackupdat',
+        component: () => import('@/views/ServicePack/servicepackupdat'),
+        name: 'servicepackupdat',
+        meta: { title: '服务包更新', icon: 'user' },
+        hidden: true
+      },
+      {
+        path: 'servicepackadd',
+        component: () => import('@/views/ServicePack/servicepackadd'),
+        name: 'servicepackadd',
+        meta: { title: '服务包新增', icon: 'user' },
+        hidden: true
+      },
+    ]
+   },
   {
     path: '/advertisement',
     component: Layout,
