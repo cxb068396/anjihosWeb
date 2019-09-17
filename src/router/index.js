@@ -504,27 +504,27 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'servicepacklist',
-        component: () => import('@/views/ServicePack/servicepacklist'),
+        component: () => import('@/views/ServicePack/ServicePackList'),
         name: 'servicepacklist',
         meta: { title: '服务包列表', icon: 'user' }
       },
       {
         path: 'servicepackinfo',
-        component: () => import('@/views/ServicePack/servicepackinfo'),
+        component: () => import('@/views/ServicePack/ServicePackInfo'),
         name: 'servicepackinfo',
         meta: { title: '服务包详情', icon: 'user' },
         hidden: true
       },
       {
         path: 'servicepackupdat',
-        component: () => import('@/views/ServicePack/servicepackupdat'),
+        component: () => import('@/views/ServicePack/ServicePackUpdat'),
         name: 'servicepackupdat',
         meta: { title: '服务包更新', icon: 'user' },
         hidden: true
       },
       {
         path: 'servicepackadd',
-        component: () => import('@/views/ServicePack/servicepackadd'),
+        component: () => import('@/views/ServicePack/ServicePackAdd'),
         name: 'servicepackadd',
         meta: { title: '服务包新增', icon: 'user' },
         hidden: true
