@@ -516,6 +516,13 @@ export const asyncRouterMap = [
         hidden: true
       },
       {
+        path: 'servicepackdetailupdat',
+        component: () => import('@/views/ServicePack/ServicePackDetailUpdat'),
+        name: 'servicepackdetailupdat',
+        meta: { title: '服务详情更新', icon: 'user' },
+        hidden: true
+      },
+      {
         path: 'servicepackupdat',
         component: () => import('@/views/ServicePack/ServicePackUpdat'),
         name: 'servicepackupdat',
@@ -527,6 +534,13 @@ export const asyncRouterMap = [
         component: () => import('@/views/ServicePack/ServicePackAdd'),
         name: 'servicepackadd',
         meta: { title: '服务包新增', icon: 'user' },
+        hidden: true
+      },
+      {
+        path: 'servicepackdetailadd',
+        component: () => import('@/views/ServicePack/ServicePackDetailAdd'),
+        name: 'servicepackdetailadd',
+        meta: { title: '服务详情添加', icon: 'user' },
         hidden: true
       },
     ]

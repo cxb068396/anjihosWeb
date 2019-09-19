@@ -17,6 +17,14 @@
           >返回列表</el-button>
         </router-link>
       </div>
+        <div class="operation-nav" style='margin-left:50px'>
+        <router-link :to="{path:'servicepackdetailadd',query:{packge_id:this.$route.query.packge_id}}">
+          <el-button
+            type="primary"
+            icon="plus"
+          >添加服务详情</el-button>
+        </router-link>
+      </div>
     </div>
     <el-table
       :data="InfoData"
@@ -52,6 +60,11 @@
             type="primary"
             @click="handleRowUpdated(scope.$index, scope.row)"
           >更新</el-button>
+           <el-button
+            size="small"
+            type="danger"
+            @click="handleRowDeleted(scope.$index, scope.row)"
+          >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -70,16 +83,43 @@ export default {
     handleRowUpdated(index, row) {
         console.log(row)
       this.$router.push({
-        name: "servicepackupdat",
+        name: "servicepackdetailupdat",
         query: {
           name: row.name,
           desc:row.desc,
-          frequency:row.frequency
+          frequency:row.frequency,
+          id:row.id
         }
       });
     },
 
-
+    handleRowDeleted(index,row){
+        console.log(row)
+        const params = {
+        id: row.id,
+        type:'delpackgedetail'    
+      };
+       this.$confirm('此操作将永久删除该条服务详情, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+        this.axios
+        .post('https://api.anjihos.newlioncity.com/admin/service/store',params).then(res=>{
+            this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+          this.$router.go(-1);
+        })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
+        
+    },
  
 
   },

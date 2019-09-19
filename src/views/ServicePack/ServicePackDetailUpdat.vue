@@ -19,6 +19,10 @@
       <el-form-item label="详情描述" prop="desc" style="width: 600px;">
         <el-input rows="5" type="textarea" v-model.trim="ruleForm.desc"></el-input>
       </el-form-item>
+      <el-form-item label="服务频次" prop="frequency" style="width: 300px;">
+        <el-input v-model.trim="ruleForm.frequency"></el-input>
+      </el-form-item>
+
       <el-form-item>
         <el-button type="primary" @click="submitForm">确定保存</el-button>
         <el-button @click="resetForm(ruleForm)">重置</el-button>
@@ -34,6 +38,7 @@ export default {
       ruleForm: {
         name: "",
         desc: "",
+        frequency: "",
         id:''
 
       }
@@ -47,8 +52,9 @@ export default {
       const params = {
         name: this.ruleForm.name.trim(),
         desc: this.ruleForm.desc.trim(),
+        frequency: this.ruleForm.frequency.trim(),
         id:this.ruleForm.id,
-        type:'modifypackge'
+        type:'modifypackgedetail'
       };
       this.$refs["ruleForm"].validate(valid => {
         if (valid) {
@@ -82,8 +88,9 @@ export default {
   mounted() {
     this.ruleForm.name = this.$route.query.name || "";
     this.ruleForm.desc = this.$route.query.desc || "";
+    this.ruleForm.frequency = this.$route.query.frequency || "";
     this.ruleForm.id = this.$route.query.id || "";
- 
+    console.log(this.$route.query.id)
   }
 };
 </script>

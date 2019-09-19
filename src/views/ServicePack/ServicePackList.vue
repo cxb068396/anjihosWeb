@@ -52,6 +52,11 @@
             type="info"
             @click="handleRowInfo(scope.$index, scope.row)"
           >详情</el-button>
+            <el-button
+            size="small"
+            type="primary"
+            @click="handleRowUpdated(scope.$index, scope.row)"
+          >更新</el-button>
            <el-button
             size="small"
             type="danger"
@@ -77,21 +82,52 @@ export default {
       this.$router.push({
         name: "servicepackinfo",
         query: {
+          packge_id:row.id,
           packge_detail: row.packge_detail,
+        }
+      });
+    },
+      handleRowUpdated(index, row) {
+        console.log(row)
+      this.$router.push({
+        name: "servicepackupdat",
+        query: {
+          name: row.name,
+          desc:row.desc,
+          id:row.id
         }
       });
     },
     handleRowDelete(index,row){
         console.log(row)
         this.id=row.id
+        const params = {
+        id: this.id,
+        type:'delpackge'    
+      };
+       this.$confirm('此操作将永久删除该服务包, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
         this.axios
-        .post('https://api.anjihos.newlioncity.com/admin/service/store?type=delpackge&id='+this.id).then(res=>{
-           console.log(res)
+        .post('https://api.anjihos.newlioncity.com/admin/service/store',params).then(res=>{
+            this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+          this.getList();
         })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
         
     },
 
-    getList() {
+   getList() {
    this.axios
         .get('https://api.anjihos.newlioncity.com/admin/service').then(res=>{
             this.tableData=res.data.data
