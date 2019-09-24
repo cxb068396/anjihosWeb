@@ -29,7 +29,7 @@
             <el-upload
               class="upload-demo"
               drag
-              action="https://api.anjihos.newlioncity.com/admin/upload/upversion"
+              action="http://47.97.251.68:8361/admin/upload/upversion"
               multiple
               :on-success='fileUpload'
               :headers="header">

@@ -86,7 +86,7 @@ export default {
         this.$refs["ruleForm"].validate(valid => {
           if (valid) {
             this.axios
-              .post("https://api.anjihos.newlioncity.com/admin/service/store", params)
+              .post("http://47.97.251.68:8361/admin/service/store", params)
               .then(response => {
                 console.log(response.data)
                 if (response.data.errno === 0) {

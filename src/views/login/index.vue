@@ -143,7 +143,7 @@ export default {
       //       this.loading = false;
       //       if (res.data.errno === 0) {
 
-      //         localStorage.https://api.anjihos.newlioncity.com/admin("token", res.data.data.token);
+      //         localStorage.http://47.97.251.68:8361/admin("token", res.data.data.token);
       //         localStorage.setItem(
       //           "userInfo",
       //           JSON.stringify(res.data.data.userInfo)
