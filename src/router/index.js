@@ -192,13 +192,13 @@ export const asyncRouterMap = [
       {
         path: 'merchant',
         component: () => import('@/views/Merchant/Merchant'),
-        name: '机构列表',
+        name: 'merchant',
         meta: { title: '机构列表', icon: 'user' }
       },
       {
         path: 'approval',
         component: () => import('@/views/Merchant/Approval'),
-        name: '机构入驻审批',
+        name: 'approval',
         meta: { title: '机构入驻审批', icon: 'user' }
       },
 

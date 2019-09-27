@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}"/>
+  <div :class="className" :style="{height:height,width:width}" @click='gomap'/>
 </template>
 
 <script>
@@ -82,7 +82,15 @@ export default {
           }
         ]
       })
-    }
+    },
+      gomap() {
+      this.$router.push({
+        name: "location",
+        query: {
+          mallCode: "dashboard"
+        }
+      });
+    },
   }
 }
 </script>

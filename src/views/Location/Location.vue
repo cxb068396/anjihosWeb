@@ -260,7 +260,10 @@ export default {
     },400)
   },
   mounted() {
-    
+    if(this.$route.query.mallCode){
+      //this.show3=true;
+      this.allDoctor();
+    }
     const that = this
     window.onresize = () => {
       return (() => {
