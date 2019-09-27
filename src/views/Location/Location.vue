@@ -324,7 +324,7 @@ export default {
       clearInterval(this.timer1);
       var that=this
       this.radio=val;
-      this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user?type=search&order_status='+this.radio).then(res=>{
+      this.axios.get('http://47.97.251.68:8361/admin/position/user?type=search&order_status='+this.radio).then(res=>{
        
         // this.circles=res.data.data.data.concat(res.data.data.others)
         // console.log(this.circles)
@@ -348,7 +348,7 @@ export default {
       var that=this
       this.disease=val;
     if(this.disease==0){
-        this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user?type=search&disease='+this.disease).then(res=>{ 
+        this.axios.get('http://47.97.251.68:8361/admin/position/user?type=search&disease='+this.disease).then(res=>{ 
           that.count1=''
           that.count2=''
           that.count3=''
@@ -358,7 +358,7 @@ export default {
         that.display()
       })
    }else if(this.disease==1){
-        this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user?type=search&disease='+this.disease).then(res=>{ 
+        this.axios.get('http://47.97.251.68:8361/admin/position/user?type=search&disease='+this.disease).then(res=>{ 
            that.count=''
           that.count2=''
           that.count3=''
@@ -368,7 +368,7 @@ export default {
         that.display()
       })
    }else if(this.disease==2){
-        this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user?type=search&disease='+this.disease).then(res=>{ 
+        this.axios.get('http://47.97.251.68:8361/admin/position/user?type=search&disease='+this.disease).then(res=>{ 
            that.count1=''
           that.count=''
           that.count3=''
@@ -378,7 +378,7 @@ export default {
         that.display()
       })
    }else{
-        this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user?type=search&disease='+this.disease).then(res=>{ 
+        this.axios.get('http://47.97.251.68:8361/admin/position/user?type=search&disease='+this.disease).then(res=>{ 
           that.count1=''
           that.count2=''
           that.count=''
@@ -394,7 +394,7 @@ export default {
     userNameChange(){
        clearInterval(this.timer1);
       if(this.input){
-        this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user?type=search&real_name='+this.input).then(res=>{ 
+        this.axios.get('http://47.97.251.68:8361/admin/position/user?type=search&real_name='+this.input).then(res=>{ 
           this.input=''
         if(res.data.data.data.length<=0&&res.data.data.others<=0){
        this.$message({
@@ -470,7 +470,7 @@ export default {
       let that = this
       marker.on('mousedown',function () {
         that.axios
-        .get('https://api.anjihos.newlioncity.com/admin/contract/?health_doc_id='+marker.healthdocid).then(res=>{
+        .get('http://47.97.251.68:8361/admin/contract/?health_doc_id='+marker.healthdocid).then(res=>{
             let data = res.data.data.data[0]
             marker.JBXX_BRDH = data.healthdocInfo.JBXX_BRDH //联系方式
             marker.JBXX_XM = data.healthdocInfo.JBXX_XM //真实姓名
@@ -545,7 +545,7 @@ export default {
       var healthdocid = marker.healthdocid
       let health_doc_id = marker.health_doc_id
       console.log(marker)
-      this.axios.get('https://api.anjihos.newlioncity.com/admin/vitalsign?health_doc_id='+healthdocid).then(res=>{
+      this.axios.get('http://47.97.251.68:8361/admin/vitalsign?health_doc_id='+healthdocid).then(res=>{
       console.log(res.data.data.data)
       this.healthdoc = res.data.data.data
     })
@@ -554,7 +554,7 @@ export default {
 
   //获得所有的街道
     getStreet(){
-      this.axios.get('https://api.anjihos.newlioncity.com/admin/position/group').then(res=>{
+      this.axios.get('http://47.97.251.68:8361/admin/position/group').then(res=>{
         res.data.data.map(item=>item.company.map(function(item2){
           let company
           item2.company = item2.unit
@@ -596,7 +596,7 @@ export default {
       this.circles = []
       console.log(street_id,company_id ,village_id )
       if(street_id && company_id == undefined && village_id ==undefined){
-        this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user?type=search&adcode='+that.adcode).then(res=>{
+        this.axios.get('http://47.97.251.68:8361/admin/position/user?type=search&adcode='+that.adcode).then(res=>{
           if(res.data.data.data.length>0){
             this.circles = JSON.parse(JSON.stringify(res.data.data.data).replace(/order_lng/g, 'lng'))
              this.circles = JSON.parse(JSON.stringify(this.circles).replace(/order_lat/g, 'lat'))
@@ -610,7 +610,7 @@ export default {
           }
         })
       }else if(street_id && company_id&& village_id ==undefined){
-        this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user?type=search&adcode='+that.adcode+'&company_id='+company_id).then(res=>{
+        this.axios.get('http://47.97.251.68:8361/admin/position/user?type=search&adcode='+that.adcode+'&company_id='+company_id).then(res=>{
           if(res.data.data.data.length>0){
             this.circles=[];
             this.circles = res.data.data.data
@@ -625,7 +625,7 @@ export default {
           that.display();
         })
       }else if(street_id && company_id&& village_id){
-      this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user?type=search&adcode='+village_id).then(res=>{
+      this.axios.get('http://47.97.251.68:8361/admin/position/user?type=search&adcode='+village_id).then(res=>{
           if(res.data.data.data.length>0){
             this.circles = res.data.data.data
               this.circles = JSON.parse(JSON.stringify(res.data.data.data).replace(/order_lng/g, 'lng'))
@@ -658,7 +658,7 @@ export default {
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.7)'
         });
-      this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user?type=index')
+      this.axios.get('http://47.97.251.68:8361/admin/position/user?type=index')
       .then(res => {
         this.circles = res.data.data
         this.numbercode11 = 0
@@ -689,7 +689,7 @@ export default {
     },
     peopleWithoutLoading() {
      
-      this.axios.get('https://api.anjihos.newlioncity.com/admin/position/user?type=index')
+      this.axios.get('http://47.97.251.68:8361/admin/position/user?type=index')
       .then(res => {
         this.circles = res.data.data
          this.numbercode11 = 0
@@ -992,7 +992,7 @@ export default {
     },
     getallHealth(marker){
    console.log( this.healthId)
-      this.axios.get('https://api.anjihos.newlioncity.com/admin/vitalsign?health_doc_id='+ this.healthId).then(res=>{
+      this.axios.get('http://47.97.251.68:8361/admin/vitalsign?health_doc_id='+ this.healthId).then(res=>{
         console.log(res.data.data.data)
         this.healthdoc = res.data.data.data
       })

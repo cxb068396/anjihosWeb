@@ -1,20 +1,13 @@
 <template>
   <div class="content-page">
     <div class="content-nav">
-      <el-breadcrumb
-        class="breadcrumb"
-        separator="/"
-      >
+      <el-breadcrumb class="breadcrumb" separator="/">
         <el-breadcrumb-item :to="{name: 'dashboard'}">首页</el-breadcrumb-item>
         <el-breadcrumb-item>医院详情</el-breadcrumb-item>
         <el-breadcrumb-item>添加医院</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="operation-nav">
-        <el-button
-          type="primary"
-          @click="goBackPage"
-          icon="arrow-left"
-        > 返回列表 </el-button>
+        <el-button type="primary" @click="goBackPage" icon="arrow-left">返回列表</el-button>
       </div>
     </div>
 
@@ -26,12 +19,7 @@
           :model="adminAddInfoForm"
           label-width="120px"
         >
-
-          <el-form-item
-            label="被签约人姓名"
-            prop="real_name"
-
-          >
+          <el-form-item label="被签约人姓名" prop="real_name">
             <el-input
               type="textarea"
               v-model.trim="adminAddInfoForm.real_name"
@@ -40,10 +28,7 @@
             ></el-input>
           </el-form-item>
 
-          <el-form-item
-            label="被签约人地址"
-            prop="second_address"
-          >
+          <el-form-item label="被签约人地址" prop="second_address">
             <el-input
               type="textarea"
               v-model.trim="adminAddInfoForm.second_address"
@@ -51,35 +36,15 @@
               style="width:50%"
             ></el-input>
           </el-form-item>
-          
 
-          <el-form-item
-            label="手机号码"
-            prop="mobile"
-          >
-            <el-input
-              type="number"
-              v-model="adminAddInfoForm.mobile"
-              :rows="1"
-              style="width:30%"
-            ></el-input>
+          <el-form-item label="手机号码" prop="mobile">
+            <el-input type="number" v-model="adminAddInfoForm.mobile" :rows="1" style="width:30%"></el-input>
           </el-form-item>
-          <el-form-item
-            label="身份证号码"
-            prop="id_card"
-          >
-            <el-input
-              type="number"
-              v-model="adminAddInfoForm.id_card"
-              :rows="1"
-              style="width:30%"
-            ></el-input>
+          <el-form-item label="身份证号码" prop="id_card">
+            <el-input type="number" v-model="adminAddInfoForm.id_card" :rows="1" style="width:30%"></el-input>
           </el-form-item>
-      
-          <el-form-item
-            label="性别"
-            prop="sex"
-          >
+
+          <el-form-item label="性别" prop="sex">
             <el-radio-group v-model="adminAddInfoForm.sex">
               <el-radio label="男"></el-radio>
               <el-radio label="女"></el-radio>
@@ -91,7 +56,7 @@
               ref="upload"
               name='pic'
               v-model="adminAddInfoForm.image_url"
-              action="https://api.anjihos.newlioncity.com/admin/upload/goodsPic"
+              action="http://47.97.251.68:8361/admin/upload/goodsPic"
               :headers='headers'
               :on-preview="handlePreview"
               :on-remove="handleRemove"
@@ -110,13 +75,10 @@
                 class="el-icon-plus avatar-uploader-icon"
               ></i>
             </el-upload>
-          </el-form-item> -->
+          </el-form-item>-->
 
           <el-form-item>
-            <el-button
-              type="primary"
-              @click="onSubmitInfo"
-            >确定保存</el-button>
+            <el-button type="primary" @click="onSubmitInfo">确定保存</el-button>
             <el-button @click="goBackPage">取消</el-button>
           </el-form-item>
         </el-form>
@@ -139,20 +101,26 @@ export default {
         second_address: "",
         sex: "",
         image_url: "",
-        mobile:'',
-        id_card:'',
-
-
+        mobile: "",
+        id_card: ""
       },
       headers: {
         "X-Anjishop-Token": localStorage.getItem("token") || ""
       },
       infoRules: {
-        namreal_namee: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-        second_address: [{ required: true, message: "请输入地址", trigger: "blur" }],
-        mobile: [{ required: true, message: "请输入手机号码", trigger: "blur" }],
+        namreal_namee: [
+          { required: true, message: "请输入姓名", trigger: "blur" }
+        ],
+        second_address: [
+          { required: true, message: "请输入地址", trigger: "blur" }
+        ],
+        mobile: [
+          { required: true, message: "请输入手机号码", trigger: "blur" }
+        ],
         sex: [{ required: true, message: "请输入性别", trigger: "blur" }],
-        id_card: [{ required: true, message: "请输入身份证号", trigger: "blur" }],
+        id_card: [
+          { required: true, message: "请输入身份证号", trigger: "blur" }
+        ]
       }
     };
   },
@@ -161,13 +129,13 @@ export default {
       this.$router.go(-1);
     },
     onSubmitInfo() {
-      console.log(this.adminAddInfoForm)
+      console.log(this.adminAddInfoForm);
       this.$router.push({
         name: "contractsendcompany",
         query: {
           adminAddInfoForm: this.adminAddInfoForm
         }
-      })
+      });
     },
     handleChange(item) {
       if (item === 0) {
@@ -211,9 +179,7 @@ export default {
     }
   },
   components: {},
-  mounted() {
-  
-  }
+  mounted() {}
 };
 </script>
 

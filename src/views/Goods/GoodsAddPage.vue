@@ -164,7 +164,7 @@
               ref="upload"
               name='pic'
               v-model="infoForm.list_pic_url"
-              action="https://api.anjihos.newlioncity.com/admin/upload/goodsPic"
+              action="http://47.97.251.68:8361/admin/upload/goodsPic"
               :headers='header'
               :on-preview="handlePreview"
               :on-remove="handleRemove"
@@ -195,7 +195,7 @@
                 ref="upload"
                 name='pic'
                 v-model="infoForm.goods_desc[0]"
-                action="https://api.anjihos.newlioncity.com/admin/upload/goodsPic"
+                action="http://47.97.251.68:8361/admin/upload/goodsPic"
                 :headers='header'
                 :on-preview="handlePreview"
                 :on-remove="handleRemove"
@@ -215,7 +215,7 @@
                 ref="upload"
                 name='pic'
                 v-model="infoForm.goods_desc[1]"
-                action="https://api.anjihos.newlioncity.com/admin/upload/goodsPic"
+                action="http://47.97.251.68:8361/admin/upload/goodsPic"
                 :headers='header'
                 :on-preview="handlePreview"
                 :on-remove="handleRemove"
@@ -288,7 +288,7 @@
                 ref="upload"
                 name='pic'
                 v-model="infoForm.gallery"
-                action="https://api.anjihos.newlioncity.com/admin/upload/goodsPic"
+                action="http://47.97.251.68:8361/admin/upload/goodsPic"
                 :headers='header'
                 :on-preview="handlePreview"
                 :on-remove="handleRemove"

@@ -111,7 +111,7 @@ export default {
           type: 'warning'
         }).then(() => {
         this.axios
-        .post('https://api.anjihos.newlioncity.com/admin/service/store',params).then(res=>{
+        .post('http://47.97.251.68:8361/admin/service/store',params).then(res=>{
             this.$message({
             type: 'success',
             message: '删除成功!'
@@ -129,7 +129,7 @@ export default {
 
    getList() {
    this.axios
-        .get('https://api.anjihos.newlioncity.com/admin/service').then(res=>{
+        .get('http://47.97.251.68:8361/admin/service').then(res=>{
             this.tableData=res.data.data
         })
     },
