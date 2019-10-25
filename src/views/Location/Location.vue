@@ -131,6 +131,40 @@
 </template>
  <el-button type="primary" size="mini" @click="numberClick">确定</el-button>
       </div>
+
+       <div style='display: flex;flex-direction: row;justify-content:space-between ; align-items: center;width:450px; padding: 10px 20px;border-top: 1px solid rgb(220, 223, 230);'>
+        <template>
+      <el-radio-group v-model="radio" @change="typeChange">
+    <el-radio :label="11">
+      <img src='../../assets/red-drip.png' width="20" height="30"/>
+       <span style="font-size:10px">{{numbercode11}}个未接单</span>
+    </el-radio>
+    <el-radio :label="12">
+      <img src='../../assets/yellow-drip.png' width="20" height="30"/>
+        <span style="font-size:10px">{{numbercode12}}个已接单</span>
+    </el-radio>
+    <el-radio :label="13">
+      <img src='../../assets/blue-drip.png' width="20" height="30"/>
+      <span style="font-size:10px">{{numbercode13}}个正在服务</span>
+    </el-radio>
+  </el-radio-group>
+</template>
+     </div>
+     
+        <div style='display: flex;flex-direction: row;justify-content:space-between ; align-items: center;width:450px; padding: 10px 20px;border-top: 1px solid rgb(220, 223, 230);'>
+          <span style='margin:0 20px 0 0; font-size:18px;color:#606266'>选择地区</span>
+        <template>
+  <el-select v-model="choosecityvalue" placeholder="请选择地点" @change="mapCityChange">
+    <el-option
+      v-for="item in mapcityoptions"
+      :key="item.value"
+      :label="item.label"
+      :value="item.value">
+    </el-option>
+  </el-select>
+</template>
+</div>
+
         <div style='display: flex;flex-direction: row;justify-content:space-between ; align-items: center;width:450px; padding: 10px 20px;border-top: 1px solid rgb(220, 223, 230)'>
        <span style='margin:0 20px 0 0; font-size:18px;color:#606266'>查询人姓名</span>
        <el-input style='width:250px' v-model="input" placeholder="请填写真实姓名" @change='userNameChange'></el-input>
@@ -181,6 +215,14 @@ export default {
       showDoctor:false,
       showHealth:false,
       type:'',
+      choosecityvalue:'',
+      mapcityoptions: [{
+          value: '上城区',
+          label: '上城区'
+        }, {
+          value: '安吉县',
+          label: '安吉县'
+        }],
       options:[],
       selectedOptions: [],
       defaultParams: {
@@ -201,6 +243,7 @@ export default {
       events: {
         init:(map)=> {
           console.log('init事件')
+          console.log('init事件中的map参数',map)
           new AMap.DistrictSearch({
             extensions:'all',
             subdistrict:0
@@ -226,7 +269,35 @@ export default {
             });
             polygon.setPath(pathArray);
             map.add(polygon)
-          })
+            
+          });
+          // new AMap.DistrictSearch({
+          //   extensions:'all',
+          //   subdistrict:0
+          // }).search('上城区',function(status,result){
+          //   // 外多边形坐标数组和内多边形坐标数组
+          //   var outer = [
+          //       new AMap.LngLat(-360,90,true),
+          //       new AMap.LngLat(-360,-90,true),
+          //       new AMap.LngLat(360,-90,true),
+          //       new AMap.LngLat(360,90,true),
+          //   ];
+          //   var holes =result.districtList[0].boundaries
+          //   var pathArray = [
+          //       outer
+          //   ];
+          //   pathArray.push.apply(pathArray,holes)
+          //   var polygon = new AMap.Polygon( {
+          //       pathL:pathArray,
+          //       strokeColor: '#00eeff',
+          //       strokeWeight: 1,
+          //       fillColor: '#71B3ff',
+          //       fillOpacity: 0.5
+          //   });
+          //   polygon.setPath(pathArray);
+          //   map.add(polygon)
+            
+          // })
         }
       },
       map: {},
@@ -309,6 +380,49 @@ export default {
         
       }
       return newArray
+    },
+    //选择区域
+    choosePlace(place){
+      let map = AMapManager.getMap()
+      console.log('choosePlace事件')
+      console.log('choosePlace事件中的map参数',map)
+      new AMap.DistrictSearch({
+        extensions:'all',
+        subdistrict:0
+      }).search(place,function(status,result){
+        // 外多边形坐标数组和内多边形坐标数组
+        var outer = [
+            new AMap.LngLat(-360,90,true),
+            new AMap.LngLat(-360,-90,true),
+            new AMap.LngLat(360,-90,true),
+            new AMap.LngLat(360,90,true),
+        ];
+        var holes =result.districtList[0].boundaries
+        var pathArray = [
+            outer
+        ];
+        pathArray.push.apply(pathArray,holes)
+        var polygon = new AMap.Polygon( {
+            pathL:pathArray,
+            strokeColor: '#00eeff',
+            strokeWeight: 1,
+            fillColor: '#71B3ff',
+            fillOpacity: 0.5
+        });
+        polygon.setPath(pathArray);
+        map.add(polygon)
+      })
+    },
+    mapCityChange(choosedcity){
+      let map = AMapManager.getMap()
+      let alllayers = map.getAllOverlays()
+      console.log('alllayers',alllayers)
+      let temPolygon = alllayers.filter(item => item.goods_name == undefined)
+      console.log(temPolygon)
+      if(temPolygon){
+        map.remove(temPolygon)
+      }
+      this.choosePlace(choosedcity)
     },
     numberClick(){
     this.people();
