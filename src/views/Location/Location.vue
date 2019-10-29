@@ -398,6 +398,26 @@ export default {
             new AMap.LngLat(360,90,true),
         ];
         var holes =result.districtList[0].boundaries
+
+        //取中心
+        let lngArr = []
+        let latArr = []
+        holes[0].map(item => {
+          latArr.push(item.lat)
+          lngArr.push(item.lng)
+        })
+        function toolfunc(x1,x2){
+          return x1 - x2
+        }
+        lngArr.sort(toolfunc)
+        latArr.sort(toolfunc)
+        let center = []
+        function getMid (arr){
+          return (arr[0]+arr[arr.length - 1]) / 2
+        }
+        center.push(getMid(lngArr),getMid(latArr))
+        map.setCenter(center)
+        
         var pathArray = [
             outer
         ];
