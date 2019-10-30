@@ -54,7 +54,7 @@ export default {
         if (valid) {
           this.axios
             .post(
-              "http://api.anjihos.z-y.tech/admin/service/store",
+              "https://api.anjihos.z-y.tech/admin/service/store",
               params
             )
             .then(response => {

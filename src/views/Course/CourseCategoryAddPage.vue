@@ -66,7 +66,7 @@
               class="upload-demo"
               :headers="headers"
               name="pic"
-              action="http://api.anjihos.z-y.tech/admin/upload/goodsPic"
+              action="https://api.anjihos.z-y.tech/admin/upload/goodsPic"
               :limit = 1 
               :on-exceed="picLimitMes"
               :on-preview="handlePreview"
@@ -88,7 +88,7 @@
               ref="upload"
               name='pic'
               v-model="infoForm.wap_banner_url"
-              action="http://api.anjihos.z-y.tech/admin/upload/goodsPic"
+              action="https://api.anjihos.z-y.tech/admin/upload/goodsPic"
               :headers='headers'
               :on-preview="handlePreview"
               :on-remove="handleRemove"
@@ -183,7 +183,8 @@ export default {
         icon_url: "",
         img_url: "",
         sort_order: 1,
-        is_show: true
+        is_show: true,
+        is_course:1,
       },
       infoRules: {
         name: [{ required: true, message: "请输入名称", trigger: "blur" }],
@@ -277,7 +278,11 @@ export default {
     },
 
     getTopCategory() {
-      this.axios.get("category/topCategory").then(response => {
+      this.axios.get("category/topCategory",{ 
+        params: {
+            is_course:1
+        }
+        }).then(response => {
         this.parentCategory = this.parentCategory.concat(response.data.data);
       });
     },

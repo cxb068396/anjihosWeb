@@ -186,7 +186,7 @@ export default {
     },
     getCascaderCategory() {
       this.axios.get("category/cascader",{
-        param: {
+        params: {
             is_course:1
         }
           }).then(response => {
@@ -253,7 +253,8 @@ export default {
             name: this.filterForm.name,
             category_id: this.filterForm.category_id,
             sortChecked: this.filterForm.sortChecked,
-            goodsTypeSelected: this.filterForm.goodsTypeSelected
+            goodsTypeSelected: this.filterForm.goodsTypeSelected,
+            type:3
           }
         })
         .then(response => {

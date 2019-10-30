@@ -29,7 +29,7 @@
             <el-upload
               class="upload-demo"
               drag
-              action="http://api.anjihos.z-y.tech/admin/upload/upversion"
+              action="https://api.anjihos.z-y.tech/admin/upload/upversion"
               multiple
               :on-success='fileUpload'
               :headers="header">

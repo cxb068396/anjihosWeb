@@ -133,7 +133,7 @@
               name="pic"
               :limit = 1 
               :on-exceed="picLimitMes"
-              action="http://api.anjihos.z-y.tech/admin/upload/goodsPic"
+              action="https://api.anjihos.z-y.tech/admin/upload/goodsPic"
               :on-preview="handlePreview"
               :on-remove="handleRemove"
               :on-success="onloadPic"
@@ -149,7 +149,7 @@
               ref="upload"
               name='pic'
               v-model="infoForm.image_url"
-              action="http://api.anjihos.z-y.tech/admin/upload/goodsPic"
+              action="https://api.anjihos.z-y.tech/admin/upload/goodsPic"
               :headers='headers'
               :on-preview="handlePreview"
               :on-remove="handleRemove"

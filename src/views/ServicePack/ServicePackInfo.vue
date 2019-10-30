@@ -105,7 +105,7 @@ export default {
           type: 'warning'
         }).then(() => {
         this.axios
-        .post('http://api.anjihos.z-y.tech/admin/service/store',params).then(res=>{
+        .post('https://api.anjihos.z-y.tech/admin/service/store',params).then(res=>{
             this.$message({
             type: 'success',
             message: '删除成功!'

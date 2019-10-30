@@ -143,7 +143,7 @@ export default {
       //       this.loading = false;
       //       if (res.data.errno === 0) {
 
-      //         localStorage.http://api.anjihos.z-y.tech/admin("token", res.data.data.token);
+      //         localStorage.https://api.anjihos.z-y.tech/admin("token", res.data.data.token);
       //         localStorage.setItem(
       //           "userInfo",
       //           JSON.stringify(res.data.data.userInfo)

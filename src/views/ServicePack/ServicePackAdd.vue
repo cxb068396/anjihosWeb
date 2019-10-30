@@ -86,7 +86,7 @@ export default {
         this.$refs["ruleForm"].validate(valid => {
           if (valid) {
             this.axios
-              .post("http://api.anjihos.z-y.tech/admin/service/store", params)
+              .post("https://api.anjihos.z-y.tech/admin/service/store", params)
               .then(response => {
                 console.log(response.data)
                 if (response.data.errno === 0) {

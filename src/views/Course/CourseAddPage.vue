@@ -87,9 +87,7 @@
                 v-model="infoForm.is_service"
                 @change="chang"
               >
-                <el-radio :label=1>服务类</el-radio>
-                <el-radio :label=0>商品类</el-radio>
-                <el-radio :label=2>预约类</el-radio>
+                <el-radio :label=3>课程类</el-radio>
               </el-radio-group>
             </template>
           </el-form-item>
@@ -103,8 +101,23 @@
               @change="numberLimt"
               type="number"
               v-model.number="infoForm.retail_price"
+              style="width:30%"
             ></el-input>
           </el-form-item>
+
+           <el-form-item
+            v-if="infoForm.type !== 2"
+            label="上限人数"
+            prop="number_limit"
+            :rules="[{ type:'number', required: true, message: '请填写人数', trigger: 'blur'}]"
+          >
+            <el-input
+              type="number"
+              v-model.number="infoForm.number_limit"
+              style="width:30%"
+            ></el-input>
+          </el-form-item>
+
           <el-form-item
             label="选择图标"
           >
@@ -208,7 +221,7 @@
               ref="upload"
               name='pic'
               v-model="infoForm.list_pic_url"
-              action="http://api.anjihos.z-y.tech/admin/upload/goodsPic"
+              action="https://api.anjihos.z-y.tech/admin/upload/goodsPic"
               :headers='header'
               :on-preview="handlePreview"
               :on-remove="handleRemove"
@@ -239,7 +252,7 @@
                 ref="upload"
                 name='pic'
                 v-model="infoForm.goods_desc[0]"
-                action="http://api.anjihos.z-y.tech/admin/upload/goodsPic"
+                action="https://api.anjihos.z-y.tech/admin/upload/goodsPic"
                 :headers='header'
                 :on-preview="handlePreview"
                 :on-remove="handleRemove"
@@ -259,7 +272,7 @@
                 ref="upload"
                 name='pic'
                 v-model="infoForm.goods_desc[1]"
-                action="http://api.anjihos.z-y.tech/admin/upload/goodsPic"
+                action="https://api.anjihos.z-y.tech/admin/upload/goodsPic"
                 :headers='header'
                 :on-preview="handlePreview"
                 :on-remove="handleRemove"
@@ -333,7 +346,7 @@
                 ref="upload"
                 name='pic'
                 v-model="infoForm.gallery"
-                action="http://api.anjihos.z-y.tech/admin/upload/goodsPic"
+                action="https://api.anjihos.z-y.tech/admin/upload/goodsPic"
                 :headers='header'
                 :on-preview="handlePreview"
                 :on-remove="handleRemove"
@@ -507,17 +520,16 @@ export default {
       header: {
         "X-Anjishop-Token": localStorage.getItem("token") || ""
       },
-
       actionGoodsPic: api.rootUrl + "/upload/goodsPic",
-
       infoForm: {
+        number_limit:0,
         type:0,
         id: 0,
         list_pic_url: "",
         goods_desc: [],
         name: "",
         goods_brief: "",
-        is_service: 1,
+        is_service: 3,
         sort_order: 100,
         category_id: 0,
         is_on_sale: 1,

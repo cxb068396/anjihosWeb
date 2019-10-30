@@ -111,7 +111,7 @@ export default {
           type: 'warning'
         }).then(() => {
         this.axios
-        .post('http://api.anjihos.z-y.tech/admin/service/store',params).then(res=>{
+        .post('https://api.anjihos.z-y.tech/admin/service/store',params).then(res=>{
             this.$message({
             type: 'success',
             message: '删除成功!'
@@ -129,7 +129,7 @@ export default {
 
    getList() {
    this.axios
-        .get('http://api.anjihos.z-y.tech/admin/service').then(res=>{
+        .get('https://api.anjihos.z-y.tech/admin/service').then(res=>{
             this.tableData=res.data.data
         })
     },

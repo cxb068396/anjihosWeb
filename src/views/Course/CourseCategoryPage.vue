@@ -163,7 +163,7 @@ export default {
     },
     getList() {
       this.axios
-        .get("category/cascader", {
+        .get("category", {
           params: {
             page: this.page,
             name: this.filterForm.name,
@@ -171,7 +171,7 @@ export default {
           }
         })
         .then(response => {
-          console.log(response)
+          console.log(response.data.data)
           this.tableData = response.data.data;
         });
     },
