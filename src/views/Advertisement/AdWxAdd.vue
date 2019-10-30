@@ -55,7 +55,7 @@
               class="upload-demo"
               name="pic"
               :headers="headers"
-              action="http://47.97.251.68:8361/admin/upload/goodsPic"
+              action="http://api.anjihos.z-y.tech/admin/upload/goodsPic"
               :limit = 1 
               :on-exceed="picLimitMes"
               :on-success="onloadPic"
@@ -75,7 +75,7 @@
               ref="upload"
               name='pic'
               v-model="imgForm.image_url"
-              action="http://47.97.251.68:8361/admin/upload/goodsPic"
+              action="http://api.anjihos.z-y.tech/admin/upload/goodsPic"
               :headers='headers'
               :on-success='onloadPic'
               :on-change='judgeIsImgIn'

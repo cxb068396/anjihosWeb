@@ -208,7 +208,7 @@
               ref="upload"
               name='pic'
               v-model="infoForm.list_pic_url"
-              action="http://47.97.251.68:8361/admin/upload/goodsPic"
+              action="http://api.anjihos.z-y.tech/admin/upload/goodsPic"
               :headers='header'
               :on-preview="handlePreview"
               :on-remove="handleRemove"
@@ -239,7 +239,7 @@
                 ref="upload"
                 name='pic'
                 v-model="infoForm.goods_desc[0]"
-                action="http://47.97.251.68:8361/admin/upload/goodsPic"
+                action="http://api.anjihos.z-y.tech/admin/upload/goodsPic"
                 :headers='header'
                 :on-preview="handlePreview"
                 :on-remove="handleRemove"
@@ -259,7 +259,7 @@
                 ref="upload"
                 name='pic'
                 v-model="infoForm.goods_desc[1]"
-                action="http://47.97.251.68:8361/admin/upload/goodsPic"
+                action="http://api.anjihos.z-y.tech/admin/upload/goodsPic"
                 :headers='header'
                 :on-preview="handlePreview"
                 :on-remove="handleRemove"
@@ -333,7 +333,7 @@
                 ref="upload"
                 name='pic'
                 v-model="infoForm.gallery"
-                action="http://47.97.251.68:8361/admin/upload/goodsPic"
+                action="http://api.anjihos.z-y.tech/admin/upload/goodsPic"
                 :headers='header'
                 :on-preview="handlePreview"
                 :on-remove="handleRemove"

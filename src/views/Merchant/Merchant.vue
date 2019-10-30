@@ -130,6 +130,7 @@ export default {
     },
     //更新
     handleRowUpdate(index, row){
+      console.log(row)
       this.$router.push({
         name: "merchantaddpage",
         query: {
@@ -144,7 +145,9 @@ export default {
           bank_name:row.bank_name,
           bank_account:row.bank_account,
           bank_username:row.bank_username,
-          is_hospital:row.is_hospital
+          is_hospital:row.is_hospital,
+          allow_course:row.allow_course
+
         }
       });
     },
@@ -165,7 +168,8 @@ export default {
           bank_name:row.bank_name,
           bank_account:row.bank_account,
           bank_username:row.bank_username,
-          is_hospital:row.is_hospital
+          is_hospital:row.is_hospital,
+          allow_course:row.allow_course
         }
       });
     },

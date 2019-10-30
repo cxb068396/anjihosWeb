@@ -60,7 +60,7 @@ export default {
         if (valid) {
           this.axios
             .post(
-              "http://47.97.251.68:8361/admin/service/store",
+              "http://api.anjihos.z-y.tech/admin/service/store",
               params
             )
             .then(response => {

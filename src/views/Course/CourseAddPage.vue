@@ -26,14 +26,32 @@
           label-width="120px"
         >
           <el-form-item
-            label="服务名称"
+            label="商品名称"
             prop="name"
           >
             <el-input v-model="infoForm.name"></el-input>
           </el-form-item>
           <el-form-item
-            label="服务简单描述"
+            label="商品简单描述"
             name="goods_brief"
+            v-if="infoForm.type == 2"
+          >
+            <el-input
+              type="textarea"
+              @input="descInput"
+              v-model="infoForm.goods_brief"
+              maxlength='48'
+              placeholder="填写后会在商品详情页的商品名称下展现，非必填"
+            ></el-input>
+            <span
+              class="text"
+              style="float: right;color: #909399;margin-right: 55px;"
+            >已输入{{remnant}}/48字以内</span>
+          </el-form-item>
+          <el-form-item
+            label="商品简单描述"
+            name="goods_brief"
+            v-else
           >
             <el-input
               type="textarea"
@@ -69,11 +87,14 @@
                 v-model="infoForm.is_service"
                 @change="chang"
               >
-                <el-radio :label="1">服务类</el-radio>
+                <el-radio :label=1>服务类</el-radio>
+                <el-radio :label=0>商品类</el-radio>
+                <el-radio :label=2>预约类</el-radio>
               </el-radio-group>
             </template>
           </el-form-item>
           <el-form-item
+            v-if="infoForm.type !== 2"
             label="价格¥"
             prop="retail_price"
             :rules="[{ type:'number', required: true, message: '请填写价格', trigger: 'blur'}]"
@@ -84,19 +105,104 @@
               v-model.number="infoForm.retail_price"
             ></el-input>
           </el-form-item>
-          <!-- <el-form-item label="上架">
+          <el-form-item
+            label="选择图标"
+          >
+          <el-select v-model="IconValue" @change="IconChange" placeholder="请选择图标，非必选">
+            <el-option
+              v-for="item in IconOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          </el-form-item>
+          <el-form-item
+            label="选择颜色"
+          >
+          <el-select v-model="colorValue" @change="colorChange" placeholder="请选择颜色，非必选">
+            <el-option
+              v-for="item in colorOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          </el-form-item>
+          <el-form-item
+            label="选择可接单角色"
+            prop="worker_role_id"
+          >
+            <!-- <template>
+              <el-radio v-model="ruleForm.worker_role_id" label=1>医生</el-radio>
+              <el-radio v-model="ruleForm.worker_role_id" label=2>护士</el-radio>
+              <el-radio v-model="ruleForm.worker_role_id" label=3>药师</el-radio>
+              <el-radio v-model="ruleForm.worker_role_id" label=4>健康管家</el-radio>
+              <el-radio v-model="ruleForm.worker_role_id" label=5>上门服务人员</el-radio>
+            </template> -->
+
+            <template>
+              <el-radio-group v-model="infoForm.worker_role_id" @change="worker_rolr_idChange">
+                <el-radio :label=1>医生</el-radio>
+                <el-radio :label=2>护士</el-radio>
+                <el-radio :label=3>药师</el-radio>
+                <el-radio :label=4>健康管家</el-radio>
+                <el-radio :label=5>上门服务人员</el-radio>
+              </el-radio-group>
+            </template>
+          </el-form-item>
+          <el-form-item label="上架">
             <el-switch
               on-text=""
               off-text=""
               v-model="infoForm.is_on_sale"
             >
             </el-switch>
-          </el-form-item> -->
+          </el-form-item>
+          <el-form-item label="是否热卖">
+            <el-switch
+              on-text=""
+              off-text=""
+              v-model="infoForm.is_hot"
+            >
+            </el-switch>
+          </el-form-item>
+          <el-form-item label="排序">
+            <el-input-number
+              v-model="infoForm.sort_order"
+              :min="1"
+              :max="1000"
+            ></el-input-number>
+          </el-form-item>
+
+           <el-form-item
+            label="温馨提示"
+            v-if="infoForm.type == 2"
+          >
+            <el-input
+              type="textarea"
+              v-model="infoForm.goods_warm_prompt"
+              maxlength='100'
+              placeholder="预约相关内容温馨提示"
+            ></el-input>
+          </el-form-item>
+          <el-form-item
+            label="服务提示"
+            v-if="infoForm.type == 2"
+          >
+            <el-input
+              type="textarea"
+              v-model="infoForm.goods_service_prompt"
+              maxlength='100'
+              placeholder="预约相关内容服务提示"
+            ></el-input>
+          </el-form-item>
+
           <!--         <el-form-item label="排序">
             <el-input-number v-model="infoForm.sort_order" :min="1" :max="1000"></el-input-number>
           </el-form-item> -->
 
-          <el-form-item label="列表图片">
+          <el-form-item label="列表图片" v-if="infoForm.type !== 2">
             <el-upload
               class="avatar-uploader"
               ref="upload"
@@ -171,6 +277,7 @@
           <el-form-item
             label="商品banner"
             prop="gallery"
+            v-if="infoForm.type !== 2"
           >
             <div
               v-for="(item, curIndex) in infoForm.gallery"
@@ -243,7 +350,7 @@
              </el-dialog> -->
           </el-form-item>
 
-          <el-form-item label="商品详情">
+          <el-form-item label="商品详情" v-if="infoForm.type !== 2">
             <div
               v-for="(item, curIndex) in infoForm.goods_desc"
               :key="item"
@@ -309,7 +416,7 @@
             <el-button
               type="primary"
               @click="onSubmitInfo"
-            >申请新自创服务</el-button>
+            >确定保存</el-button>
             <el-button @click="goBackPage">取消</el-button>
           </el-form-item>
         </el-form>
@@ -323,6 +430,67 @@ import api from "@/config/api";
 export default {
   data() {
     return {
+      IconOptions:[{
+        value: 'cardboardfill',
+        label: 'cardboardfill'
+      }, {
+        value: 'recordfill',
+        label: 'recordfill'
+      }, {
+        value: 'picfill',
+        label: 'picfill'
+      }, {
+        value: 'noticefill',
+        label: 'noticefill'
+      }, {
+        value: 'upstagefill',
+        label: 'upstagefill'
+      },{
+        value: 'clothesfill',
+        label: 'clothesfill'
+      },{
+        value: 'discoverfill',
+        label: 'discoverfill'
+      },{
+        value: 'questionfill',
+        label: 'questionfill'
+      },{
+        value: 'commandfill',
+        label: 'commandfill'
+      },{
+        value: 'brandfill',
+        label: 'brandfill'
+      }],
+      IconValue:'',
+      colorOptions:[{
+        value: 'red',
+        label: 'red'
+      }, {
+        value: 'orange',
+        label: 'orange'
+      }, {
+        value: 'yellow',
+        label: 'yellow'
+      }, {
+        value: 'olive',
+        label: 'olive'
+      }, {
+        value: 'cyan',
+        label: 'cyan'
+      },{
+        value: 'blue',
+        label: 'blue'
+      },{
+        value: 'purple',
+        label: 'purple'
+      },{
+        value: 'mauve',
+        label: 'mauve'
+      }],
+      colorValue:'',
+
+
+
       remnant: 0,
       isImgIn_1: false,
       isImgIn_2: false,
@@ -343,24 +511,28 @@ export default {
       actionGoodsPic: api.rootUrl + "/upload/goodsPic",
 
       infoForm: {
+        type:0,
         id: 0,
         list_pic_url: "",
         goods_desc: [],
         name: "",
         goods_brief: "",
-        sort_order: 1,
         is_service: 1,
         sort_order: 100,
-        is_show: true,
         category_id: 0,
-        is_on_sale: 0,
+        is_on_sale: 1,
         retail_price: "",
         keywords: "",
-        verified:0,
-        company_id:0,
+        verified : 1,
+        icon:'',
+        color:'',
         gallery: [],
         deletedGalleries: [],
         deletedDescPics: [],
+        is_hot:0,
+        worker_role_id:1,
+        goods_warm_prompt:'',
+        goods_service_prompt:''
       },
 
       infoRules: {
@@ -387,9 +559,20 @@ export default {
     };
   },
   methods: {
+    worker_rolr_idChange(value){
+      this.worker_role_id = value
+      console.log(this.worker_role_id)
+    },
     chang(value) {
+      // console.log(value)
+      // if(value == 3 || value == 4){
+      //   this.infoForm.type = value
+      // }else{
+      //   this.infoForm.is_service = value;
+      //   console.log(this.infoForm.is_service);
+      // }
       this.infoForm.is_service = value;
-      console.log(this.infoForm.is_service);
+      this.infoForm.type = value
     },
     descInput() {
       var txtVal = this.infoForm.goods_brief.length;
@@ -414,7 +597,7 @@ export default {
     },
     goBackPage() {
       this.$router.push({
-        name:'servecontent'
+        name:'coursepage'
       });
     },
     //上传之前的图片限制
@@ -438,6 +621,16 @@ export default {
     },
     handleChange(item) {
       this.infoForm.category_id = item[item.length - 1];
+    },
+    IconChange(item){
+      // console.log(this.IconValue)
+      this.infoForm.icon = this.IconValue
+      console.log(this.infoForm.icon )
+    },
+    colorChange(item){
+      // console.log(this.IconValue)
+      this.infoForm.color = this.colorValue
+      console.log(this.infoForm.color )
     },
     handlePreview(file) {
       //预览图片时调用
@@ -577,16 +770,16 @@ export default {
       }
     },
     onSubmitInfo() {
-      let userInfo = JSON.parse(localStorage.getItem("userInfo"));
-      let company_id = userInfo.company_id;
-      this.infoForm.company_id = company_id
-      console.log(company_id)
       if (
         (this.isImgIn_1 && this.isImgIn_2 && this.isImgIn_3) ||
         this.$route.query.id
       ) {
         this.$refs["infoForm"].validate(valid => {
           if (valid) {
+            //如果是预约类，将is_service变成1
+            if(this.infoForm.type == 2){
+              this.infoForm.is_service = 1
+            }
             this.axios.post("goods/store", this.infoForm).then(response => {
               if (response.data.errno === 0) {
                 this.$message({
@@ -601,6 +794,7 @@ export default {
                 });
               }
             });
+
           } else {
             return false;
           }
@@ -646,19 +840,22 @@ export default {
           }
         })
         .then(response => {
+          console.log(response.data.data);
           let resInfo = response.data.data;
           resInfo.is_on_sale = resInfo.is_on_sale ? true : false;
-
+          resInfo.is_hot = resInfo.is_on_sale ? true : false;
           that.infoForm = Object.assign(that.infoForm, resInfo);
-
+          //将前端的is_service=type
+          this.infoForm.is_service = this.infoForm.type
+          this.IconValue = resInfo.icon
+          this.colorValue = resInfo.color
           this.handleCategorySelected();
-          console.log(this.infoForm.list_pic_url);
-          console.log(this.infoForm.goods_desc[0]);
+          console.log(this.infoForm);
         });
     }
   },
   components: {},
-  mounted() {
+  created() {
     this.getCascaderCategory();
     this.infoForm.id = this.$route.query.id || 0;
     this.getInfo();
