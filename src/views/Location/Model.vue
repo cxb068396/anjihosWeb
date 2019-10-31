@@ -193,7 +193,7 @@ export default {
    this.helthdangan()
     },
     helthdangan(){
-         this.axios.get('http://47.97.251.68:8361/admin/vitalsign?health_doc_id='+this.health_doc_id).then(res=>{
+         this.axios.get('https://api.anjihos.z-y.tech/admin/vitalsign?health_doc_id='+this.health_doc_id).then(res=>{
          this.helthdoc = res.data.data.data;
           this.totals = res.data.data.count;
           this.currentPages = res.data.data.currentPage;
@@ -207,7 +207,7 @@ export default {
       //获取所有人的列表
         people() {
         this.axios
-        .get('http://47.97.251.68:8361/admin/healthdoc',
+        .get('https://api.anjihos.z-y.tech/admin/healthdoc',
         {
           params: {
             page: this.currentPage

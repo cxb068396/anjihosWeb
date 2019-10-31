@@ -174,7 +174,7 @@ export default {
         //获取路径
         let that = this
         this.axios
-          .get('http://47.97.251.68:8361/admin/position',{
+          .get('https://api.anjihos.z-y.tech/admin/position',{
             params: {
               worker_id : row.worker_id,
               time_after : row.createdate[0],
@@ -327,7 +327,7 @@ export default {
       console.log(this.search)
       if(this.search.length == 0){
         this.axios
-        .get('http://47.97.251.68:8361/admin/position')
+        .get('https://api.anjihos.z-y.tech/admin/position')
         .then(res => {
           this.circles = res.data.data
           this.count = this.circles.length
@@ -341,7 +341,7 @@ export default {
         })
       }else{
         let that = this
-         this.axios.get('http://47.97.251.68:8361/admin/position')
+         this.axios.get('https://api.anjihos.z-y.tech/admin/position')
         .then(res => {
           this.circles = res.data.data.filter(
             item => item.worker_name == that.search
@@ -352,7 +352,7 @@ export default {
     },
     typeChange:function(val){
       this.type = val;
-      this.axios.get('http://47.97.251.68:8361/admin/position',{
+      this.axios.get('https://api.anjihos.z-y.tech/admin/position',{
             params: {
               type:this.type
             }
@@ -385,7 +385,7 @@ export default {
         }
       }).join(',')
       let that = this
-         this.axios.get('http://47.97.251.68:8361/admin/position',{
+         this.axios.get('https://api.anjihos.z-y.tech/admin/position',{
             params: {
               worker_role_id:this.checkedCities2
             }

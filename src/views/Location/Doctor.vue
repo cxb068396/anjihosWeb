@@ -301,7 +301,7 @@ methods:{
           background: 'rgba(0, 0, 0, 0.7)'
         });
        this.axios
-        .get('http://47.97.251.68:8361/admin/contract/plot?completed=1&doctor_team_id='+this.doctor_team_id).then(res=>{
+        .get('https://api.anjihos.z-y.tech/admin/contract/plot?completed=1&doctor_team_id='+this.doctor_team_id).then(res=>{
           console.log(res.data.data)
            this.contractPeoplelist=res.data.data //得到所有签约对象
             if( this.contractPeoplelist.length>0){
@@ -357,7 +357,7 @@ methods:{
     },
     peoplelist(){
         this.axios
-        .get('http://47.97.251.68:8361/admin/contract?doctor_team_id='+this.doctor_team_id,
+        .get('https://api.anjihos.z-y.tech/admin/contract?doctor_team_id='+this.doctor_team_id,
         {
           params: {
             page: this.currentPages
@@ -379,7 +379,7 @@ methods:{
       //获取所有人的列表
         people() {
         this.axios
-        .get('http://47.97.251.68:8361/admin/doctorteam',
+        .get('https://api.anjihos.z-y.tech/admin/doctorteam',
         {
           params: {
             page: this.currentPage

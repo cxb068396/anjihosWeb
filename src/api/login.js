@@ -6,7 +6,7 @@ export function loginByUsername(username, password) {
     password
   }
   return request({
-    url: 'http://47.97.251.68:8361/admin/auth/login',
+    url: 'https://api.anjihos.z-y.tech/admin/auth/login',
     method: 'post',
     data
   })
