@@ -6,8 +6,8 @@
         separator="/"
       >
         <el-breadcrumb-item :to="{ name: 'dashboard'}">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>商品管理</el-breadcrumb-item>
-        <el-breadcrumb-item>{{infoForm.id ? '编辑商品' : '添加商品'}}</el-breadcrumb-item>
+        <el-breadcrumb-item>课程管理</el-breadcrumb-item>
+        <el-breadcrumb-item>{{infoForm.id ? '编辑课程' : '添加课程'}}</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="operation-nav">
         <el-button
@@ -26,13 +26,13 @@
           label-width="120px"
         >
           <el-form-item
-            label="商品名称"
+            label="课程名称"
             prop="name"
           >
             <el-input v-model="infoForm.name"></el-input>
           </el-form-item>
           <el-form-item
-            label="商品简单描述"
+            label="课程简单描述"
             name="goods_brief"
             v-if="infoForm.type == 2"
           >
@@ -41,7 +41,7 @@
               @input="descInput"
               v-model="infoForm.goods_brief"
               maxlength='48'
-              placeholder="填写后会在商品详情页的商品名称下展现，非必填"
+              placeholder="填写后会在课程详情页的课程名称下展现，非必填"
             ></el-input>
             <span
               class="text"
@@ -49,7 +49,7 @@
             >已输入{{remnant}}/48字以内</span>
           </el-form-item>
           <el-form-item
-            label="商品简单描述"
+            label="课程简单描述"
             name="goods_brief"
             v-else
           >
@@ -58,7 +58,7 @@
               @input="descInput"
               v-model="infoForm.goods_brief"
               maxlength='100'
-              placeholder="填写后会在商品详情页的商品名称下展现，非必填"
+              placeholder="填写后会在课程详情页的课程名称下展现，非必填"
             ></el-input>
             <span
               class="text"
@@ -288,7 +288,7 @@
           </el-form-item> -->
 
           <el-form-item
-            label="商品banner"
+            label="课程banner"
             prop="gallery"
             v-if="infoForm.type !== 2"
           >
@@ -363,7 +363,7 @@
              </el-dialog> -->
           </el-form-item>
 
-          <el-form-item label="商品详情" v-if="infoForm.type !== 2">
+          <el-form-item label="课程详情" v-if="infoForm.type !== 2">
             <div
               v-for="(item, curIndex) in infoForm.goods_desc"
               :key="item"
@@ -523,7 +523,7 @@ export default {
       actionGoodsPic: api.rootUrl + "/upload/goodsPic",
       infoForm: {
         number_limit:0,
-        type:0,
+        type:3,
         id: 0,
         list_pic_url: "",
         goods_desc: [],
@@ -789,7 +789,7 @@ export default {
         this.$refs["infoForm"].validate(valid => {
           if (valid) {
             //如果是预约类，将is_service变成1
-            if(this.infoForm.type == 2){
+            if(this.infoForm.type == 3){
               this.infoForm.is_service = 1
             }
             this.axios.post("goods/store", this.infoForm).then(response => {
@@ -820,7 +820,9 @@ export default {
     },
 
     getCascaderCategory() {
-      this.axios.get("category/cascader").then(response => {
+      this.axios.get("category/cascader",{ params: {
+            is_course:1
+        }}).then(response => {
         this.categoryOptions = this.categoryOptions.concat(response.data.data);
         this.handleCategorySelected();
       });

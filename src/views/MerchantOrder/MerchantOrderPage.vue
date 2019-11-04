@@ -396,7 +396,7 @@ export default {
           }
         )
         .then(response => {
-          //console.log(response.data.data.data);
+          console.log(response.data.data.data);
           this.postData = response.data.data.data;
           this.total1 = response.data.data.count;
           this.currentPage1 = response.data.data.currentPage;

@@ -7,8 +7,8 @@
         separator="/"
       >
         <el-breadcrumb-item :to="{ path: '/dashboard'}"> 首页</el-breadcrumb-item>
-        <el-breadcrumb-item>商品管理</el-breadcrumb-item>
-        <el-breadcrumb-item>商品分类</el-breadcrumb-item>
+        <el-breadcrumb-item>课程管理</el-breadcrumb-item>
+        <el-breadcrumb-item>课程分类</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="operation-nav">
           <el-button
