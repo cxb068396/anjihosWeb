@@ -490,7 +490,7 @@ export default {
         })
         .then(response => {
           //this.OrderList = response.data.data.data;
-           console.log(response.data.data.data);
+          //  console.log(response.data.data.data);
           this.OrderListService = response.data.data.data;
 
           this.count = response.data.data.count;
@@ -507,25 +507,25 @@ export default {
           this.count = response.data.data.count;
         });
     },
-    //  async handleCourseListGoods() {
-    //    const res = await this.axios
-    //     .get("/order", {
-    //       params: { page: this.currentPage2, is_service: 1 ,order_type: 4}
-    //     })
-    //     console.log(res.data.data.data)
-    //     this.CourseListGoods = res.data.data.data;
-    //     this.count = res.data.data.count;
-    // },
-      handleCourseListGoods() {
-        this.axios.get("/order", {
+     async handleCourseListGoods() {
+       const res = await this.axios
+        .get("/order", {
           params: { page: this.currentPage2, is_service: 1 ,order_type: 4}
         })
-        .then(response => {
-          console.log(response.data.data.data);
-          this.CourseListGoods = response.data.data.data;
-          this.count = response.data.data.count;
-        });
-    }
+        console.log(res.data.data.data)
+        this.CourseListGoods = res.data.data.data;
+        this.count = res.data.data.count;
+    },
+    //   handleCourseListGoods() {
+    //     this.axios.get("/order", {
+    //       params: { page: this.currentPage2, is_service: 1 ,order_type: 4}
+    //     })
+    //     .then(response => {
+    //       console.log(response);
+    //       this.CourseListGoods = response.data.data.data;
+    //       this.count = response.data.data.count;
+    //     });
+    // }
     //时间过滤
     // datetimeFilterAdd_time(row) {
     //   var date = new Date(row.add_time * 1000);

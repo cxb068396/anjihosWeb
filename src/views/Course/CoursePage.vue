@@ -6,15 +6,15 @@
         separator="/"
       >
         <el-breadcrumb-item :to="{path: '/dashboard'}">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>商品管理</el-breadcrumb-item>
-        <el-breadcrumb-item>商品列表</el-breadcrumb-item>
+        <el-breadcrumb-item>课程管理</el-breadcrumb-item>
+        <el-breadcrumb-item>课程列表</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="operation-nav">
           <el-button
             type="primary"
             icon="plus"
             @click="handleRowPush"
-          >添加商品</el-button>
+          >添加课程</el-button>
       </div>
     </div>
 
@@ -25,10 +25,10 @@
           :model="filterForm"
           class="demo-form-inline"
         >
-          <el-form-item label="商品名称">
+          <el-form-item label="课程名称">
             <el-input
               v-model.trim="filterForm.name"
-              placeholder="商品名称"
+              placeholder="课程名称"
               v-on:input="onSubmitFilter"
             ></el-input>
           </el-form-item>
@@ -72,7 +72,7 @@
           </el-table-column>
           <el-table-column
             prop="name"
-            label="商品名称"
+            label="课程名称"
             min-width="100"
           >
           </el-table-column>

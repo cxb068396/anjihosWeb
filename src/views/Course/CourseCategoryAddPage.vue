@@ -7,7 +7,7 @@
         separator="/"
       >
         <el-breadcrumb-item :to="{name: 'dashboard'}">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>商品管理</el-breadcrumb-item>
+        <el-breadcrumb-item>课程管理</el-breadcrumb-item>
         <el-breadcrumb-item>{{infoForm.id ? '编辑更新' : '添加分类'}}</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="operation-nav">
@@ -117,7 +117,7 @@
             prop="front_name"
           >
             <el-input
-              type="textarea"
+             
               @input="descInput"
               v-model="infoForm.front_name"
               :rows="1"

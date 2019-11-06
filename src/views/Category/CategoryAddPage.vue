@@ -117,7 +117,7 @@
             prop="front_name"
           >
             <el-input
-              type="textarea"
+              
               @input="descInput"
               v-model="infoForm.front_name"
               :rows="1"
