@@ -523,7 +523,8 @@ export default {
         is_hot:0,
         worker_role_id:1,
         goods_warm_prompt:'',
-        goods_service_prompt:''
+        goods_service_prompt:'',
+        company_id:0,
       },
 
       infoRules: {
@@ -771,6 +772,7 @@ export default {
             if(this.infoForm.type == 3){
               this.infoForm.is_service = 1
             }
+            this.getCompanyId()
             this.axios.post("goods/store", this.infoForm).then(response => {
               if (response.data.errno === 0) {
                 this.$message({
@@ -819,7 +821,12 @@ export default {
         });
       }
     },
-
+    getCompanyId(){
+      let temId = localStorage.getItem("userInfo") 
+      temId = JSON.parse(temId)
+      this.infoForm.company_id = temId.company_id
+      console.log(this.infoForm.company_id)
+    },
     getInfo() {
       if (this.infoForm.id <= 0) {
         return false;
