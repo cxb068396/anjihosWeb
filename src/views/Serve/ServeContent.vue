@@ -139,6 +139,7 @@ export default {
           "/goods?company_id=" + company_id
         )
         .then(response => {
+          console.log(response.data.data)
           var result = response.data.data.company_has_goods.reverse();
           this.contentData = result;
         });

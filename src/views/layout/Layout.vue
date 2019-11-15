@@ -92,7 +92,7 @@ data() {
     position: absolute;
     font-size: 10px;
     left:47.5%;
-    top:50px;
+    top:0px;
     z-index: 9999;
   }
 </style>
