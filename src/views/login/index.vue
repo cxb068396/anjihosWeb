@@ -58,7 +58,9 @@
       <br>
       <social-sign />
     </el-dialog>
-
+    <div class="beian">
+      <a href="http://www.beian.miit.gov.cn">浙ICP备19043810号-1</a>
+    </div>
   </div>
 </template>
 
@@ -314,6 +316,12 @@ $light_gray:#eee;
     position: absolute;
     right: 35px;
     bottom: 28px;
+  }
+  .beian{
+    position: fixed;
+    bottom: 2%;
+    left:calc(50% - 80px);
+    color: #fff;
   }
 }
 </style>
