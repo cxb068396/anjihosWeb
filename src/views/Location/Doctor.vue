@@ -269,6 +269,7 @@ export default {
   },
   mounted(){
        this.people();
+       console.log('doctor_team_id',this.doctor_team_id)
   },
 methods:{
       locationClick(index,row){
@@ -290,30 +291,30 @@ methods:{
       })
     },
     peopleLocationClick(index, row){
-    var that=this
+      var that=this
       this.doctor_team_id=row.doctorInfo.doctor_team_id
       // this.peoplelist()
       console.log(this.doctor_team_id)
       const loading = this.$loading({
-          lock: true,
-          text: '数据量较多，请稍等。',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.7)'
-        });
-       this.axios
-        .get('https://api.anjihos.z-y.tech/admin/contract/plot?completed=1&doctor_team_id='+this.doctor_team_id).then(res=>{
-          console.log(res.data.data)
-           this.contractPeoplelist=res.data.data //得到所有签约对象
-            if( this.contractPeoplelist.length>0){
-              loading.close();
-            this.$emit('funcs',that.contractPeoplelist)
-          }else{
-            this.$message({
-              type: "error",
-              message: "人数不足。"
-            });
-          }
-        })
+        lock: true,
+        text: '数据量较多，请稍等。',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      });
+      this.axios.get('https://api.anjihos.z-y.tech/admin/contract/plot?completed=1&doctor_team_id='+this.doctor_team_id).then(res=>{
+        console.log(res.data.data)
+          this.contractPeoplelist=res.data.data //得到所有签约对象
+          if( this.contractPeoplelist.length>0){
+            loading.close();
+          this.$emit('funcs',that.contractPeoplelist)
+        }else{
+          loading.close()
+          this.$message({
+            type: "error",
+            message: "人数不足。"
+          });
+        }
+      })
     },
     async getLocation () {
       let res = await $.ajax({
@@ -387,7 +388,7 @@ methods:{
         }
         )
         .then(res => {
-         // console.log(res)
+          console.log('doctorteam',res)
           this.circles = res.data.data.data;
           this.total = res.data.data.count;
           this.currentPage = res.data.data.currentPage;
