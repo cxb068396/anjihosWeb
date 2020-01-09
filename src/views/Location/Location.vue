@@ -35,9 +35,11 @@
       <Doctor 
         v-show="showDoctor" 
         width="1000"
+        :querydoctor_team_id="querydoctor_team_id"
         @on-close="close"
         @func="getLocation"
-        @funcs='getAllpeople'>
+        @funcs='getAllpeople'
+        ref="Doctor">
       </Doctor>
       <Healthdoc 
         v-show="showHealth" 
@@ -249,6 +251,7 @@ export default {
         value: 'id',
         children: 'company',
       },
+      querydoctor_team_id:0,
       adcode:'',
       plugins: ['AMap.DistrictSearch'],
       zoom: 11,
@@ -681,6 +684,7 @@ export default {
                           '</div>' +
                       '</div>' +
                       // '<input id="contractpeople_healthfile" type="button" class="btn" value="服务记录" onclick="showMoreMessage3()"/>' +
+                       '<input id="displayDoctorPosition" type="button" class="btn" value="签约医疗团队位置" onclick="displayDoctorPositionFunc()" style="margin: 5px 5px 5px 20px"/>' + 
                     '</div>' +
                   '</div>';
               that.infoWindow = new AMap.InfoWindow({
@@ -688,16 +692,31 @@ export default {
                   content: info , //使用默认信息窗体框样式，显示信息内容
                   closeWhenClickMap:true,
               });
+              
               //使用其它坐标会有bug
               setTimeout(function(){
                 that.infoWindow.open(map);
+                var displayDoctorPosition = document.getElementById('displayDoctorPosition');
                 var contractpeople_healthfile = document.getElementById('contractpeople_healthfile');
                 let contractpeopleHealthfileClick = function(){
                   that.showHealth = true;
                   that.infoWindow.close()
                   that.getHealth(marker)
                 }
+                let displayDoctorPositionFunc = function(){
+                  // console.log('displayAlldoctor执行了，marker.doctorInfo.doctor_team_id是',marker.doctorInfo.doctor_team_id)
+                  // that.querydoctor_team_id = marker.doctorInfo.doctor_team_id
+                  that.infoWindow.close()
+                  let map = AMapManager.getMap()
+                  map.clearInfoWindow( )
+                  that.getdoctorTeam()
+                  // that.showDoctor = !that.showDoctor; 
+                  // setTimeout(
+                  //   function(){that.$refs.Doctor.peopleLocationClick()
+                  // },100)
+                }
                 contractpeople_healthfile.onclick = contractpeopleHealthfileClick
+                displayDoctorPosition.onclick = displayDoctorPositionFunc
               },200)
         })
             })
@@ -1193,7 +1212,7 @@ export default {
       // that.healthId=marker.doctorInfo.health_doc_id
       // marker.goods_name = marker.doctorInfo[0].goods_name
       let info = 
-      '<div className="custom-infowindow input-card" style="width:300px;border-radius:20px;font-size:10px;">' +
+      '<div className="custom-infowindow input-card" style="width:330px;border-radius:20px;font-size:10px;">' +
         '<div style="text-align: center;font-weight: bold;margin:10px 0">医疗团队信息</div>' +
         '<div>' +
           `<img src=${marker.photo||doctor} style="width:100px;height:100px;border-radius:4em;display:inline-block;float:left;margin-top:-10px"/>` +
@@ -1205,7 +1224,8 @@ export default {
                 `<div class="input-item-text" >地址：${marker.doctorInfo.address}</div>` +
               '</div>' +
           '</div>' +
-          '<input id="displayDoctor" type="button" class="btn" value="签约人员列表" onclick="displayAlldoctor()" style="margin: 5px 20px"/>' + 
+          '<input id="displayDoctor" type="button" class="btn" value="签约人员列表" onclick="displayAlldoctor()" style="margin: 5px 5px 5px 20px"/>' + 
+          '<input id="displayLocation" type="button" class="btn" value="签约人员位置" onclick="displayPeopleLocation()" style="margin: 5px 20px 5px 5px"/>' + 
         '</div>' +
       '</div>';
       that.infoWindow = new AMap.InfoWindow({
@@ -1217,17 +1237,35 @@ export default {
       setTimeout(function(){
         that.infoWindow.open(map);
         var displayDoctor = document.getElementById('displayDoctor');
+        var displayLocation = document.getElementById('displayLocation');
         var withdoctorinfo_healthfile = document.getElementById('withdoctorinfo_healthfile')
         //onclick事件
 
         let displayAlldoctor = function(){
           console.log('displayAlldoctor执行了，marker.doctorInfo.doctor_team_id是',marker.doctorInfo.doctor_team_id)
+          that.querydoctor_team_id = marker.doctorInfo.doctor_team_id
           that.infoWindow.close()
           let map = AMapManager.getMap()
           map.clearInfoWindow( )
           that.showDoctor = !that.showDoctor; 
+          //给一个异步，不然props里的值有延迟bug
+          setTimeout(
+            function(){that.$refs.Doctor.serviceClick()
+          },100)
+        }
+        let displayPeopleLocation = function(){
+          console.log('displayAlldoctor执行了，marker.doctorInfo.doctor_team_id是',marker.doctorInfo.doctor_team_id)
+          that.querydoctor_team_id = marker.doctorInfo.doctor_team_id
+          that.infoWindow.close()
+          let map = AMapManager.getMap()
+          map.clearInfoWindow( )
+          that.showDoctor = !that.showDoctor; 
+          setTimeout(
+            function(){that.$refs.Doctor.peopleLocationClick()
+          },100)
         }
         displayDoctor.onclick = displayAlldoctor
+        displayLocation.onclick = displayPeopleLocation
       },200)
     },
     getallHealth(marker){

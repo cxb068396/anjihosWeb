@@ -216,12 +216,11 @@
 export default {
   name: 'Doctor',
   //接收父组件传递的width属性
-  props: {
-    width:{
-        type:[Number,String],//类型检测
-        default:300 //父组件没传width时的默认值
-    },
-  },
+  props: [
+    "width",
+    "querydoctor_team_id"
+      
+  ],
   data() {
     return { 
         show:true,
@@ -240,9 +239,14 @@ export default {
         location:'',
         contractPeople:{},
         contractPeoplelist:'',
-        arr:[]
+        arr:[],
     }
 
+  },
+  watch: {
+    doctor_team_idChange() {
+      this.doctor_team_id = this.querydoctor_team_id;
+    }
   },
   computed:{
      //计算属性来响应width属性，实时绑定到相应DOM元素的style上
@@ -250,7 +254,7 @@ export default {
           let style = {};
           style.width = `${parseInt(this.width)}px`;
           return style;
-      }  ,
+      },
     //   tables(){
     //       var  search=this.search
     //   if (search) {
@@ -269,10 +273,9 @@ export default {
   },
   mounted(){
        this.people();
-       console.log('doctor_team_id',this.doctor_team_id)
   },
 methods:{
-      locationClick(index,row){
+    locationClick(index,row){
       // console.log('row',row)
       this.address=row.healthdocInfo.JBXX_JZDZXX
       this.contractPeople=row
@@ -292,7 +295,7 @@ methods:{
     },
     peopleLocationClick(index, row){
       var that=this
-      this.doctor_team_id=row.doctorInfo.doctor_team_id
+      this.doctor_team_id=this.querydoctor_team_id||row.doctorInfo.doctor_team_id
       // this.peoplelist()
       console.log(this.doctor_team_id)
       const loading = this.$loading({
@@ -301,7 +304,7 @@ methods:{
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)'
       });
-      this.axios.get('https://api.anjihos.z-y.tech/admin/contract/plot?completed=1&doctor_team_id='+this.doctor_team_id).then(res=>{
+      this.axios.get('https://api.anjihos.z-y.tech/admin/contract/plot?completed=1&doctor_team_id='+this.querydoctor_team_id||this.doctor_team_id).then(res=>{
         console.log(res.data.data)
           this.contractPeoplelist=res.data.data //得到所有签约对象
           if( this.contractPeoplelist.length>0){
@@ -352,25 +355,34 @@ methods:{
     serviceClick(index, row){
       this.show=false;
       this.service=true;
-      this.doctor_team_id=row.doctorInfo.doctor_team_id
+      console.log('this',this)
+      console.log('this.querydoctor_team_id',this.querydoctor_team_id)
+      this.doctor_team_id = this.querydoctor_team_id||row.doctorInfo.doctor_team_id
       this.peoplelist()
       
     },
     peoplelist(){
-        this.axios
-        .get('https://api.anjihos.z-y.tech/admin/contract?doctor_team_id='+this.doctor_team_id,
-        {
-          params: {
-            page: this.currentPages
-          }
+      const loading = this.$loading({
+        lock: true,
+        text: '数据量较多，请稍等。',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      });
+      this.axios
+      .get('https://api.anjihos.z-y.tech/admin/contract?doctor_team_id='+ this.querydoctor_team_id||this.doctor_team_id,
+      {
+        params: {
+          page: this.currentPages
         }
-        ).then(res=>{
-         // console.log(res)
-         this.peoples = res.data.data.data;
-        // console.log( this.peoples)
-          this.totals = res.data.data.count;
-          this.currentPages = res.data.data.currentPage;
-        })
+      }
+      ).then(res=>{
+        // console.log(res)
+        this.peoples = res.data.data.data;
+      // console.log( this.peoples)
+        this.totals = res.data.data.count;
+        this.currentPages = res.data.data.currentPage;
+        loading.close()
+      })
     },
     //点击返回按钮，将服务记录隐藏，然后将签约列表显示出来
       serviceClose(){
