@@ -27,7 +27,7 @@
     </el-table-column>
     <el-table-column label="订单状态" width="100" align="center">
       <template slot-scope="scope">
-        <el-tag :type="scope.row.status | statusFilter" color="#ffff00">{{ scope.row.order_status === 11?'去派单':'去发货' }}</el-tag>
+        <el-tag :type="scope.row.status | statusFilter" color="#ffff00" @click.native='dispatdispatch'>{{ scope.row.order_status === 11?'去派单':'去发货' }}</el-tag>
       </template>
     </el-table-column>
   </el-table>
@@ -74,6 +74,11 @@ export default {
           console.log(response.data.data)
           this.list = response.data.data
         })
+    },
+    dispatdispatch(){
+       this.$router.push({
+        name:'order'
+      })
     }
   }
 }

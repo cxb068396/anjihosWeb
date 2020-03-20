@@ -6,7 +6,7 @@ export function loginByUsername(username, password) {
     password
   }
   return request({
-    url: 'http://47.97.251.68:8361/admin/auth/login',
+    url: 'https://api.anjihos.liangyouapp.com/admin/auth/login',
     method: 'post',
     data
   })
@@ -23,7 +23,8 @@ export function getUserInfo(token) {
   return request({
     url: '/user/info',
     method: 'get',
-    params: { token }
+    params: {
+      token
+    }
   })
 }
-
