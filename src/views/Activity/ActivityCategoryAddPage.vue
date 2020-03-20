@@ -66,7 +66,7 @@
               class="upload-demo"
               :headers="headers"
               name="pic"
-              action="http://47.97.251.68:8361/admin/upload/goodsPic"
+              action="https://api.anjihos.z-y.tech/admin/upload/goodsPic"
               :limit = 1 
               :on-exceed="picLimitMes"
               :on-preview="handlePreview"
@@ -88,7 +88,7 @@
               ref="upload"
               name='pic'
               v-model="infoForm.wap_banner_url"
-              action="http://47.97.251.68:8361/admin/upload/goodsPic"
+              action="https://api.anjihos.z-y.tech/admin/upload/goodsPic"
               :headers='headers'
               :on-preview="handlePreview"
               :on-remove="handleRemove"

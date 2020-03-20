@@ -128,6 +128,10 @@ router.beforeEach((to, from, next) => {
           console.log(roles)
           // router.addRoutes(asyncPlatformAdminRouterMap); // 动态添加可访问路由表
         } else if (userInfo.admin_role_id == 2) {
+          //有课程设置权限的，给定“课程管理”路由
+          if(userInfo.allow_course == 1){
+            roles.push('course')
+          }
           // 医院后台
           roles.push('editor')
           console.log(roles)

@@ -6,8 +6,8 @@
         separator="/"
       >
         <el-breadcrumb-item :to="{ name: 'dashboard'}">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>商品管理</el-breadcrumb-item>
-        <el-breadcrumb-item>{{infoForm.id ? '编辑商品' : '添加商品'}}</el-breadcrumb-item>
+        <el-breadcrumb-item>课程管理</el-breadcrumb-item>
+        <el-breadcrumb-item>{{infoForm.id ? '编辑课程' : '添加课程'}}</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="operation-nav">
         <el-button
@@ -26,39 +26,39 @@
           label-width="120px"
         >
           <el-form-item
-            label="活动标题"
+            label="课程名称"
             prop="name"
           >
-            <el-input v-model="infoForm.name" style="width:30%"></el-input>
+            <el-input v-model="infoForm.name"></el-input>
           </el-form-item>
           <el-form-item
-            label="承办方"
-            prop="organizer"
-          >
-            <el-input v-model="infoForm.organizer" style="width:30%"></el-input>
-          </el-form-item>
-          <el-form-item
-            label="活动地点"
-            prop="address"
-          >
-            <el-input v-model="infoForm.address"></el-input>
-          </el-form-item>
-          <el-form-item
-            label="联系方式"
-            prop="contact"
-          >
-            <el-input v-model="infoForm.contact" style="width:30%"></el-input>
-          </el-form-item>
-          <el-form-item
-            label="活动简单描述"
-            name="brief"
+            label="课程简单描述"
+            name="goods_brief"
+            v-if="infoForm.type == 2"
           >
             <el-input
               type="textarea"
               @input="descInput"
-              v-model="infoForm.brief"
+              v-model="infoForm.goods_brief"
+              maxlength='48'
+              placeholder="填写后会在课程详情页的课程名称下展现，非必填"
+            ></el-input>
+            <span
+              class="text"
+              style="float: right;color: #909399;margin-right: 55px;"
+            >已输入{{remnant}}/48字以内</span>
+          </el-form-item>
+          <el-form-item
+            label="课程简单描述"
+            name="goods_brief"
+            v-else
+          >
+            <el-input
+              type="textarea"
+              @input="descInput"
+              v-model="infoForm.goods_brief"
               maxlength='100'
-              placeholder="填写后会在活动详情页的活动名称下展现，非必填"
+              placeholder="填写后会在课程详情页的课程名称下展现，非必填"
             ></el-input>
             <span
               class="text"
@@ -79,35 +79,6 @@
             </el-cascader>
           </el-form-item>
           <el-form-item
-          label="选择时间"
-          name="time1"
-          >
-            <el-date-picker
-              value-format="timestamp"
-              v-model="time1"
-              type="datetimerange"
-              range-separator="至"
-              unlink-panels
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              @change="choosetime1">
-            </el-date-picker>
-          </el-form-item>
-
-          <!-- <el-form-item
-            label="所属分类"
-            prop="categorySelected"
-          >
-            <el-cascader
-              :options="categoryOptions"
-              :props="categoryCascaderConfig"
-              placeholder="请选择分类"
-              v-model="categorySelected"
-              @change="handleChange"
-            >
-            </el-cascader>
-          </el-form-item> -->
-          <!-- <el-form-item
             label="产品类别"
             prop="is_service"
           >
@@ -116,12 +87,12 @@
                 v-model="infoForm.is_service"
                 @change="chang"
               >
-                <el-radio :label="1">服务类</el-radio>
-                <el-radio :label="0">商品类</el-radio>
+                <el-radio :label=3>课程类</el-radio>
               </el-radio-group>
             </template>
-          </el-form-item> -->
-          <!-- <el-form-item
+          </el-form-item>
+          <el-form-item
+            v-if="infoForm.type !== 2"
             label="价格¥"
             prop="retail_price"
             :rules="[{ type:'number', required: true, message: '请填写价格', trigger: 'blur'}]"
@@ -130,8 +101,48 @@
               @change="numberLimt"
               type="number"
               v-model.number="infoForm.retail_price"
+              style="width:30%"
             ></el-input>
           </el-form-item>
+
+           <el-form-item
+            v-if="infoForm.type !== 2"
+            label="上限人数"
+            prop="number_limit"
+            :rules="[{ type:'number', required: true, message: '请填写人数', trigger: 'blur'}]"
+          >
+            <el-input
+              type="number"
+              v-model.number="infoForm.number_limit"
+              style="width:30%"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item
+            label="选择图标"
+          >
+          <el-select v-model="IconValue" @change="IconChange" placeholder="请选择图标，非必选">
+            <el-option
+              v-for="item in IconOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          </el-form-item>
+          <el-form-item
+            label="选择颜色"
+          >
+          <el-select v-model="colorValue" @change="colorChange" placeholder="请选择颜色，非必选">
+            <el-option
+              v-for="item in colorOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          </el-form-item>
+  
           <el-form-item label="上架">
             <el-switch
               on-text=""
@@ -139,12 +150,51 @@
               v-model="infoForm.is_on_sale"
             >
             </el-switch>
-          </el-form-item> -->
+          </el-form-item>
+          <el-form-item label="是否热卖">
+            <el-switch
+              on-text=""
+              off-text=""
+              v-model="infoForm.is_hot"
+            >
+            </el-switch>
+          </el-form-item>
+          <el-form-item label="排序">
+            <el-input-number
+              v-model="infoForm.sort_order"
+              :min="1"
+              :max="1000"
+            ></el-input-number>
+          </el-form-item>
+
+           <el-form-item
+            label="温馨提示"
+            v-if="infoForm.type == 2"
+          >
+            <el-input
+              type="textarea"
+              v-model="infoForm.goods_warm_prompt"
+              maxlength='100'
+              placeholder="预约相关内容温馨提示"
+            ></el-input>
+          </el-form-item>
+          <el-form-item
+            label="服务提示"
+            v-if="infoForm.type == 2"
+          >
+            <el-input
+              type="textarea"
+              v-model="infoForm.goods_service_prompt"
+              maxlength='100'
+              placeholder="预约相关内容服务提示"
+            ></el-input>
+          </el-form-item>
+
           <!--         <el-form-item label="排序">
             <el-input-number v-model="infoForm.sort_order" :min="1" :max="1000"></el-input-number>
           </el-form-item> -->
 
-          <el-form-item label="列表图片">
+          <el-form-item label="列表图片" v-if="infoForm.type !== 2">
             <el-upload
               class="avatar-uploader"
               ref="upload"
@@ -180,7 +230,7 @@
                class="upload-uploader"
                 ref="upload"
                 name='pic'
-                v-model="infoForm.desc[0]"
+                v-model="infoForm.goods_desc[0]"
                 action="https://api.anjihos.z-y.tech/admin/upload/goodsPic"
                 :headers='header'
                 :on-preview="handlePreview"
@@ -191,7 +241,7 @@
                 :before-upload="beforeAvatarUpload"
 
                 >
-                <img width="100%" v-if="infoForm.desc[0]" :src="infoForm.desc[0]" alt="">
+                <img width="100%" v-if="infoForm.goods_desc[0]" :src="infoForm.goods_desc[0]" alt="">
                 <i class="el-icon-plus"></i>
               </el-upload>
               <el-upload
@@ -200,7 +250,7 @@
                class="upload-uploader"
                 ref="upload"
                 name='pic'
-                v-model="infoForm.desc[1]"
+                v-model="infoForm.goods_desc[1]"
                 action="https://api.anjihos.z-y.tech/admin/upload/goodsPic"
                 :headers='header'
                 :on-preview="handlePreview"
@@ -210,15 +260,16 @@
                 :file-list="fileList"
                 :before-upload="beforeAvatarUpload"
                 >
-                <img width="100%" v-if="infoForm.desc[1]" :src="infoForm.desc[1]" alt="">
+                <img width="100%" v-if="infoForm.goods_desc[1]" :src="infoForm.goods_desc[1]" alt="">
                 <i class="el-icon-plus"></i>
               </el-upload>
               <el-dialog :visible.sync="dialogVisible"></el-dialog>
           </el-form-item> -->
 
           <el-form-item
-            label="活动banner"
+            label="课程banner"
             prop="gallery"
+            v-if="infoForm.type !== 2"
           >
             <div
               v-for="(item, curIndex) in infoForm.gallery"
@@ -291,9 +342,9 @@
              </el-dialog> -->
           </el-form-item>
 
-          <el-form-item label="活动详情">
+          <el-form-item label="课程详情" v-if="infoForm.type !== 2">
             <div
-              v-for="(item, curIndex) in infoForm.desc"
+              v-for="(item, curIndex) in infoForm.goods_desc"
               :key="item"
               class='image-div'
             >
@@ -330,7 +381,7 @@
                 @click="handleImgSort('desc', curIndex, true)"
               >↑上移</el-button>
               <el-button
-                v-if="curIndex != infoForm.desc.length - 1"
+                v-if="curIndex != infoForm.goods_desc.length - 1"
                 class="image-delete"
                 size="small"
                 type="primary"
@@ -346,7 +397,7 @@
               :show-file-list="false"
               :on-success="handleUploadImageSuccess"
               :headers="header"
-              :data="{index: infoForm.desc.length, type: 'desc'}"
+              :data="{index: infoForm.goods_desc.length, type: 'desc'}"
             >
               <i class="el-icon-plus image-uploader-icon"></i>
             </el-upload>
@@ -371,7 +422,67 @@ import api from "@/config/api";
 export default {
   data() {
     return {
-      time1:[],
+      IconOptions:[{
+        value: 'cardboardfill',
+        label: 'cardboardfill'
+      }, {
+        value: 'recordfill',
+        label: 'recordfill'
+      }, {
+        value: 'picfill',
+        label: 'picfill'
+      }, {
+        value: 'noticefill',
+        label: 'noticefill'
+      }, {
+        value: 'upstagefill',
+        label: 'upstagefill'
+      },{
+        value: 'clothesfill',
+        label: 'clothesfill'
+      },{
+        value: 'discoverfill',
+        label: 'discoverfill'
+      },{
+        value: 'questionfill',
+        label: 'questionfill'
+      },{
+        value: 'commandfill',
+        label: 'commandfill'
+      },{
+        value: 'brandfill',
+        label: 'brandfill'
+      }],
+      IconValue:'',
+      colorOptions:[{
+        value: 'red',
+        label: 'red'
+      }, {
+        value: 'orange',
+        label: 'orange'
+      }, {
+        value: 'yellow',
+        label: 'yellow'
+      }, {
+        value: 'olive',
+        label: 'olive'
+      }, {
+        value: 'cyan',
+        label: 'cyan'
+      },{
+        value: 'blue',
+        label: 'blue'
+      },{
+        value: 'purple',
+        label: 'purple'
+      },{
+        value: 'mauve',
+        label: 'mauve'
+      }],
+      colorValue:'',
+
+
+
       remnant: 0,
       isImgIn_1: false,
       isImgIn_2: false,
@@ -388,33 +499,36 @@ export default {
       header: {
         "X-Anjishop-Token": localStorage.getItem("token") || ""
       },
-
       actionGoodsPic: api.rootUrl + "/upload/goodsPic",
-
       infoForm: {
+        number_limit:0,
+        type:3,
         id: 0,
         list_pic_url: "",
-        contact:'',
-        desc: [],
+        goods_desc: [],
         name: "",
-        organizer:'',
-        brief: "",
-        sort_order: 1,
+        goods_brief: "",
+        is_service: 3,
         sort_order: 100,
-        activity_category_id:0,
-        is_show: true,
+        category_id: 0,
         is_on_sale: 1,
-        start_time:123,
-        end_time:456,
+        retail_price: "",
+        keywords: "",
+        verified : 1,
+        icon:'',
+        color:'',
         gallery: [],
-        deletedGalleries:[],
-        deletedDescPics:[],
-
+        deletedGalleries: [],
+        deletedDescPics: [],
+        is_hot:0,
+        worker_role_id:1,
+        goods_warm_prompt:'',
+        goods_service_prompt:'',
+        company_id:0,
       },
 
       infoRules: {
         name: [{ required: true, message: "请输入名称", trigger: "blur" }],
-        time1:[{required: true, message: "请选择时间段", trigger: "blur"}],
         is_service: [
           { required: true, message: "请选择类别", trigger: "blur" }
         ],
@@ -437,16 +551,23 @@ export default {
     };
   },
   methods: {
-    choosetime1(){
-      this.infoForm.start_time = this.time1[0]/1000
-      this.infoForm.end_time = this.time1[1]/1000
-      console.log(this.infoForm)
+    worker_rolr_idChange(value){
+      this.worker_role_id = value
+      console.log(this.worker_role_id)
     },
     chang(value) {
+      // console.log(value)
+      // if(value == 3 || value == 4){
+      //   this.infoForm.type = value
+      // }else{
+      //   this.infoForm.is_service = value;
+      //   console.log(this.infoForm.is_service);
+      // }
       this.infoForm.is_service = value;
+      this.infoForm.type = value
     },
     descInput() {
-      var txtVal = this.infoForm.brief.length;
+      var txtVal = this.infoForm.goods_brief.length;
       this.remnant = txtVal;
     },
     judgeIsImgIn_1() {
@@ -468,7 +589,7 @@ export default {
     },
     goBackPage() {
       this.$router.push({
-        name:'activity'
+        name:'coursepage'
       });
     },
     //上传之前的图片限制
@@ -491,7 +612,17 @@ export default {
       return testmsg && isLt2M;
     },
     handleChange(item) {
-      this.infoForm.activity_category_id = item[item.length - 1];
+      this.infoForm.category_id = item[item.length - 1];
+    },
+    IconChange(item){
+      // console.log(this.IconValue)
+      this.infoForm.icon = this.IconValue
+      console.log(this.infoForm.icon )
+    },
+    colorChange(item){
+      // console.log(this.IconValue)
+      this.infoForm.color = this.colorValue
+      console.log(this.infoForm.color )
     },
     handlePreview(file) {
       //预览图片时调用
@@ -507,8 +638,8 @@ export default {
     },
     //详情图片
     goodsDesc(response, file, fileList) {
-      // console.log(this.infoForm.desc);
-      this.infoForm.desc.push(response.data.fileUrl);
+      console.log(this.infoForm.goods_desc);
+      this.infoForm.goods_desc.push(response.data.fileUrl);
     },
     //轮播图片
     banner(response, file, fileList) {
@@ -528,7 +659,7 @@ export default {
       switch (type) {
         case "desc":
           {
-            let arr = this.infoForm.desc;
+            let arr = this.infoForm.goods_desc;
             if (index >= 0 && index < arr.length) {
               if (upOrDown) {
                 if (index === 0) {
@@ -542,8 +673,8 @@ export default {
                 [arr[index + 1], arr[index]] = [arr[index], arr[index + 1]];
               }
             }
-            this.infoForm.desc = [];
-            this.infoForm.desc = arr;
+            this.infoForm.goods_desc = [];
+            this.infoForm.goods_desc = arr;
           }
 
           break;
@@ -564,8 +695,8 @@ export default {
 
         case "desc":
           {
-            if (index >= 0 && index < this.infoForm.desc.length) {
-              let deletedUrls = this.infoForm.desc.splice(index, 1);
+            if (index >= 0 && index < this.infoForm.goods_desc.length) {
+              let deletedUrls = this.infoForm.goods_desc.splice(index, 1);
               this.infoForm.deletedDescPics.push(deletedUrls[0]);
             }
           }
@@ -608,10 +739,10 @@ export default {
                 this.infoForm.deletedDescPics.push(preUrl);
               }
 
-              if (index >= this.infoForm.desc.length) {
-                this.infoForm.desc.push(res.data.fileUrl);
+              if (index >= this.infoForm.goods_desc.length) {
+                this.infoForm.goods_desc.push(res.data.fileUrl);
               } else {
-                this.infoForm.desc.splice(index, 1, res.data.fileUrl);
+                this.infoForm.goods_desc.splice(index, 1, res.data.fileUrl);
               }
             }
 
@@ -637,7 +768,12 @@ export default {
       ) {
         this.$refs["infoForm"].validate(valid => {
           if (valid) {
-            this.axios.post("activity/store", this.infoForm).then(response => {
+            //如果是预约类，将is_service变成1
+            if(this.infoForm.type == 3){
+              this.infoForm.is_service = 1
+            }
+            this.getCompanyId()
+            this.axios.post("goods/store", this.infoForm).then(response => {
               if (response.data.errno === 0) {
                 this.$message({
                   type: "success",
@@ -651,6 +787,7 @@ export default {
                 });
               }
             });
+
           } else {
             return false;
           }
@@ -664,25 +801,32 @@ export default {
     },
 
     getCascaderCategory() {
-      this.axios.get("activitycategory/cascader").then(response => {
+      this.axios.get("category/cascader",{ params: {
+            is_course:1
+        }}).then(response => {
         this.categoryOptions = this.categoryOptions.concat(response.data.data);
         this.handleCategorySelected();
       });
     },
 
     handleCategorySelected() {
-      if (this.categoryOptions.length > 0 && this.infoForm.activity_category_id > 0) {
+      if (this.categoryOptions.length > 0 && this.infoForm.category_id > 0) {
         this.categoryOptions.map(item => {
           item.children.map(itemChild => {
-            if (itemChild.id === this.infoForm.activity_category_id) {
-              this.categorySelected = [item.id, this.infoForm.activity_category_id];
+            if (itemChild.id === this.infoForm.category_id) {
+              this.categorySelected = [item.id, this.infoForm.category_id];
               return;
             }
           });
         });
       }
     },
-
+    getCompanyId(){
+      let temId = localStorage.getItem("userInfo") 
+      temId = JSON.parse(temId)
+      this.infoForm.company_id = temId.company_id
+      console.log(this.infoForm.company_id)
+    },
     getInfo() {
       if (this.infoForm.id <= 0) {
         return false;
@@ -690,44 +834,38 @@ export default {
 
       let that = this;
       this.axios
-        .get("activity/info", {
+        .get("goods/info", {
           params: {
             id: that.infoForm.id
           }
         })
         .then(response => {
-          console.log(response)
+          console.log(response.data.data);
           let resInfo = response.data.data;
           resInfo.is_on_sale = resInfo.is_on_sale ? true : false;
-
+          resInfo.is_hot = resInfo.is_on_sale ? true : false;
           that.infoForm = Object.assign(that.infoForm, resInfo);
-
+          //将前端的is_service=type
+          this.infoForm.is_service = this.infoForm.type
+          this.IconValue = resInfo.icon
+          this.colorValue = resInfo.color
           this.handleCategorySelected();
-          console.log(that.time1)
-          that.time1.push(that.infoForm.start_time * 1000)
-          that.time1.push(that.infoForm.end_time * 1000)
-          // console.log(this.infoForm.list_pic_url);
-          // console.log(this.infoForm.desc[0]);
+          console.log(this.infoForm);
         });
     }
   },
   components: {},
-  mounted() {
+  created() {
     this.getCascaderCategory();
     this.infoForm.id = this.$route.query.id || 0;
     this.getInfo();
-    // console.log(this.infoForm.list_pic_url);
-    // console.log(this.infoForm.desc);
+    console.log(this.infoForm.list_pic_url);
+    console.log(this.infoForm.goods_desc);
   }
 };
 </script>
 
 <style>
-.demonstration{
-  color: #606266;
-  font-size:14px;
-  font-weight: bold;
-}
 .imgHuge-list {
   position: absolute;
   bottom: -10px;

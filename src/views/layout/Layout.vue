@@ -3,8 +3,13 @@
     <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>
     <sidebar class="sidebar-container"/>
     <div class="main-container">
-      <navbar/>
-      <tags-view/>
+      <el-button round class='triangle' @click="showOrNot" id='btn'>隐藏</el-button>
+      <el-collapse-transition>
+        <div v-show="openOrNot">
+          <navbar id="navbar"/>
+          <tags-view id="tags"/>
+        </div>
+      </el-collapse-transition>
       <app-main/>
     </div>
   </div>
@@ -15,6 +20,11 @@ import { Navbar, Sidebar, AppMain, TagsView } from './components'
 import ResizeMixin from './mixin/ResizeHandler'
 
 export default {
+data() {
+    return {
+      openOrNot:true
+    };
+  },
   name: 'Layout',
   components: {
     Navbar,
@@ -42,6 +52,15 @@ export default {
   methods: {
     handleClickOutside() {
       this.$store.dispatch('closeSideBar', { withoutAnimation: false })
+    },
+    showOrNot(){
+      if(this.openOrNot){
+        document.getElementById('btn').innerHTML = "显示"
+        this.openOrNot = !this.openOrNot
+      }else{
+        document.getElementById('btn').innerHTML = "隐藏"
+        this.openOrNot = !this.openOrNot
+      }
     }
   }
 }
@@ -67,5 +86,13 @@ export default {
     height: 100%;
     position: absolute;
     z-index: 999;
+  }
+  .triangle{
+    text-align: center;
+    position: absolute;
+    font-size: 10px;
+    left:47.5%;
+    top:0px;
+    z-index: 9999;
   }
 </style>

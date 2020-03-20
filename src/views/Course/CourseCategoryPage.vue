@@ -7,8 +7,8 @@
         separator="/"
       >
         <el-breadcrumb-item :to="{ path: '/dashboard'}"> 首页</el-breadcrumb-item>
-        <el-breadcrumb-item>商品管理</el-breadcrumb-item>
-        <el-breadcrumb-item>商品分类</el-breadcrumb-item>
+        <el-breadcrumb-item>课程管理</el-breadcrumb-item>
+        <el-breadcrumb-item>课程分类</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="operation-nav">
           <el-button
@@ -114,12 +114,12 @@ export default {
   methods: {
     handleRowPush(){
       this.$router.push({
-        name: "categoryaddpage",
+        name: "coursecategoryaddpage",
       });
     },
     handleRowEdit(index, row) {
       console.log(row);
-      this.$router.push({ name: "categoryaddpage", query: { id: row.id } });
+      this.$router.push({ name: "coursecategoryaddpage", query: { id: row.id } });
     },
     handleRowDelete(index, row) {
       console.log(row.parent_id);
@@ -166,7 +166,8 @@ export default {
         .get("category", {
           params: {
             page: this.page,
-            name: this.filterForm.name
+            name: this.filterForm.name,
+            is_course:1
           }
         })
         .then(response => {

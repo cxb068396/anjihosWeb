@@ -7,6 +7,7 @@ export function loginByUsername(username, password) {
   }
   return request({
     url: 'https://api.anjihos.liangyouapp.com/admin/auth/login',
+
     method: 'post',
     data
   })

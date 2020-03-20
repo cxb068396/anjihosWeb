@@ -53,6 +53,22 @@
               </el-radio-group>
             </template>
           </el-form-item>
+
+          <el-form-item
+            label="添加课程权限"
+            prop="allow_course"
+          >
+            <template>
+              <el-radio-group
+                v-model="infoForm.allow_course"
+                
+              >
+                <el-radio :label="0">不允许</el-radio>
+                <el-radio :label="1">允许</el-radio>
+              </el-radio-group>
+            </template>
+          </el-form-item>
+
           <el-form-item
             label="机构地址"
             prop="address"
@@ -117,7 +133,7 @@
               name="pic"
               :limit = 1 
               :on-exceed="picLimitMes"
-              action="http://47.97.251.68:8361/admin/upload/goodsPic"
+              action="https://api.anjihos.z-y.tech/admin/upload/goodsPic"
               :on-preview="handlePreview"
               :on-remove="handleRemove"
               :on-success="onloadPic"
@@ -133,7 +149,7 @@
               ref="upload"
               name='pic'
               v-model="infoForm.image_url"
-              action="http://47.97.251.68:8361/admin/upload/goodsPic"
+              action="https://api.anjihos.z-y.tech/admin/upload/goodsPic"
               :headers='headers'
               :on-preview="handlePreview"
               :on-remove="handleRemove"
@@ -177,6 +193,7 @@ export default {
       //   'X-Anjishop-Token':localStorage.getItem('token') || ''
       // },
       infoForm: {
+        allow_course:0,
         id: 0,
         name: "",
         address: "",
@@ -265,6 +282,7 @@ export default {
           }
         })
         .then(response => {
+          console.log(response)
           let resInfo = response.data.data;
           resInfo.is_show = resInfo.is_show ? true : false;
           that.infoForm = resInfo;
@@ -308,6 +326,7 @@ export default {
   },
   components: {},
   created() {
+    console.log(this.$route.query)
     this.infoForm.id = this.$route.query.id || 0;
     this.infoForm.address = this.$route.query.address || "";
     this.infoForm.name = this.$route.query.name || "";
@@ -316,7 +335,7 @@ export default {
     this.infoForm.bank_account = this.$route.query.bank_account || "";
     this.infoForm.bank_username = this.$route.query.bank_username || "";
     this.infoForm.is_hospital = this.$route.query.is_hospital || 0;
-    console.log(this.infoForm.is_hospital)
+    this.infoForm.allow_course = this.$route.query.allow_course || 0;
     // this.getTopCategory();
     // this.infoForm.id = this.$route.query.id || 0;
     // this.getInfo();

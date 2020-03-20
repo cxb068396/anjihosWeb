@@ -7,7 +7,7 @@
         separator="/"
       >
         <el-breadcrumb-item :to="{name: 'dashboard'}">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>商品管理</el-breadcrumb-item>
+        <el-breadcrumb-item>课程管理</el-breadcrumb-item>
         <el-breadcrumb-item>{{infoForm.id ? '编辑更新' : '添加分类'}}</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="operation-nav">
@@ -117,7 +117,7 @@
             prop="front_name"
           >
             <el-input
-              
+             
               @input="descInput"
               v-model="infoForm.front_name"
               :rows="1"
@@ -183,7 +183,8 @@ export default {
         icon_url: "",
         img_url: "",
         sort_order: 1,
-        is_show: true
+        is_show: true,
+        is_course:1,
       },
       infoRules: {
         name: [{ required: true, message: "请输入名称", trigger: "blur" }],
@@ -277,7 +278,11 @@ export default {
     },
 
     getTopCategory() {
-      this.axios.get("category/topCategory").then(response => {
+      this.axios.get("category/topCategory",{ 
+        params: {
+            is_course:1
+        }
+        }).then(response => {
         this.parentCategory = this.parentCategory.concat(response.data.data);
       });
     },

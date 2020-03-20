@@ -56,7 +56,7 @@
               ref="upload"
               name='pic'
               v-model="adminAddInfoForm.image_url"
-              action="http://47.97.251.68:8361/admin/upload/goodsPic"
+              action="https://api.anjihos.z-y.tech/admin/upload/goodsPic"
               :headers='headers'
               :on-preview="handlePreview"
               :on-remove="handleRemove"

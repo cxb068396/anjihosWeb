@@ -58,7 +58,9 @@
       <br>
       <social-sign />
     </el-dialog>
-
+    <div class="beian">
+      <a href="http://www.beian.miit.gov.cn">浙ICP备19043810号-1</a>
+    </div>
   </div>
 </template>
 
@@ -88,7 +90,7 @@ export default {
     return {
       loginForm: {
         username: 'admin',
-        password: 'admin888'
+        password: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -143,7 +145,7 @@ export default {
       //       this.loading = false;
       //       if (res.data.errno === 0) {
 
-      //         localStorage.http://47.97.251.68:8361/admin("token", res.data.data.token);
+      //         localStorage.https://api.anjihos.z-y.tech/admin("token", res.data.data.token);
       //         localStorage.setItem(
       //           "userInfo",
       //           JSON.stringify(res.data.data.userInfo)
@@ -314,6 +316,12 @@ $light_gray:#eee;
     position: absolute;
     right: 35px;
     bottom: 28px;
+  }
+  .beian{
+    position: fixed;
+    bottom: 2%;
+    left:calc(50% - 80px);
+    color: #fff;
   }
 }
 </style>

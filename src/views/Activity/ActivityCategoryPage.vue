@@ -170,6 +170,7 @@ export default {
           }
         })
         .then(response => {
+          console.log(response.data.data)
           this.tableData = response.data.data;
         });
     },

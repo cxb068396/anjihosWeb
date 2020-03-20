@@ -34,6 +34,24 @@
           <el-form-item
             label="商品简单描述"
             name="goods_brief"
+            v-if="infoForm.type == 2"
+          >
+            <el-input
+              type="textarea"
+              @input="descInput"
+              v-model="infoForm.goods_brief"
+              maxlength='48'
+              placeholder="填写后会在商品详情页的商品名称下展现，非必填"
+            ></el-input>
+            <span
+              class="text"
+              style="float: right;color: #909399;margin-right: 55px;"
+            >已输入{{remnant}}/48字以内</span>
+          </el-form-item>
+          <el-form-item
+            label="商品简单描述"
+            name="goods_brief"
+            v-else
           >
             <el-input
               type="textarea"
@@ -71,10 +89,12 @@
               >
                 <el-radio :label=1>服务类</el-radio>
                 <el-radio :label=0>商品类</el-radio>
+                <el-radio :label=2>预约类</el-radio>
               </el-radio-group>
             </template>
           </el-form-item>
           <el-form-item
+            v-if="infoForm.type !== 2"
             label="价格¥"
             prop="retail_price"
             :rules="[{ type:'number', required: true, message: '请填写价格', trigger: 'blur'}]"
@@ -154,17 +174,41 @@
               :max="1000"
             ></el-input-number>
           </el-form-item>
+
+           <el-form-item
+            label="温馨提示"
+            v-if="infoForm.type == 2"
+          >
+            <el-input
+              type="textarea"
+              v-model="infoForm.goods_warm_prompt"
+              maxlength='100'
+              placeholder="预约相关内容温馨提示"
+            ></el-input>
+          </el-form-item>
+          <el-form-item
+            label="服务提示"
+            v-if="infoForm.type == 2"
+          >
+            <el-input
+              type="textarea"
+              v-model="infoForm.goods_service_prompt"
+              maxlength='100'
+              placeholder="预约相关内容服务提示"
+            ></el-input>
+          </el-form-item>
+
           <!--         <el-form-item label="排序">
             <el-input-number v-model="infoForm.sort_order" :min="1" :max="1000"></el-input-number>
           </el-form-item> -->
 
-          <el-form-item label="列表图片">
+          <el-form-item label="列表图片" v-if="infoForm.type !== 2">
             <el-upload
               class="avatar-uploader"
               ref="upload"
               name='pic'
               v-model="infoForm.list_pic_url"
-              action="http://47.97.251.68:8361/admin/upload/goodsPic"
+              action="https://api.anjihos.z-y.tech/admin/upload/goodsPic"
               :headers='header'
               :on-preview="handlePreview"
               :on-remove="handleRemove"
@@ -195,7 +239,7 @@
                 ref="upload"
                 name='pic'
                 v-model="infoForm.goods_desc[0]"
-                action="http://47.97.251.68:8361/admin/upload/goodsPic"
+                action="https://api.anjihos.z-y.tech/admin/upload/goodsPic"
                 :headers='header'
                 :on-preview="handlePreview"
                 :on-remove="handleRemove"
@@ -215,7 +259,7 @@
                 ref="upload"
                 name='pic'
                 v-model="infoForm.goods_desc[1]"
-                action="http://47.97.251.68:8361/admin/upload/goodsPic"
+                action="https://api.anjihos.z-y.tech/admin/upload/goodsPic"
                 :headers='header'
                 :on-preview="handlePreview"
                 :on-remove="handleRemove"
@@ -233,6 +277,7 @@
           <el-form-item
             label="商品banner"
             prop="gallery"
+            v-if="infoForm.type !== 2"
           >
             <div
               v-for="(item, curIndex) in infoForm.gallery"
@@ -288,7 +333,7 @@
                 ref="upload"
                 name='pic'
                 v-model="infoForm.gallery"
-                action="http://47.97.251.68:8361/admin/upload/goodsPic"
+                action="https://api.anjihos.z-y.tech/admin/upload/goodsPic"
                 :headers='header'
                 :on-preview="handlePreview"
                 :on-remove="handleRemove"
@@ -305,7 +350,7 @@
              </el-dialog> -->
           </el-form-item>
 
-          <el-form-item label="商品详情">
+          <el-form-item label="商品详情" v-if="infoForm.type !== 2">
             <div
               v-for="(item, curIndex) in infoForm.goods_desc"
               :key="item"
@@ -466,6 +511,7 @@ export default {
       actionGoodsPic: api.rootUrl + "/upload/goodsPic",
 
       infoForm: {
+        type:0,
         id: 0,
         list_pic_url: "",
         goods_desc: [],
@@ -485,6 +531,8 @@ export default {
         deletedDescPics: [],
         is_hot:0,
         worker_role_id:1,
+        goods_warm_prompt:'',
+        goods_service_prompt:''
       },
 
       infoRules: {
@@ -516,8 +564,15 @@ export default {
       console.log(this.worker_role_id)
     },
     chang(value) {
+      // console.log(value)
+      // if(value == 3 || value == 4){
+      //   this.infoForm.type = value
+      // }else{
+      //   this.infoForm.is_service = value;
+      //   console.log(this.infoForm.is_service);
+      // }
       this.infoForm.is_service = value;
-      console.log(this.infoForm.is_service);
+      this.infoForm.type = value
     },
     descInput() {
       var txtVal = this.infoForm.goods_brief.length;
@@ -721,6 +776,10 @@ export default {
       ) {
         this.$refs["infoForm"].validate(valid => {
           if (valid) {
+            //如果是预约类，将is_service变成1
+            if(this.infoForm.type == 2){
+              this.infoForm.is_service = 1
+            }
             this.axios.post("goods/store", this.infoForm).then(response => {
               if (response.data.errno === 0) {
                 this.$message({
@@ -735,6 +794,7 @@ export default {
                 });
               }
             });
+
           } else {
             return false;
           }
@@ -785,15 +845,17 @@ export default {
           resInfo.is_on_sale = resInfo.is_on_sale ? true : false;
           resInfo.is_hot = resInfo.is_on_sale ? true : false;
           that.infoForm = Object.assign(that.infoForm, resInfo);
+          //将前端的is_service=type
+          this.infoForm.is_service = this.infoForm.type
           this.IconValue = resInfo.icon
           this.colorValue = resInfo.color
           this.handleCategorySelected();
-          console.log(this.infoForm.goods_desc[0]);
+          console.log(this.infoForm);
         });
     }
   },
   components: {},
-  mounted() {
+  created() {
     this.getCascaderCategory();
     this.infoForm.id = this.$route.query.id || 0;
     this.getInfo();
