@@ -139,63 +139,25 @@
       </el-tab-pane>
 
       <el-tab-pane label="课程类订单">
-        <el-table
-          stripe
-          style="width: 100%;"
-          :data="CourseListGoods"
-        >
-          <el-table-column
-            label="下单时间"
-            prop="add_time"
-            min-width="130"
-          >
-            <template slot-scope="scope">
-              {{scope.row.add_time*1000 | datetimeFilter}}
-            </template>
+        <el-table stripe style="width: 100%;" :data="CourseListGoods">
+          <el-table-column label="下单时间" prop="add_time" min-width="130">
+            <template slot-scope="scope">{{scope.row.add_time*1000 | datetimeFilter}}</template>
           </el-table-column>
-          <el-table-column
-            label="预约时间"
-            prop="service_need_time"
-            min-width="130"
-          >
-            <template slot-scope="scope">
-              {{'暂无预约时间'}}
-            </template>
-
+          <el-table-column label="预约时间" prop="service_need_time" min-width="130">
+            <template>{{'暂无预约时间'}}</template>
           </el-table-column>
-          <el-table-column
-            label="用户姓名"
-            prop="consignee"
-            min-width="80"
-          >
-
-          </el-table-column>
-          <el-table-column
-            label="课程名称"
-            prop="goodsInfos[0].name"
-            min-width="140"
-          >
-          </el-table-column>
-          <el-table-column
-            label="评价"
-            min-width="70"
-          >
+          <el-table-column label="用户姓名" prop="consignee" min-width="80"></el-table-column>
+          <el-table-column label="课程名称" prop="goodsInfos[0].name" min-width="140"></el-table-column>
+          <el-table-column label="评价" min-width="70">
             <template slot-scope="scope">
               <el-button
                 v-if="scope.row.comment == 1"
                 @click="commentsRowInfo(scope.$index, scope.row)"
                 size="small"
-              >
-                评价
-              </el-button>
+              >评价</el-button>
             </template>
           </el-table-column>
-          <el-table-column
-            label="地址"
-            prop="address"
-            min-width="180"
-          >
-          </el-table-column>
+          <el-table-column label="地址" prop="address" min-width="180"></el-table-column>
           <el-table-column
             prop="order_status_text"
             label="订单状态"
@@ -212,33 +174,19 @@
               >{{scope.row.order_status_text}}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column
-            fixed="right"
-            label="订单详情"
-            min-width="80"
-          >
+          <el-table-column fixed="right" label="订单详情" min-width="80">
             <template slot-scope="scope">
-              <el-button
-                size="small"
-                type='info'
-                @click="handleRowInfo(scope.$index, scope.row)"
-              >详情</el-button>
+              <el-button size="small" type="info" @click="handleRowInfo(scope.$index, scope.row)">详情</el-button>
             </template>
           </el-table-column>
-          <el-table-column
-            fixed="right"
-            label="操作"
-            min-width="150"
-          >
+          <el-table-column fixed="right" label="操作" min-width="150">
             <template slot-scope="scope">
               <el-button
                 size="small"
                 type="danger"
                 @click="orderSend(scope.$index, scope.row)"
                 v-bind:class="[scope.row.order_status == 11 ? goToSend: scope.row.order_status == 12 ? changeSend: hasSend]"
-              >
-                {{scope.row.order_status == 11 ? '去派单' : scope.row.order_status == 12 ? '改派单' : '服务完成或其它'}}
-              </el-button>
+              >{{scope.row.order_status == 11 ? '去派单' : scope.row.order_status == 12 ? '改派单' : '服务完成或其它'}}</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -248,8 +196,7 @@
           :page-size="pagesize"
           layout="total, prev, pager, next, jumper"
           :total="count"
-        >
-        </el-pagination>
+        ></el-pagination>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -265,12 +212,12 @@ export default {
       hasSend: "hasSend",
       currentPage0: 1,
       currentPage1: 1,
-      currentPage2:1,
+      currentPage2: 1,
       count: 0,
       pagesize: 10,
       OrderListService: [],
       OrderListGoods: [],
-      CourseListGoods:[]
+      CourseListGoods: []
     };
   },
   created() {
@@ -340,9 +287,9 @@ export default {
     handleClick(tab) {
       if (tab.label == "服务类订单") {
         this.handleOrderListService();
-      } else if(tab.label == "商品类订单"){
+      } else if (tab.label == "商品类订单") {
         this.handleOrderListGoods();
-      }else{
+      } else {
         this.handleCourseListGoods();
       }
     },
@@ -379,11 +326,9 @@ export default {
         })
         .then(response => {
           //this.OrderList = response.data.data.data;
-<<<<<<< HEAD
-          console.log(response.data.data.data);
-=======
+
           //  console.log(response.data.data.data);
->>>>>>> d32a61175b1f786cca1e48ee027938569dcbcac9
+
           this.OrderListService = response.data.data.data;
 
           this.count = response.data.data.count;
@@ -400,15 +345,14 @@ export default {
           this.count = response.data.data.count;
         });
     },
-     async handleCourseListGoods() {
-       const res = await this.axios
-        .get("/order", {
-          params: { page: this.currentPage2, is_service: 1 ,order_type: 4}
-        })
-        console.log(res.data.data.data)
-        this.CourseListGoods = res.data.data.data;
-        this.count = res.data.data.count;
-    },
+    async handleCourseListGoods() {
+      const res = await this.axios.get("/order", {
+        params: { page: this.currentPage2, is_service: 1, order_type: 4 }
+      });
+      console.log(res.data.data.data);
+      this.CourseListGoods = res.data.data.data;
+      this.count = res.data.data.count;
+    }
     //   handleCourseListGoods() {
     //     this.axios.get("/order", {
     //       params: { page: this.currentPage2, is_service: 1 ,order_type: 4}
